@@ -15,7 +15,7 @@
 ------
 
 + 개발범위
-![Image 1](https://i.imgur.com/jBT1i53.png)
+![Image 1](https://i.imgur.com/342NBOt.png)
 
 ------
 예상 게임 실행 흐름
