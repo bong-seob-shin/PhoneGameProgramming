@@ -1,11 +1,15 @@
-package kr.ac.kpu.game.s1234567.samplegame;
+package kr.ac.kpu.game.s1234567.samplegame.game;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
-public class Ball implements GameObject{
+import kr.ac.kpu.game.s1234567.samplegame.R;
+import kr.ac.kpu.game.s1234567.samplegame.framework.GameObject;
+import kr.ac.kpu.game.s1234567.samplegame.ui.view.GameView;
+
+public class Ball implements GameObject {
     private static int imageWidth;
     private static int imageHeight;
     private   float x,y;
@@ -27,14 +31,15 @@ public class Ball implements GameObject{
     }
 
     public void update() {
-        this.x += dx * GameView.frameTime;
-        this.y += dy * GameView.frameTime;
+        MainGame game = MainGame.get();
+        this.x += dx * game.frameTime;
+        this.y += dy * game.frameTime;
         int w = GameView.view.getWidth();
         int h = GameView.view.getHeight();
-        if(x<imageWidth/2 || x>w-imageWidth/2){
+        if(x<0|| x>w){
             dx = -dx;
         }
-        if(y<imageHeight/2||y>h-imageHeight/2){
+        if(y<0|y>h){
             dy = -dy;
         }
 
