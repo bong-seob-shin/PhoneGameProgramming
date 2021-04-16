@@ -1,4 +1,4 @@
-package kr.ac.kpu.game.s1234567.samplegame.game;
+package kr.ac.kpu.game.s2016184024.dragonflight.game;
 
 import android.graphics.Canvas;
 import android.view.MotionEvent;
@@ -6,8 +6,8 @@ import android.view.MotionEvent;
 import java.util.ArrayList;
 import java.util.Random;
 
-import kr.ac.kpu.game.s1234567.samplegame.framework.GameObject;
-import kr.ac.kpu.game.s1234567.samplegame.ui.view.GameView;
+import kr.ac.kpu.game.s2016184024.dragonflight.framework.GameObject;
+import kr.ac.kpu.game.s2016184024.dragonflight.ui.view.GameView;
 
 public class MainGame {
     public static final int BALL_COUNT = 10;
@@ -15,6 +15,8 @@ public class MainGame {
 
     //singleton
     static MainGame instance;
+    private Player player;
+
     public static MainGame get(){
         if(instance ==null){
             instance = new MainGame();
@@ -24,7 +26,7 @@ public class MainGame {
     public float frameTime;
 
     private boolean initialized;
-    Player player;
+//    Player player;
 
     ArrayList<GameObject> objects = new ArrayList<>();
 
@@ -36,18 +38,21 @@ public class MainGame {
         int w = GameView.view.getWidth();
         int h = GameView.view.getHeight();
 
-        player = new Player(w/2,h/2,0,0);
-        objects.add(player);
+//        player = new Player(w/2,h/2,0,0);
+//        objects.add(player);
 
-        Random random = new Random();
-        for (int i = 0; i< BALL_COUNT; i++){
-            float x = random.nextInt(800)+100;
-            float y = random.nextInt(900)+100;
-            float dx = random.nextFloat()*1000 -500;
-            float dy = random.nextFloat()*1000-500;
-            Ball b = new Ball(x,y,dx,dy);
-            objects.add(b);
-        }
+//        Random random = new Random();
+//        for (int i = 0; i< BALL_COUNT; i++){
+//            float x = random.nextInt(800)+100;
+//            float y = random.nextInt(900)+100;
+//            float dx = random.nextFloat()*1000 -500;
+//            float dy = random.nextFloat()*1000-500;
+//            Ball b = new Ball(x,y,dx,dy);
+//            objects.add(b);
+//        }
+
+        player = new Player(w/2,h-300,0,0);
+        objects.add(player);
         initialized = true;
         return true;
     }
@@ -73,7 +78,7 @@ public class MainGame {
 
     public boolean onTouchEvent(MotionEvent event) {
         int action = event.getAction();
-        if(action == MotionEvent.ACTION_DOWN){
+        if(action == MotionEvent.ACTION_DOWN|| action == MotionEvent.ACTION_MOVE){
             player.moveTo(event.getX(), event.getY());
             return true;
         }

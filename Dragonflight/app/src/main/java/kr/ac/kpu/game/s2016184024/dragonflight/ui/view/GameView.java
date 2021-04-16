@@ -1,4 +1,4 @@
-package kr.ac.kpu.game.s1234567.samplegame.ui.view;
+package kr.ac.kpu.game.s2016184024.dragonflight.ui.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,8 +11,8 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import kr.ac.kpu.game.s1234567.samplegame.framework.Sound;
-import kr.ac.kpu.game.s1234567.samplegame.game.MainGame;
+import kr.ac.kpu.game.s2016184024.dragonflight.framework.Sound;
+import kr.ac.kpu.game.s2016184024.dragonflight.game.MainGame;
 
 public class GameView extends View {
     private static final String TAG = GameView.class.getSimpleName();

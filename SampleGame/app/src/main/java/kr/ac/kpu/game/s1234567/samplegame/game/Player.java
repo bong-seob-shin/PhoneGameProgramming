@@ -4,14 +4,17 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.media.MediaPlayer;
 
 import kr.ac.kpu.game.s1234567.samplegame.R;
 import kr.ac.kpu.game.s1234567.samplegame.framework.GameObject;
+import kr.ac.kpu.game.s1234567.samplegame.framework.Sound;
 import kr.ac.kpu.game.s1234567.samplegame.ui.view.GameView;
 
 public class Player implements GameObject {
     private static int imageWidth;
     private static int imageHeight;
+
     private   float x,y;
     private  float dx, dy;
     private static Bitmap bitmap;
@@ -36,6 +39,7 @@ public class Player implements GameObject {
     }
 
     public void moveTo(float x, float y){
+        Sound.play(R.raw.hadouken);
         Bullet bullet = new Bullet(this.x, this.y, x, y);
 
         MainGame game = MainGame.get();
