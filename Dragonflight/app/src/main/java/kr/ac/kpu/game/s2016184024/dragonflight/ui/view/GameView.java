@@ -16,7 +16,8 @@ import kr.ac.kpu.game.s2016184024.dragonflight.game.MainGame;
 
 public class GameView extends View {
     private static final String TAG = GameView.class.getSimpleName();
-    private Bitmap bitmap;
+
+    public static final  float MULTIPLIER = 2;
 
 
     private long lastFrame;

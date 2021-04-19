@@ -4,10 +4,13 @@ import android.graphics.Canvas;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
+import kr.ac.kpu.game.s2016184024.dragonflight.framework.BoxCollidable;
 import kr.ac.kpu.game.s2016184024.dragonflight.framework.GameObject;
 import kr.ac.kpu.game.s2016184024.dragonflight.ui.view.GameView;
+import kr.ac.kpu.game.s2016184024.dragonflight.utils.CollisionHelper;
 
 public class MainGame {
     public static final int BALL_COUNT = 10;
@@ -38,21 +41,12 @@ public class MainGame {
         int w = GameView.view.getWidth();
         int h = GameView.view.getHeight();
 
-//        player = new Player(w/2,h/2,0,0);
-//        objects.add(player);
 
-//        Random random = new Random();
-//        for (int i = 0; i< BALL_COUNT; i++){
-//            float x = random.nextInt(800)+100;
-//            float y = random.nextInt(900)+100;
-//            float dx = random.nextFloat()*1000 -500;
-//            float dy = random.nextFloat()*1000-500;
-//            Ball b = new Ball(x,y,dx,dy);
-//            objects.add(b);
-//        }
-
-        player = new Player(w/2,h-300,0,0);
+        player = new Player(w/2,h-300);
         objects.add(player);
+
+        objects.add(new EnemyGenerator());
+
         initialized = true;
         return true;
     }
@@ -64,6 +58,22 @@ public class MainGame {
         for(GameObject go: objects){
             go.update();
 
+        }
+        
+        for(GameObject o1 : objects){
+            if(!(o1 instanceof  Enemy)){
+                continue;
+            }
+            
+            for (GameObject o2 : objects){
+                if(!(o2 instanceof Bullet||o2 instanceof Player)){
+                    continue;
+                }
+                
+                if(CollisionHelper.collides((BoxCollidable) o1,(BoxCollidable) o2)){
+                  //대충 충돌 로그  
+                }
+            }
         }
     }
 
@@ -86,7 +96,13 @@ public class MainGame {
     }
 
     public void add(GameObject gameObject) {
-        objects.add(gameObject);
+        GameView.view.post(new Runnable() {
+            @Override
+            public void run() {
+                objects.add(gameObject);
+            }
+        });
+
     }
 
     public void remove(GameObject gameObject) {

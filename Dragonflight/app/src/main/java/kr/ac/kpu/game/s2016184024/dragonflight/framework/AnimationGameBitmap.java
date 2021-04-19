@@ -5,9 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
+import kr.ac.kpu.game.s2016184024.dragonflight.ui.view.GameView;
+
 public class AnimationGameBitmap extends GameBitmap {
     private static final int PIXEL_MULTIPLIER = 4;
-    private Bitmap bitmap;
     private final int imageWidth;
     private final int imageHeight;
     private final int frameWidth;
@@ -16,9 +17,10 @@ public class AnimationGameBitmap extends GameBitmap {
     private final float framesPerSecond;
     private final int frameCount;
 
-    public AnimationGameBitmap(int resId, float framePerSecond, int frameCount){
+    protected  Rect srcRect = new Rect();
 
-        bitmap = GameBitmap.load(resId);
+    public AnimationGameBitmap(int resId, float framePerSecond, int frameCount){
+        super(resId);
         imageWidth = bitmap.getWidth();
         imageHeight = bitmap.getHeight();
 
@@ -44,20 +46,20 @@ public class AnimationGameBitmap extends GameBitmap {
 
         int fw = frameWidth;
         int h = imageHeight;
-        int hw = fw /2*PIXEL_MULTIPLIER;
-        int hh = imageHeight/2 * PIXEL_MULTIPLIER;
-        Rect src = new Rect(fw*frameIndex,0,fw*frameIndex+fw, h);
-        RectF dst = new RectF(x-hw, y -hh, x+hw,y+hh);
+        float hw = fw /2* GameView.MULTIPLIER;
+        float hh = imageHeight/2 *GameView.MULTIPLIER ;
+        srcRect.set(fw*frameIndex,0,fw*frameIndex+fw, h);
+        dstRect.set(x-hw, y -hh, x+hw,y+hh);
 
-        canvas.drawBitmap(bitmap, src, dst, null);
+        canvas.drawBitmap(bitmap, srcRect, dstRect, null);
 
     }
 
     public int getWidth(){
-        return frameWidth*PIXEL_MULTIPLIER;
+        return frameWidth;
     }
 
     public int getHeight(){
-        return imageHeight*PIXEL_MULTIPLIER;
+        return imageHeight;
     }
 }

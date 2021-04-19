@@ -3,6 +3,8 @@ package kr.ac.kpu.game.s2016184024.dragonflight.framework;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.RectF;
 
 import java.util.HashMap;
 
@@ -25,4 +27,42 @@ public class GameBitmap {
         }
         return bitmap;
     }
+
+    protected final Bitmap bitmap;
+    protected RectF dstRect = new RectF();
+    public GameBitmap(int resId){
+        bitmap = load(resId);
+    }
+
+    public void draw(Canvas canvas, float x, float y){
+        int hw = getWidth()/2;
+        int hh = getHeight()/2;
+
+        float dl = x - hw *GameView.MULTIPLIER;
+        float dt = y - hh *GameView.MULTIPLIER;
+        float dr = x + hw *GameView.MULTIPLIER;
+        float db = y + hh *GameView.MULTIPLIER;
+        dstRect.set(dl,dt,dr,db);
+        canvas.drawBitmap(bitmap,null,dstRect,null);
+    }
+
+    public int getHeight() {
+        return bitmap.getHeight();
+    }
+
+    public int getWidth() {
+        return bitmap.getWidth();
+    }
+
+    public RectF getBoundingRect(float x, float y) {
+        int hw = bitmap.getWidth()/2;
+        int hh = bitmap.getHeight()/2;
+
+        float dl = x - hw *GameView.MULTIPLIER;
+        float dt = y - hh *GameView.MULTIPLIER;
+        float dr = x + hw *GameView.MULTIPLIER;
+        float db = y + hh *GameView.MULTIPLIER;
+        return new RectF(dl,dt,dr,db);
+    }
+
 }
