@@ -16,14 +16,13 @@ import kr.ac.kpu.game.s2016184024.dragonflight.ui.view.GameView;
 public class Player implements GameObject , BoxCollidable {
     private static final int BULLET_SPEED = 1500;
     private static final float FIRE_INTERVAL = 1.0f/7.5f;
+    private static final float LASER_DURATION = FIRE_INTERVAL/3;
+
     private float fireTime;
 
-    private  int imageWidth;
-    private  int imageHeight;
-
     private   float x,y;
-    private  float dx, dy;
-    private GameBitmap bitmap;
+    private GameBitmap planeBitmap;
+    private GameBitmap fireBitmap;
     private float tx,ty;
     private float speed;
     private float angle;
@@ -34,7 +33,8 @@ public class Player implements GameObject , BoxCollidable {
         this.tx = x;
         this.ty = 0;
         this.speed = 800;
-        this.bitmap = new GameBitmap(R.mipmap.fighter);
+        this.planeBitmap = new GameBitmap(R.mipmap.fighter);
+        this.fireBitmap = new GameBitmap(R.mipmap.laser_0);
         this.fireTime = 0.0f;
 
     }
@@ -67,18 +67,19 @@ public class Player implements GameObject , BoxCollidable {
     }
 
     private void fireBullet() {
-        Bullet bullet = new Bullet(this.x, this.y,BULLET_SPEED);
+        Bullet bullet = Bullet.get(this.x, this.y,BULLET_SPEED);
         MainGame game = MainGame.get();
-        game.add(bullet);
+        game.add(MainGame.Layer.bullet, bullet);
     }
 
     public void draw(Canvas canvas) {
 
-        bitmap.draw(canvas, this.x, this.y);
-
+        planeBitmap.draw(canvas, this.x, this.y);
+        if(fireTime<LASER_DURATION)
+        fireBitmap.draw(canvas,x,y-50);
     }
 
-    public RectF getBoundingRect() {
-        return  bitmap.getBoundingRect(x,y);
+    public void getBoundingRect(RectF rect) {
+          planeBitmap.getBoundingRect(x,y,rect);
     }
 }
