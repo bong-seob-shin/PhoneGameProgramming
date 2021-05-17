@@ -9,6 +9,7 @@ import java.util.HashMap;
 import kr.ac.kpu.game.s2016184024.cookierun.framework.iface.GameObject;
 import kr.ac.kpu.game.s2016184024.cookierun.framework.iface.Recyclable;
 import kr.ac.kpu.game.s2016184024.cookierun.framework.view.GameView;
+import kr.ac.kpu.game.s2016184024.cookierun.game.MainGame;
 
 
 public class BaseGame {
@@ -156,5 +157,9 @@ public class BaseGame {
         } else {
             runnable.run();
         }
+    }
+
+    public ArrayList<GameObject> objectsAt(MainGame.Layer layer){
+        return layers.get(layer.ordinal());
     }
 }

@@ -17,7 +17,7 @@ public class MainGame extends BaseGame {
     private boolean initialized;
 
     public enum Layer{
-        bg, platform,player,ui, controller, LAYER_COUNT
+        bg, platform,item,player,ui, controller, LAYER_COUNT
     }
 
     public void add(Layer layer, GameObject obj){
@@ -34,7 +34,8 @@ public class MainGame extends BaseGame {
 
         initLayers(Layer.LAYER_COUNT.ordinal());
 
-        player = new Player(200,h-300);
+        float y = h - Platform.Type.T_2x2.height()-255;
+        player = new Player(200,y);
         add(Layer.player, player);
         //add(Layer.controller, new EnemyGenerator());
 
@@ -52,9 +53,12 @@ public class MainGame extends BaseGame {
         HorizonTalScrolBackground bg2 = new HorizonTalScrolBackground(R.mipmap.cookie_run_bg_3, -30);
         add(Layer.bg, bg2);
 
-        float tx = 0, ty= h-160;
+        add(Layer.controller, new StageMap());
+
+        float tx = 0, ty= h-Platform.Type.T_2x2.height();
         while(tx<w){
-            Platform platform = new Platform(Platform.Type.T_10x2, tx, ty);
+
+            Platform platform = new Platform(Platform.Type.RANDOM, tx, ty);
             add(Layer.platform, platform);
             tx += platform.getDstWidth();
 
