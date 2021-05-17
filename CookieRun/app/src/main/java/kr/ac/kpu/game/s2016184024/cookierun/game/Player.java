@@ -1,38 +1,46 @@
 package kr.ac.kpu.game.s2016184024.cookierun.game;
 
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.RectF;
+import android.nfc.Tag;
+import android.util.Log;
 
 import kr.ac.kpu.game.s2016184024.cookierun.R;
-import kr.ac.kpu.game.s2016184024.cookierun.framework.BoxCollidable;
-import kr.ac.kpu.game.s2016184024.cookierun.framework.GameBitmap;
-import kr.ac.kpu.game.s2016184024.cookierun.framework.GameObject;
-import kr.ac.kpu.game.s2016184024.cookierun.framework.IndexedAnimationGameBitmap;
-import kr.ac.kpu.game.s2016184024.cookierun.framework.MainGame;
+import kr.ac.kpu.game.s2016184024.cookierun.framework.iface.BoxCollidable;
+import kr.ac.kpu.game.s2016184024.cookierun.framework.iface.GameObject;
+import kr.ac.kpu.game.s2016184024.cookierun.framework.bitmap.IndexedAnimationGameBitmap;
+import kr.ac.kpu.game.s2016184024.cookierun.framework.game.BaseGame;
 
 
 public class Player implements GameObject, BoxCollidable {
     private static final int BULLET_SPEED = 1500;
     private static final float FIRE_INTERVAL = 1.0f/7.5f;
     private static final float LASER_DURATION = FIRE_INTERVAL/3;
+    private static final float GRAVITY = 2000f;
+    private static final float JUMPPOWER = 1200f;
+    private static final String TAG = Player.class.getSimpleName();
     private final IndexedAnimationGameBitmap charBitmap;
 
     private float fireTime;
 
     private   float x,y;
+    private  float ground_y;
     private float tx,ty;
+    private float vertSpeed;
     private float speed;
-    private float angle;
 
+    private enum State{
+        running, jump, doubleJump, slide, hit
+    }
+
+    private  State state = State.running;
     public Player(float x, float y) {
         this.x = x;
         this.y = y;
         this.tx = x;
         this.ty = 0;
         this.speed = 800;
+        this.ground_y = y;
         this.charBitmap = new IndexedAnimationGameBitmap(R.mipmap.cookie, 4.5f, 0);
         charBitmap.setIndices(100,101,102,103);
 
@@ -47,31 +55,19 @@ public class Player implements GameObject, BoxCollidable {
     }
 
     public void update() {
-        MainGame game = MainGame.get();
-        float dx = speed * game.frameTime;
-        if(tx < x){
-            //move left
-            dx = -dx;
-        }
-        x+=dx;
-
-        if((dx>0&& x>tx)||(dx<0&& x<tx)){
-            x =tx;
-        }
-
-        fireTime += game.frameTime;
-        if(fireTime >= FIRE_INTERVAL){
-//            fireBullet();
-            fireTime -= FIRE_INTERVAL;
-        }
-//
+        BaseGame game = BaseGame.get();
+       if(state == State.jump || state == State.doubleJump){
+           float y  = this.y + vertSpeed * game.frameTime;
+           vertSpeed += GRAVITY * game.frameTime;
+           if(y>= ground_y){
+               y = ground_y;
+               state = State.running;
+               this.charBitmap.setIndices(100,101,102,103);
+           }
+           this.y = y;
+       }
     }
 
-//    private void fireBullet() {
-//        Bullet bullet = Bullet.get(this.x, this.y,BULLET_SPEED);
-//        MainGame game = MainGame.get();
-//        game.add(MainGame.Layer.bullet, bullet);
-//    }
 
     public void draw(Canvas canvas) {
         charBitmap.draw(canvas, this.x, this.y);
@@ -80,5 +76,24 @@ public class Player implements GameObject, BoxCollidable {
 
     public void getBoundingRect(RectF rect) {
       //    planeBitmap.getBoundingRect(x,y,rect);
+    }
+
+    public void Jump() {
+        //if(state != State.running &&state !=State.jump&&state != State.slide){
+        if(state != State.running&&state != State.jump){
+            return;
+        }
+        if(state == State.running) {
+            state = State.jump;
+            charBitmap.setIndices(7, 8);
+            vertSpeed = -JUMPPOWER;
+        }
+        else if(state == State.jump){
+            state= State.doubleJump;
+            charBitmap.setIndices(1,2,3,4);
+            Log.d(TAG, "Jump");
+            vertSpeed = -JUMPPOWER;
+
+        }
     }
 }

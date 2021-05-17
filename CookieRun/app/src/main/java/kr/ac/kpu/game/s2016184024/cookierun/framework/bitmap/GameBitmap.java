@@ -1,4 +1,4 @@
-package kr.ac.kpu.game.s2016184024.cookierun.framework;
+package kr.ac.kpu.game.s2016184024.cookierun.framework.bitmap;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -64,5 +64,6 @@ public class GameBitmap {
         float db = y + hh *GameView.MULTIPLIER;
         rect.set(dl,dt,dr,db);
     }
+
 
 }

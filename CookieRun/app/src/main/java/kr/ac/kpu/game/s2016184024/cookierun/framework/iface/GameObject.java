@@ -1,4 +1,4 @@
-package kr.ac.kpu.game.s2016184024.cookierun.framework;
+package kr.ac.kpu.game.s2016184024.cookierun.framework.iface;
 
 import android.graphics.Canvas;
 

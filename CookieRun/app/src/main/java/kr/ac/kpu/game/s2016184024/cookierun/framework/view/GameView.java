@@ -1,7 +1,6 @@
 package kr.ac.kpu.game.s2016184024.cookierun.framework.view;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -11,8 +10,8 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import kr.ac.kpu.game.s2016184024.cookierun.framework.MainGame;
-import kr.ac.kpu.game.s2016184024.cookierun.framework.Sound;
+import kr.ac.kpu.game.s2016184024.cookierun.framework.game.BaseGame;
+import kr.ac.kpu.game.s2016184024.cookierun.framework.utils.Sound;
 
 
 public class GameView extends View {
@@ -40,7 +39,7 @@ public class GameView extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         Log.d(TAG, "OnSize" + w +","+ h);
-        MainGame game = MainGame.get();
+        BaseGame game = BaseGame.get();
 
         boolean justInitialized = game.initResources();
         if(justInitialized){
@@ -49,7 +48,7 @@ public class GameView extends View {
         //super.onSizeChanged(w, h, oldw, oldh);
     }
     private void update() {
-        MainGame game = MainGame.get();
+        BaseGame game = BaseGame.get();
         game.update();
 
         invalidate();
@@ -85,7 +84,7 @@ public class GameView extends View {
                 if (lastFrame == 0) {
                     lastFrame = time;
                 }
-                MainGame game = MainGame.get();
+                BaseGame game = BaseGame.get();
                 game.frameTime = (float) (time - lastFrame) / 1_000_000_000;
                 update();
                 lastFrame = time;
@@ -96,7 +95,7 @@ public class GameView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        MainGame game = MainGame.get();
+        BaseGame game = BaseGame.get();
         game.update();
         game.draw(canvas);
 
@@ -104,7 +103,7 @@ public class GameView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        MainGame game = MainGame.get();
+        BaseGame game = BaseGame.get();
         return game.onTouchEvent(event);
 
     }

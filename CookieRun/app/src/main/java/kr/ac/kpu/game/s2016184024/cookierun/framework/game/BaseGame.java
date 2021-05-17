@@ -1,37 +1,36 @@
-package kr.ac.kpu.game.s2016184024.cookierun.framework;
+package kr.ac.kpu.game.s2016184024.cookierun.framework.game;
 
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
-import java.util.Random;
 
-import kr.ac.kpu.game.s2016184024.cookierun.R;
+import kr.ac.kpu.game.s2016184024.cookierun.framework.iface.GameObject;
+import kr.ac.kpu.game.s2016184024.cookierun.framework.iface.Recyclable;
 import kr.ac.kpu.game.s2016184024.cookierun.framework.view.GameView;
-import kr.ac.kpu.game.s2016184024.cookierun.game.Player;
-import kr.ac.kpu.game.s2016184024.cookierun.game.Score;
 
 
-public class MainGame {
+public class BaseGame {
     public static final int BALL_COUNT = 10;
 
 
     //singleton
-    static MainGame instance;
-    private Player player;
-    private Score score;
+    static BaseGame instance;
 
-    public static MainGame get(){
-        if(instance ==null){
-            instance = new MainGame();
-        }
+
+    public static BaseGame get(){
+//        if(instance ==null){
+//            instance = new BaseGame();
+//        }
         return  instance;
     }
     public float frameTime;
 
-    private boolean initialized;
+
+    protected BaseGame(){
+        instance = this;
+    }
 //    Player player;
 
     ArrayList<ArrayList<GameObject>> layers;
@@ -54,42 +53,12 @@ public class MainGame {
         return array.remove(0);
     }
 
-    public enum Layer{
-        bg1,enemy, bullet, player,bg2,ui, controller,ENEMY_COUNT
-    }
+
     public boolean initResources() {
-
-        if(initialized){
-            return false;
-        }
-        int w = GameView.view.getWidth();
-        int h = GameView.view.getHeight();
-
-        initLayers(Layer.ENEMY_COUNT.ordinal());
-
-        player = new Player(w/2,h-300);
-        add(Layer.player, player);
-        //add(Layer.controller, new EnemyGenerator());
-
-        int margin = (int) (20*GameView.MULTIPLIER);
-        score = new Score(w - margin, margin);
-        score.setScore(0);
-        add(Layer.ui, score);
-
-        HorizonTalScrolBackground bg = new HorizonTalScrolBackground(R.mipmap.cookie_run_bg_1, 10);
-        add(Layer.bg1, bg);
-
-        HorizonTalScrolBackground bg1 = new HorizonTalScrolBackground(R.mipmap.cookie_run_bg_2, 20);
-        add(Layer.bg1, bg1);
-
-        HorizonTalScrolBackground bg2 = new HorizonTalScrolBackground(R.mipmap.cookie_run_bg_3, 30);
-        add(Layer.bg1, bg2);
-
-        initialized = true;
-        return true;
+       return false;
     }
 
-    private void initLayers(int layerCount) {
+    protected void initLayers(int layerCount) {
         layers = new ArrayList<>();
         for(int i = 0; i<layerCount; i++){
             layers.add(new ArrayList<>());
@@ -146,20 +115,15 @@ public class MainGame {
     }
 
     public boolean onTouchEvent(MotionEvent event) {
-        int action = event.getAction();
-        if(action == MotionEvent.ACTION_DOWN|| action == MotionEvent.ACTION_MOVE){
-            player.moveTo(event.getX(), event.getY());
 
-            return true;
-        }
         return false;
     }
 
-    public void add(Layer layer, GameObject gameObject) {
+    public void add(int layerIndex, GameObject gameObject) {
         GameView.view.post(new Runnable() {
             @Override
             public void run() {
-                ArrayList<GameObject> objects = layers.get(layer.ordinal());
+                ArrayList<GameObject> objects = layers.get(layerIndex);
                 objects.add(gameObject);
             }
         });
