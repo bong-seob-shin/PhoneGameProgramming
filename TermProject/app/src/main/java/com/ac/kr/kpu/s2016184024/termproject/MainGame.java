@@ -15,7 +15,7 @@ public class MainGame extends BaseGame {
     private boolean initialized;
 
     public enum Layer{
-        bg, platform,item,player,ui, controller, LAYER_COUNT
+        bg, Tile,item,player,ui, controller, LAYER_COUNT
     }
 
     public void add(Layer layer, GameObject obj){
@@ -33,9 +33,17 @@ public class MainGame extends BaseGame {
         initLayers(Layer.LAYER_COUNT.ordinal());
 
 
-        player = new Player(200, 100);
+        player = new Player(400, h-400);
         add(Layer.player, player);
         //add(Layer.controller, new EnemyGenerator());
+
+        float tw = w/2;
+        float ty = h/2;
+        add(Layer.Tile, new Tiles(R.mipmap.centerTile,tw, ty ));
+        add(Layer.Tile, new Tiles(R.mipmap.centerTile,tw- Tiles.TILE_WIDTH, ty ));
+        add(Layer.Tile, new Tiles(R.mipmap.centerTile,tw- Tiles.TILE_WIDTH*2, ty ));
+        add(Layer.Tile, new Tiles(R.mipmap.centerTile,tw+ Tiles.TILE_WIDTH, ty ));
+        add(Layer.Tile, new Tiles(R.mipmap.centerTile,tw+ Tiles.TILE_WIDTH*2, ty ));
 
         int margin = (int) (20*GameView.MULTIPLIER);
         score = new Score(w - margin, margin);
@@ -58,9 +66,10 @@ public class MainGame extends BaseGame {
     public boolean onTouchEvent(MotionEvent event) {
         int action = event.getAction();
         if(action == MotionEvent.ACTION_DOWN|| action == MotionEvent.ACTION_MOVE){
-
+            player.moveTo(event.getX(), event.getY());
             return true;
         }
+
         return  false;
     }
 }

@@ -67,37 +67,14 @@ public class BaseGame {
     }
 
     public void update() {
-//        if(!initialized){
-//            return;
-//        }
+
         for(ArrayList<GameObject> objects : layers){
             for(GameObject go: objects){
                 go.update();
             }
         }
 //
-//        ArrayList<GameObject> bullets = layers.get(Layer.bullet.ordinal());
-//        ArrayList<GameObject> enemies = layers.get(Layer.enemy.ordinal());
-//        for (GameObject o1 : enemies){
-//            Enemy enemy = (Enemy) o1;
-//            boolean collided = false;
-//            for(GameObject o2 : bullets){
-//                Bullet bullet = (Bullet) o2;
-//                if(CollisionHelper.collides(enemy,bullet)){
-//                    remove(bullet, false);
-//                    remove(enemy, false);
-//                    score.addScore(10);
-//                    collided = true;
-//                    break;
-//                }
-//            }
-//            if(collided){
-//                break;
-//            }
-//        }
 //
-//
-//        }
     }
 
     public void draw(Canvas canvas) {

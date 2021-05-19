@@ -31,19 +31,41 @@ public class Player implements GameObject, BoxCollidable {
     }
 
     public void moveTo(float x, float y){
-          this.tx =x;
-
+        if(this.x > x){
+            this.tx = this.tx - 100;
+        }
+        else if(this.x < x){
+            this.tx = this.tx + 100;
+        }
+        else{
+            return;
+        }
+        if(this.y > y){
+            this.ty = this.ty - 100;
+        }
+        else if(this.y < y){
+            this.ty = this.ty + 100;
+        }
+        else{
+            return;
+        }
 
     }
 
     public void update() {
         BaseGame game = BaseGame.get();
         float dx = speed * game.frameTime;
+        float dy = speed * game.frameTime;
         if(tx < x){
             //move left
             dx = -dx;
         }
+        if(ty < y){
+            //move left
+            dy = -dy;
+        }
         x+=dx;
+        y += dy;
 
         if((dx>0&& x>tx)||(dx<0&& x<tx)){
             x =tx;
