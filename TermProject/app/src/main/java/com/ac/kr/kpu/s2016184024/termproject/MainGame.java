@@ -13,13 +13,15 @@ public class MainGame extends BaseGame {
     private static final String TAG = MainGame.class.getSimpleName();
     private Player player;
     private Score score;
+    private CheckSymbol symbol;
     private boolean initialized;
     private float clickStartPosX =0;
     private float clickEndPosX =0;
     private float clickStartPosY =0;
     private float clickEndPosY =0;
+
     public enum Layer{
-        bg, Tile,item,player,ui, controller, LAYER_COUNT
+        bg, Tile,player,ui,symbol, controller, LAYER_COUNT
     }
 
     public void add(Layer layer, GameObject obj){
@@ -49,17 +51,39 @@ public class MainGame extends BaseGame {
             }
         }
 
+        symbol = new CheckSymbol(R.mipmap.check, w/2, h/2);
+        add(Layer.symbol,symbol );
+
         player = new Player(w/2, h/2);
         add(Layer.player, player);
 
-        int margin = (int) (20*GameView.MULTIPLIER);
-        score = new Score(w - margin, margin);
-        score.setScore(0);
-        add(Layer.ui, score);
 
 
         initialized = true;
         return true;
+    }
+
+    public Pair checkClickTile(float x, float y){
+        int w = GameView.view.getWidth();
+        int h = GameView.view.getHeight();
+        float tileW =Tiles.TILE_WIDTH;
+        float tileH = Tiles.TILE_HEIGHT;
+
+        float tw = w/2- Tiles.TILE_WIDTH*2;
+        float ty = h/2- Tiles.TILE_HEIGHT*2;
+
+        for(int i = 0; i<5; i++){
+            for(int j = 0; j<5; j++){
+
+                if(tw+tileW*i-tileW< x && tw+tileW*i+tileW>x){
+                    if(ty+tileH*j-tileH< y && ty+tileH*j+tileH>y){
+                        
+                        return  new Pair(tw+tileW, ty+tileH);
+                    }
+                }
+            }
+        }
+        return  new Pair(-1,-1); //false value
     }
 
     @Override
@@ -78,6 +102,10 @@ public class MainGame extends BaseGame {
             case MotionEvent.ACTION_DOWN :
                 clickStartPosX = event.getX();
                 clickStartPosY = event.getY();
+                Pair checkPos = checkClickTile(event.getX(),event.getY());
+                if(checkPos.getFirst()>0){
+                    symbol.setPos(checkPos.getFirst(),checkPos.getSecond());
+                }
                 break;
 
             case MotionEvent.ACTION_UP:
