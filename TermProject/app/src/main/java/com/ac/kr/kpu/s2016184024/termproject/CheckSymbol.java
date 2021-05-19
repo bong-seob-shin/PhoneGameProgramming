@@ -9,7 +9,7 @@ public class CheckSymbol extends ImageObject {
     private static final float TILESIZE = 130;
     public static float TILE_WIDTH = TILESIZE * GameView.MULTIPLIER;
     public static float TILE_HEIGHT = TILESIZE* GameView.MULTIPLIER;
-    float x, y;
+    private float x, y;
 
     public CheckSymbol(int resId, float x, float y){
 
@@ -27,6 +27,11 @@ public class CheckSymbol extends ImageObject {
         this.y =y;
         dstRect.set(this.x-(TILE_WIDTH/2),this.y-(TILE_HEIGHT/2)-TILESIZE/2, this.x+(TILE_WIDTH/2), this.y+(TILE_HEIGHT/2)-TILESIZE/2);
 
+    }
+
+    public Pair getPos(){
+
+        return new Pair(x, y);
     }
 
 }

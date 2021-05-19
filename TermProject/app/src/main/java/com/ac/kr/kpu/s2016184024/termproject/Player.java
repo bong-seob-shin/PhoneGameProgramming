@@ -11,13 +11,13 @@ import com.ac.kr.kpu.s2016184024.termproject.framework.iface.GameObject;
 import com.ac.kr.kpu.s2016184024.termproject.framework.view.GameView;
 
 
-public class Player implements GameObject, BoxCollidable {
+public class Player implements GameObject {
 
 
     private static final String TAG = Player.class.getSimpleName();
     private   float x,y;
     private GameBitmap characterBitmap;
-    private GameBitmap fireBitmap;
+
     private float tx,ty;
     private float speed;
     private float dir; //0 top 1 bottom 2 left 3 right

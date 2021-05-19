@@ -24,7 +24,7 @@ public class MainGame extends BaseGame {
 
 
     public enum Layer{
-        bg, Tile,player,ui,symbol,controller, LAYER_COUNT
+        bg, Tile,player,ui,symbol,fire, LAYER_COUNT
     }
 
     public void add(Layer layer, GameObject obj){
@@ -111,6 +111,14 @@ public class MainGame extends BaseGame {
     public void update() {
         super.update();
 
+        if(selectLevel == 2){
+            Pair firePos = symbol.getPos();
+            add(Layer.fire, new FireEffect(firePos.getFirst(),firePos.getSecond() ));
+
+            remove(symbol);
+            selectLevel++;
+
+        }
         //collision detect
     }
 
