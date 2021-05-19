@@ -50,10 +50,17 @@ public class Player implements GameObject, BoxCollidable {
     }
 
     public void RightMove(){
-        this.tx = this.tx + 100;
+        this.tx = this.tx + Tiles.TILE_WIDTH;
     }
     public void LeftMove(){
-        this.tx = this.tx - 100;
+        this.tx = this.tx -Tiles.TILE_WIDTH;
+    }
+    public void UpMove() {
+        this.ty = this.ty + Tiles.TILE_HEIGHT;
+    }
+
+    public void DownMove() {
+        this.ty = this.ty - Tiles.TILE_HEIGHT;
     }
     public void update() {
         BaseGame game = BaseGame.get();
@@ -88,4 +95,6 @@ public class Player implements GameObject, BoxCollidable {
     public void getBoundingRect(RectF rect) {
         characterBitmap.getBoundingRect(x,y,rect);
     }
+
+
 }

@@ -19,6 +19,8 @@ public class MainGame extends BaseGame {
     private boolean initialized;
     private float clickStartPosX =0;
     private float clickEndPosX =0;
+    private float clickStartPosY =0;
+    private float clickEndPosY =0;
     public enum Layer{
         bg, Tile,item,player,ui, controller, LAYER_COUNT
     }
@@ -76,22 +78,42 @@ public class MainGame extends BaseGame {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN :
                 clickStartPosX = event.getX();
-
+                clickStartPosY = event.getY();
                 break;
 
             case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL:
                 clickEndPosX = event.getX();
-                if(clickEndPosX-clickStartPosX>swipeDistance){
-                    //rightMove
-                    player.RightMove();
+                clickEndPosY = event.getY();
+                float distX = clickEndPosX-clickStartPosX;
+                float distY = clickEndPosY - clickStartPosY;
+                if(Math.abs(distX)  > Math.abs(distY)){
+                    Log.d(TAG, distX +" : distance X "+ clickStartPosX + " : StartPos "+clickEndPosX+" : EndPos ");
+                    if(distX>swipeDistance){
+                       //rightMove
+                      player.RightMove();
+                    }
+                    if(distX<-swipeDistance){
+                      //leftMove
+                     player.LeftMove();
+                    }
                 }
-                if(clickEndPosX-clickStartPosX<-swipeDistance){
-                    //leftMove
-                    player.LeftMove();
+                else {
+                    Log.d(TAG, distY +" : distance Y "+ clickStartPosY + " : StartPos "+clickEndPosY+" : EndPos ");
+
+                    if(distY>swipeDistance){
+                        //downMove
+                        player.UpMove();
+                    }
+                    if(distY<-swipeDistance){
+                        //upMove
+                        player.DownMove();
+                    }
                 }
                 clickStartPosX =0;
                 clickEndPosX =0;
+                clickStartPosY =0;
+                clickEndPosY = 0;
+
                 break;
         }
         return  true;
