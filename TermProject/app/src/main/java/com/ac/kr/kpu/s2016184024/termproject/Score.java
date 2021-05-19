@@ -43,8 +43,8 @@ public class Score implements GameObject {
         int nw = bitmap.getWidth()/10;
         int nh = bitmap.getHeight();
         int x = right;
-        int dw = (int)(nw* GameView.MULTIPLIER);
-        int dh = (int)(nh * GameView.MULTIPLIER);
+        int dw = (int)(nw*2* GameView.MULTIPLIER);
+        int dh = (int)(nh *2* GameView.MULTIPLIER);
 
 
         while(value>0){
