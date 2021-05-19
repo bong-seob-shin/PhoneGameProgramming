@@ -17,7 +17,8 @@ public class MainGame extends BaseGame {
     private Player player;
     private Score score;
     private boolean initialized;
-
+    private float clickStartPosX =0;
+    private float clickEndPosX =0;
     public enum Layer{
         bg, Tile,item,player,ui, controller, LAYER_COUNT
     }
@@ -70,27 +71,27 @@ public class MainGame extends BaseGame {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        float startPosX =0;
-        float endPosX =0;
+
         int swipeDistance = 100;
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN :
-                startPosX = event.getX();
-                Log.d(TAG,"move start");
+                clickStartPosX = event.getX();
+
                 break;
 
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                endPosX = event.getX();
-                Log.d(TAG,startPosX+"sp"+endPosX+"ep"+ ( endPosX-startPosX)+"move distance");
-                if(endPosX-startPosX>swipeDistance){
+                clickEndPosX = event.getX();
+                if(clickEndPosX-clickStartPosX>swipeDistance){
                     //rightMove
                     player.RightMove();
                 }
-                if(endPosX-startPosX<-swipeDistance){
+                if(clickEndPosX-clickStartPosX<-swipeDistance){
                     //leftMove
                     player.LeftMove();
                 }
+                clickStartPosX =0;
+                clickEndPosX =0;
                 break;
         }
         return  true;
