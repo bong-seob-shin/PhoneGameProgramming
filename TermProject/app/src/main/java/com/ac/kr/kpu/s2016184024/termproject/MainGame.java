@@ -33,17 +33,18 @@ public class MainGame extends BaseGame {
         initLayers(Layer.LAYER_COUNT.ordinal());
 
 
-        player = new Player(400, h-400);
-        add(Layer.player, player);
-        //add(Layer.controller, new EnemyGenerator());
 
-        float tw = w/2;
-        float ty = h/2;
-        add(Layer.Tile, new Tiles(R.mipmap.centerTile,tw, ty ));
-        add(Layer.Tile, new Tiles(R.mipmap.centerTile,tw- Tiles.TILE_WIDTH, ty ));
-        add(Layer.Tile, new Tiles(R.mipmap.centerTile,tw- Tiles.TILE_WIDTH*2, ty ));
-        add(Layer.Tile, new Tiles(R.mipmap.centerTile,tw+ Tiles.TILE_WIDTH, ty ));
-        add(Layer.Tile, new Tiles(R.mipmap.centerTile,tw+ Tiles.TILE_WIDTH*2, ty ));
+
+        float tw = w/2- Tiles.TILE_WIDTH*2;
+        float ty = h/2- Tiles.TILE_HEIGHT*2;
+        for(int i = 0; i<5; i++){
+            for(int j = 0; j<5; j++){
+                add(Layer.Tile, new Tiles(tw+Tiles.TILE_WIDTH*i, ty+Tiles.TILE_HEIGHT*j,i,j ));
+            }
+        }
+
+        player = new Player(w/2, h/2);
+        add(Layer.player, player);
 
         int margin = (int) (20*GameView.MULTIPLIER);
         score = new Score(w - margin, margin);

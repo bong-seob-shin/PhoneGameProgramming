@@ -37,10 +37,7 @@ public class Player implements GameObject, BoxCollidable {
         else if(this.x < x){
             this.tx = this.tx + 100;
         }
-        else{
-            return;
-        }
-        if(this.y > y){
+        else if(this.y > y){
             this.ty = this.ty - 100;
         }
         else if(this.y < y){
