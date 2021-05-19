@@ -1,6 +1,10 @@
 package com.ac.kr.kpu.s2016184024.termproject;
 
+import android.nfc.Tag;
+import android.util.Log;
 import android.view.MotionEvent;
+
+import androidx.appcompat.view.menu.MenuView;
 
 import com.ac.kr.kpu.s2016184024.termproject.framework.game.BaseGame;
 import com.ac.kr.kpu.s2016184024.termproject.framework.iface.GameObject;
@@ -9,7 +13,7 @@ import com.ac.kr.kpu.s2016184024.termproject.framework.view.GameView;
 public class MainGame extends BaseGame {
 
 
-
+    private static final String TAG = MainGame.class.getSimpleName();
     private Player player;
     private Score score;
     private boolean initialized;
@@ -65,12 +69,30 @@ public class MainGame extends BaseGame {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        int action = event.getAction();
-        if(action == MotionEvent.ACTION_DOWN|| action == MotionEvent.ACTION_MOVE){
-            player.moveTo(event.getX(), event.getY());
-            return true;
-        }
 
-        return  false;
+        float startPosX =0;
+        float endPosX =0;
+        int swipeDistance = 100;
+        switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN :
+                startPosX = event.getX();
+                Log.d(TAG,"move start");
+                break;
+
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                endPosX = event.getX();
+                Log.d(TAG,startPosX+"sp"+endPosX+"ep"+ ( endPosX-startPosX)+"move distance");
+                if(endPosX-startPosX>swipeDistance){
+                    //rightMove
+                    player.RightMove();
+                }
+                if(endPosX-startPosX<-swipeDistance){
+                    //leftMove
+                    player.LeftMove();
+                }
+                break;
+        }
+        return  true;
     }
 }

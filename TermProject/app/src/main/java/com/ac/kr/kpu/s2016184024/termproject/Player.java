@@ -23,7 +23,7 @@ public class Player implements GameObject, BoxCollidable {
         this.x = x;
         this.y = y;
         this.tx = x;
-        this.ty = 0;
+        this.ty = y;
         this.speed = 800;
         this.characterBitmap = new GameBitmap(R.mipmap.tank);
 
@@ -49,6 +49,12 @@ public class Player implements GameObject, BoxCollidable {
 
     }
 
+    public void RightMove(){
+        this.tx = this.tx + 100;
+    }
+    public void LeftMove(){
+        this.tx = this.tx - 100;
+    }
     public void update() {
         BaseGame game = BaseGame.get();
         float dx = speed * game.frameTime;
