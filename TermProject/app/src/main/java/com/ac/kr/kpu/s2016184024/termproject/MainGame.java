@@ -1,10 +1,7 @@
 package com.ac.kr.kpu.s2016184024.termproject;
 
-import android.nfc.Tag;
 import android.util.Log;
 import android.view.MotionEvent;
-
-import androidx.appcompat.view.menu.MenuView;
 
 import com.ac.kr.kpu.s2016184024.termproject.framework.game.BaseGame;
 import com.ac.kr.kpu.s2016184024.termproject.framework.iface.GameObject;
@@ -40,6 +37,8 @@ public class MainGame extends BaseGame {
         initLayers(Layer.LAYER_COUNT.ordinal());
 
 
+
+        add(Layer.bg, new Background(R.mipmap.background, w/2, h/2));
 
 
         float tw = w/2- Tiles.TILE_WIDTH*2;
@@ -87,7 +86,6 @@ public class MainGame extends BaseGame {
                 float distX = clickEndPosX-clickStartPosX;
                 float distY = clickEndPosY - clickStartPosY;
                 if(Math.abs(distX)  > Math.abs(distY)){
-                    Log.d(TAG, distX +" : distance X "+ clickStartPosX + " : StartPos "+clickEndPosX+" : EndPos ");
                     if(distX>swipeDistance){
                        //rightMove
                       player.RightMove();
@@ -98,15 +96,16 @@ public class MainGame extends BaseGame {
                     }
                 }
                 else {
-                    Log.d(TAG, distY +" : distance Y "+ clickStartPosY + " : StartPos "+clickEndPosY+" : EndPos ");
 
                     if(distY>swipeDistance){
                         //downMove
-                        player.UpMove();
+                        player.DownMove();
+
                     }
                     if(distY<-swipeDistance){
                         //upMove
-                        player.DownMove();
+                        player.UpMove();
+
                     }
                 }
                 clickStartPosX =0;
