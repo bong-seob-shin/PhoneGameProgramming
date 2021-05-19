@@ -65,10 +65,10 @@ public class Player implements GameObject {
         if(GameView.view.getHeight()/2+Tiles.TILE_WIDTH*2>this.ty) {
             this.ty = this.ty + Tiles.TILE_HEIGHT;
             Log.d(TAG, " Down Move");
-
             dir =2;
         }
     }
+
     public void update() {
         BaseGame game = BaseGame.get();
         float dx = speed * game.frameTime;

@@ -85,7 +85,6 @@ public class MainGame extends BaseGame {
             for(int j = 0; j<5; j++){
                 if(tw + tileW * i - (tileW / 2) < x && tw + tileW * i + (tileW / 2) > x){
                     if(ty + tileH * j - (tileH / 2) < y && ty + tileH * j + (tileH / 2) > y){
-                        Log.d(TAG,tw+tileW+" tw " +ty+tileH +" ty "+x+ " x " + y + " y ");
                         return  new Pair(tw+tileW*i, ty+tileH*j);
                     }
                 }
