@@ -34,7 +34,8 @@ GitHub
 	깃허브 통계입니다.
 ![Image 3](https://i.imgur.com/tIAPcUN.png)
 
-	5/21일 수정
+![Image 3](https://i.imgur.com/M6QepsA.png)
+
 	프로젝트에 대한 커밋은 총 17개의 커밋이 있습니다.
 ------
 수정 사항
