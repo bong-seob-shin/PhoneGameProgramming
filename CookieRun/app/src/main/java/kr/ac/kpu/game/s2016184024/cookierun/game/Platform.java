@@ -11,10 +11,10 @@ import kr.ac.kpu.game.s2016184024.cookierun.framework.view.GameView;
 
 public class Platform extends ImageObject {
     public static final float SPEED = 150.0f;
-
+    public static final int UNIT_SIZE = 70;
     enum Type{
         T_10x2, T_2x2, T_3x1, RANDOM;
-        private static final int UNIT_SIZE = 40;
+
 
         float width(){
             int w = 1;
