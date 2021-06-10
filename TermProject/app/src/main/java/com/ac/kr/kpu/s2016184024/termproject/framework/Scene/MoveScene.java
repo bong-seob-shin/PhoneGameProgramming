@@ -1,5 +1,6 @@
 package com.ac.kr.kpu.s2016184024.termproject.framework.Scene;
 
+import android.util.Log;
 import android.view.MotionEvent;
 
 import com.ac.kr.kpu.s2016184024.termproject.Background;
@@ -16,6 +17,7 @@ import com.ac.kr.kpu.s2016184024.termproject.framework.iface.GameObject;
 import com.ac.kr.kpu.s2016184024.termproject.framework.view.GameView;
 
 public class MoveScene extends Scene {
+    private static final String TAG = MoveScene.class.getSimpleName();
     private Player player;
     private Score score;
     private CustomButton selectButton;
@@ -56,6 +58,7 @@ public class MoveScene extends Scene {
 
 
         player = MainGame.get().my_player;
+
         player.setPlayerInfo(w/2,h/2,R.mipmap.tank_my);
         add(Layer.player, player);
 
@@ -156,13 +159,26 @@ public class MoveScene extends Scene {
                         }
                     }
                 btsCheck = checkButton(selectButton,event.getX(),event.getY());
+
+
                 if(btsCheck){
                     //씬바꾸고 플레이어 정보 업데이트, 패킷 업데이트
                     Pair p = player.getPos();
-                    PlayerPacket pp = new PlayerPacket();
-                    pp.writeNewUser("1", "1",3.0,p.getFirst(),p.getSecond(),0,0,player.getShieldItem(),player.getRangeItem(),
-                            player.getMoveItem());
 
+
+                    PlayerPacket pp = new PlayerPacket();
+
+                    if(player.id.equals("1")){
+                        Log.d(TAG, "onTouchEvent: 22222asdad");
+
+                        pp.writeNewUser("1", "1",3.0,p.getFirst(),p.getSecond(),0,0,player.getShieldItem(),player.getRangeItem(),
+                            player.getMoveItem());
+                    }
+                    if(player.id.equals("2")){
+                        Log.d(TAG, "onTouchEvent: 11111asdad");
+                        pp.writeNewUser("2", "2",3.0,p.getFirst(),p.getSecond(),0,0,player.getShieldItem(),player.getRangeItem(),
+                                player.getMoveItem());
+                    }
                     MainGame.get().my_player = player;
 
                     MainGame.get().push(new AttackScene());

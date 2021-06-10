@@ -131,9 +131,15 @@ public class AttackScene extends Scene {
                     Pair p = MainGame.get().my_player.getPos();
                     Pair sp = symbol.getPos();
                     PlayerPacket pp = new PlayerPacket();
+                    if(MainGame.get().my_player.id.equals("1")){
                     pp.writeNewUser("1", "1",3.0,p.getFirst(),p.getSecond(),sp.getFirst(),sp.getSecond(),
                             MainGame.get().my_player.getShieldItem(),MainGame.get().my_player.getRangeItem(),MainGame.get().my_player.getMoveItem());
-                    MainGame.get().my_Symbol = symbol;
+                    }
+                    if(MainGame.get().my_player.id.equals("2")) {
+                        pp.writeNewUser("2", "2", 3.0, p.getFirst(), p.getSecond(), sp.getFirst(), sp.getSecond(),
+                                MainGame.get().my_player.getShieldItem(), MainGame.get().my_player.getRangeItem(), MainGame.get().my_player.getMoveItem());
+                    }
+                        MainGame.get().my_Symbol = symbol;
                     MainGame.get().push(new ResultScene());
                 }
                 break;

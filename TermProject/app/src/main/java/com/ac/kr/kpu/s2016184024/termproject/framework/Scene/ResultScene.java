@@ -8,9 +8,9 @@ import com.ac.kr.kpu.s2016184024.termproject.CustomButton;
 
 import com.ac.kr.kpu.s2016184024.termproject.FireEffect;
 import com.ac.kr.kpu.s2016184024.termproject.MainGame;
+import com.ac.kr.kpu.s2016184024.termproject.PacketReader;
 import com.ac.kr.kpu.s2016184024.termproject.Pair;
 import com.ac.kr.kpu.s2016184024.termproject.Player;
-import com.ac.kr.kpu.s2016184024.termproject.PlayerPacket;
 import com.ac.kr.kpu.s2016184024.termproject.R;
 import com.ac.kr.kpu.s2016184024.termproject.Score;
 import com.ac.kr.kpu.s2016184024.termproject.Tiles;
@@ -24,11 +24,11 @@ public class ResultScene extends Scene {
     private Score score;
     private Player other;
     private CustomButton selectButton;
-
+    public  PacketReader pr = new PacketReader();
 
 
     public enum Layer{
-        bg, Tile,player,ui,fire, LAYER_COUNT
+        bg, PacketReader,Tile,player,ui,fire, LAYER_COUNT
     }
 
     public static ResultScene scene;
@@ -42,7 +42,7 @@ public class ResultScene extends Scene {
         super.start();
         int w = GameView.view.getWidth();
         int h = GameView.view.getHeight();
-
+        other =new Player();
         initLayers(Layer.LAYER_COUNT.ordinal());
         add(Layer.bg, new Background(R.mipmap.background, w/2, h/2,0));
 
@@ -55,39 +55,47 @@ public class ResultScene extends Scene {
             }
         }
 
-        
-        Player player = MainGame.get().my_player;
-        if(player.id.equals("1")){
-            MainGame.get().other_Packet.readUser("2");
-            if(!MainGame.get().other_Packet.packets.isEmpty()){
-                Pair attackPair = new Pair((float) MainGame.get().other_Packet.packets.get(1).getAttackPosX(),(float) MainGame.get().other_Packet.packets.get(1).getAttackPosY());
-                Pair PosPair = new Pair((float) MainGame.get().other_Packet.packets.get(1).getPosX(),(float) MainGame.get().other_Packet.packets.get(1).getPosY());
 
-                add(Layer.fire, new FireEffect(attackPair.getFirst(),attackPair.getSecond() ));
+        add(Layer.PacketReader.ordinal(),pr);
 
-                other.setPlayerInfo(PosPair.getFirst(),PosPair.getSecond(),R.mipmap.tank_enemy);
-                add(MoveScene.Layer.player.ordinal(), other);
-                Log.d(TAG, "update?: ");
-            }
+    
+
+        if(pr.packetRead){
+            Log.d(TAG, "update?: true");
+            Player player = MainGame.get().my_player;
+            Pair attackPair = new Pair((float)pr.attackPosX, (float) pr.attackPosY);
+            Pair PosPair = new Pair((float)pr.posX, (float) pr.posY);
+
+            add(Layer.fire, new FireEffect(attackPair.getFirst(), attackPair.getSecond()));
+
+            other.setPlayerInfo(PosPair.getFirst(), PosPair.getSecond(), R.mipmap.tank_enemy);
+            add(ResultScene.Layer.player.ordinal(), other);
+
+        }
+        else{
+            Log.d(TAG, "update?: true");
+            Player player = MainGame.get().my_player;
+            Pair attackPair = new Pair((float)pr.attackPosX, (float) pr.attackPosY);
+            Pair PosPair = new Pair((float)pr.posX, (float) pr.posY);
+
+            add(Layer.fire, new FireEffect(attackPair.getFirst(), attackPair.getSecond()));
+
+            other.setPlayerInfo(PosPair.getFirst(), PosPair.getSecond(), R.mipmap.tank_enemy);
+            add(ResultScene.Layer.player.ordinal(), other);
+//            Log.d(TAG, "update?: true");
+//            Player player = MainGame.get().my_player;
+//            Pair attackPair = new Pair((float)pr.attackPosX, (float) pr.attackPosY);
+//            Pair PosPair = new Pair((float)pr.posX, (float) pr.posY);
+//            add(Layer.fire, new FireEffect(w/2, h/2));
+//
+//            other.setPlayerInfo(w/2, h/2, R.mipmap.tank_enemy);
+//            add(Layer.player.ordinal(), other);
         }
 
-        if(player.id.equals("2")){
-            MainGame.get().other_Packet.readUser("1");
-            if(!MainGame.get().other_Packet.packets.isEmpty()){
-                Pair attackPair = new Pair((float) MainGame.get().other_Packet.packets.get(1).getAttackPosX(),(float) MainGame.get().other_Packet.packets.get(1).getAttackPosY());
-                Pair PosPair = new Pair((float) MainGame.get().other_Packet.packets.get(1).getPosX(),(float) MainGame.get().other_Packet.packets.get(1).getPosY());
-
-                add(Layer.fire, new FireEffect(attackPair.getFirst(),attackPair.getSecond() ));
-
-                other.setPlayerInfo(PosPair.getFirst(),PosPair.getSecond(),R.mipmap.tank_enemy);
-                add(MoveScene.Layer.player.ordinal(), other);
-                Log.d(TAG, "update?: ");
-            }
-        }
 
 
 
-        Pair firePos =  MainGame.get().my_Symbol.getPos();
+
 
 
 
@@ -104,8 +112,30 @@ public class ResultScene extends Scene {
     }
 
 
-    public boolean checkButton(CustomButton bts,float x, float y){
+    void drawResult(){
+        if(pr.packetRead){
+            Log.d(TAG, "update?: true");
+            Player player = MainGame.get().my_player;
+            Pair attackPair = new Pair((float)pr.attackPosX, (float) pr.attackPosY);
+            Pair PosPair = new Pair((float)pr.posX, (float) pr.posY);
 
+            add(Layer.fire, new FireEffect(attackPair.getFirst(), attackPair.getSecond()));
+
+            other.setPlayerInfo(PosPair.getFirst(), PosPair.getSecond(), R.mipmap.tank_enemy);
+            add(ResultScene.Layer.player.ordinal(), other);
+
+        }
+    }
+
+    public boolean checkButton(CustomButton bts,float x, float y){
+        if(pr.packetRead){
+            Log.d(TAG, "checkButton: true!!");
+            drawResult();
+        }
+        else{
+            Log.d(TAG, "checkButton: false!!");
+
+        }
         Pair btsPos = bts.getPos();
 
         if(btsPos.getFirst()-CustomButton.TILE_WIDTH/2<x&&btsPos.getFirst()+CustomButton.TILE_WIDTH/2>x){
@@ -121,7 +151,8 @@ public class ResultScene extends Scene {
 
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN :
-
+                
+                
                 boolean btsCheck = checkButton(selectButton,event.getX(),event.getY());
                 if(btsCheck){
 

@@ -45,7 +45,7 @@ public class Player implements GameObject {
         this.shieldItem = true;
         this.rangeItem = true;
         this.moveItem = true;
-        this.id ="0";
+
     }
 
     public boolean getShieldItem(){

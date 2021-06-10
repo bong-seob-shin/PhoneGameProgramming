@@ -114,7 +114,7 @@ public class LobbyScene extends Scene {
                     PlayerPacket pp = new PlayerPacket();
                     pp.writeNewUser("1", "1",3.0,0,0,0,0,false,false,false);
                     MainGame.get().my_player.setPlayerId("1");
-
+                    Log.d(TAG, "onTouchEvent: "+ MainGame.get().my_player.id);
                     MainGame.get().push(new MoveScene());
                 }
 
