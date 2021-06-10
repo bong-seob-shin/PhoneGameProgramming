@@ -1,11 +1,13 @@
 package com.ac.kr.kpu.s2016184024.termproject.framework.Scene;
 
+import android.util.Log;
 import android.view.MotionEvent;
 
 import com.ac.kr.kpu.s2016184024.termproject.Background;
 import com.ac.kr.kpu.s2016184024.termproject.CustomButton;
 import com.ac.kr.kpu.s2016184024.termproject.MainGame;
 import com.ac.kr.kpu.s2016184024.termproject.Pair;
+import com.ac.kr.kpu.s2016184024.termproject.PlayerPacket;
 import com.ac.kr.kpu.s2016184024.termproject.R;
 import com.ac.kr.kpu.s2016184024.termproject.framework.game.Scene;
 import com.ac.kr.kpu.s2016184024.termproject.framework.iface.GameObject;
@@ -14,8 +16,7 @@ import com.ac.kr.kpu.s2016184024.termproject.framework.view.GameView;
 public class LobbyScene extends Scene {
 
 
-
-
+    private static final String TAG = LobbyScene.class.getSimpleName();
     public static LobbyScene scene;
     public void add(LobbyScene.Layer layer, GameObject obj){
         add(layer.ordinal(), obj);
@@ -34,8 +35,7 @@ public class LobbyScene extends Scene {
         scene =this;
         super.start();
 
-//        PlayerPacket pp = new PlayerPacket();
-//        pp.writeNewUser("2",3.0,0,0,0,0,false,false,false);
+
 
         int w = GameView.view.getWidth();
         int h = GameView.view.getHeight();
@@ -45,7 +45,6 @@ public class LobbyScene extends Scene {
 
 
         add(LobbyScene.Layer.ui, new Background(R.mipmap.game_title, w/2, h-1700,1));
-
 
 
         p1_Button = new CustomButton(R.mipmap.p1_button, w/2, h-700);
@@ -94,20 +93,36 @@ public class LobbyScene extends Scene {
                 }
                 boolean reset_btsCheck = checkButton(resetButton,event.getX(),event.getY());
                 if(reset_btsCheck){
-                    resetButton.changeBitmap(R.mipmap.resetbutton_clicked);
+                    MainGame.get().my_Packet.readUser("1");
+                    MainGame.get().other_Packet.readUser("2");
 
+                    if(!MainGame.get().my_Packet.packets.isEmpty()){
+                       if(MainGame.get().my_Packet.packets.get(0).getUserID().equals( "1") &&MainGame.get().other_Packet.packets.get(0).getUserID().equals("2"))
+                       {
+                           resetButton.changeBitmap(R.mipmap.resetbutton_clicked);
+                           PlayerPacket pp = new PlayerPacket();
+                           pp.writeNewUser("1", "0",3.0,0,0,0,0,false,false,false);
+                           pp.writeNewUser("2", "0",3.0,0,0,0,0,false,false,false);
+                       }
+                    }
                 }
                 break;
             case MotionEvent.ACTION_UP:
 
                 p1_btsCheck = p1_Button.getIsSelected();
                 if(p1_btsCheck){
+                    PlayerPacket pp = new PlayerPacket();
+                    pp.writeNewUser("1", "1",3.0,0,0,0,0,false,false,false);
                     MainGame.get().my_player.setPlayerId("1");
+
                     MainGame.get().push(new MoveScene());
                 }
 
                 p2_btsCheck = p2_Button.getIsSelected();
                 if(p2_btsCheck){
+                    PlayerPacket pp = new PlayerPacket();
+                    pp.writeNewUser("2", "2",3.0,0,0,0,0,false,false,false);
+
                     MainGame.get().my_player.setPlayerId("2");
 
                     MainGame.get().push(new MoveScene());

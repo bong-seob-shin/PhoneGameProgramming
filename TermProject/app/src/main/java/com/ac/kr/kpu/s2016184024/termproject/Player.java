@@ -20,9 +20,11 @@ public class Player implements GameObject {
     private float tx,ty;
     private float speed;
     private float dir; //0 top 1 bottom 2 left 3 right
-    public PlayerPacket my_packet;
-    public String id;
 
+    public String id;
+    private boolean shieldItem;
+    private boolean rangeItem;
+    private boolean moveItem;
 
 
     private int moveCount =4;
@@ -32,17 +34,35 @@ public class Player implements GameObject {
 
     }
 
-    public void setPlayerInfo(float x, float y){
+    public void setPlayerInfo(float x, float y, int resId){
         this.x = x;
         this.y = y;
         this.tx = x;
         this.ty = y;
         this.speed = 800;
-        this.characterBitmap = new GameBitmap(R.mipmap.tank_my);
+        this.characterBitmap = new GameBitmap(resId);
         this.dir =0;
+        this.shieldItem = true;
+        this.rangeItem = true;
+        this.moveItem = true;
+        this.id ="0";
     }
 
+    public boolean getShieldItem(){
+        return shieldItem;
+    }
 
+    public boolean getRangeItem(){
+        return rangeItem;
+    }
+    public boolean getMoveItem(){
+        return moveItem;
+    }
+
+    public Pair getPos(){
+
+        return new Pair(x, y);
+    }
     public void setPlayerId(String id){
         this.id = id;
     }

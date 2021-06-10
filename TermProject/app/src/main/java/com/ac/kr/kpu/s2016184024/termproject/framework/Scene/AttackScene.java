@@ -7,6 +7,7 @@ import com.ac.kr.kpu.s2016184024.termproject.CheckSymbol;
 import com.ac.kr.kpu.s2016184024.termproject.CustomButton;
 import com.ac.kr.kpu.s2016184024.termproject.MainGame;
 import com.ac.kr.kpu.s2016184024.termproject.Pair;
+import com.ac.kr.kpu.s2016184024.termproject.PlayerPacket;
 import com.ac.kr.kpu.s2016184024.termproject.R;
 import com.ac.kr.kpu.s2016184024.termproject.Score;
 import com.ac.kr.kpu.s2016184024.termproject.Tiles;
@@ -126,6 +127,12 @@ public class AttackScene extends Scene {
 
                 btsCheck = selectButton.getIsSelected();
                 if(btsCheck){
+
+                    Pair p = MainGame.get().my_player.getPos();
+                    Pair sp = symbol.getPos();
+                    PlayerPacket pp = new PlayerPacket();
+                    pp.writeNewUser("1", "1",3.0,p.getFirst(),p.getSecond(),sp.getFirst(),sp.getSecond(),
+                            MainGame.get().my_player.getShieldItem(),MainGame.get().my_player.getRangeItem(),MainGame.get().my_player.getMoveItem());
                     MainGame.get().my_Symbol = symbol;
                     MainGame.get().push(new ResultScene());
                 }

@@ -7,6 +7,7 @@ import com.ac.kr.kpu.s2016184024.termproject.CustomButton;
 import com.ac.kr.kpu.s2016184024.termproject.MainGame;
 import com.ac.kr.kpu.s2016184024.termproject.Pair;
 import com.ac.kr.kpu.s2016184024.termproject.Player;
+import com.ac.kr.kpu.s2016184024.termproject.PlayerPacket;
 import com.ac.kr.kpu.s2016184024.termproject.R;
 import com.ac.kr.kpu.s2016184024.termproject.Score;
 import com.ac.kr.kpu.s2016184024.termproject.Tiles;
@@ -55,7 +56,7 @@ public class MoveScene extends Scene {
 
 
         player = MainGame.get().my_player;
-        player.setPlayerInfo(w/2,h/2);
+        player.setPlayerInfo(w/2,h/2,R.mipmap.tank_my);
         add(Layer.player, player);
 
         selectButton = new CustomButton(R.mipmap.button, w/2, h-200);
@@ -157,7 +158,13 @@ public class MoveScene extends Scene {
                 btsCheck = checkButton(selectButton,event.getX(),event.getY());
                 if(btsCheck){
                     //씬바꾸고 플레이어 정보 업데이트, 패킷 업데이트
+                    Pair p = player.getPos();
+                    PlayerPacket pp = new PlayerPacket();
+                    pp.writeNewUser("1", "1",3.0,p.getFirst(),p.getSecond(),0,0,player.getShieldItem(),player.getRangeItem(),
+                            player.getMoveItem());
+
                     MainGame.get().my_player = player;
+
                     MainGame.get().push(new AttackScene());
                 }
                     clickStartPosX = 0;

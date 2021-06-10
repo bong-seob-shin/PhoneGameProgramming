@@ -11,8 +11,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class PlayerPacket {
     private static final String TAG = PlayerPacket.class.getSimpleName();
+
+    public ArrayList<PlayerPacket> packets =new ArrayList<>();
 
     private String UserID;
     private double HP;
@@ -36,16 +40,29 @@ public class PlayerPacket {
 
     public PlayerPacket(){}
 
-    public PlayerPacket(String userId, double HP,double posX,double poxY, double attackPosX, double attackPosY,boolean shieldItem,boolean rangeItem,boolean moveItem){
+    public PlayerPacket(String userId, double HP,double posX,double posY, double attackPosX, double attackPosY,boolean shieldItem,boolean rangeItem,boolean moveItem){
         this.UserID =userId;
         this.HP = HP;
         this.posX =posX;
-        this.posY =poxY;
+        this.posY =posY;
         this.attackPosX =attackPosX;
         this.attackPosY= attackPosY;
         this.shieldItem= shieldItem;
         this.rangeItem= rangeItem;
         this.moveItem= moveItem;
+
+    }
+
+    public void SetValue(PlayerPacket p){
+        this.UserID =p.UserID;
+        this.HP = p.HP;
+        this.posX =p.posX;
+        this.posY =p.posY;
+        this.attackPosX =p.attackPosX;
+        this.attackPosY= p.attackPosY;
+        this.shieldItem= p.shieldItem;
+        this.rangeItem= p.rangeItem;
+        this.moveItem= p.moveItem;
     }
     public String getUserID() {
         return UserID;
@@ -121,10 +138,10 @@ public class PlayerPacket {
 
 
 
-    public void writeNewUser(String userId, double HP,double posX,double poxY, double attackPosX, double attackPosY,boolean shieldItem,boolean rangeItem,boolean moveItem) {
-        PlayerPacket user = new PlayerPacket(userId , HP, posX,  poxY,  attackPosX, attackPosY, shieldItem, rangeItem, moveItem);
+    public void writeNewUser(String index, String userId, double HP,double posX,double posY, double attackPosX, double attackPosY,boolean shieldItem,boolean rangeItem,boolean moveItem) {
+        PlayerPacket user = new PlayerPacket(userId , HP, posX,  posY,  attackPosX, attackPosY, shieldItem, rangeItem, moveItem);
 
-        BaseGame.get().mDatabase.child(userId).setValue(user)
+        BaseGame.get().mDatabase.child(index).setValue(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -143,14 +160,18 @@ public class PlayerPacket {
 
     }
 
-    private void readUser(String userId){
-        BaseGame.get().mDatabase.child(userId).addValueEventListener(new ValueEventListener() {
+    public void readUser(String index){
+
+
+        BaseGame.get().mDatabase.child(index).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 if(dataSnapshot.getValue(PlayerPacket.class) != null){
                     PlayerPacket post = dataSnapshot.getValue(PlayerPacket.class);
-                    Log.d(TAG, "onSuccess: change ");
+                    packets.add(post);
+
+                    Log.d(TAG, "onSuccess: change "+packets.get(0).getUserID());
                 } else {
                     Log.d(TAG, "onFail: noData");
                 }
@@ -162,5 +183,7 @@ public class PlayerPacket {
                 Log.w("FireBaseData", "loadPost:onCancelled", databaseError.toException());
             }
         });
+
+
     }
 }
