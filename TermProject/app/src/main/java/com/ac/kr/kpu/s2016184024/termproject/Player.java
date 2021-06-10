@@ -21,9 +21,14 @@ public class Player implements GameObject {
     private float speed;
     private float dir; //0 top 1 bottom 2 left 3 right
     public PlayerPacket my_packet;
+    public String id;
+
+    public Player() {
 
 
-    public Player(float x, float y, String id) {
+    }
+
+    public void setPlayerInfo(float x, float y){
         this.x = x;
         this.y = y;
         this.tx = x;
@@ -31,14 +36,12 @@ public class Player implements GameObject {
         this.speed = 800;
         this.characterBitmap = new GameBitmap(R.mipmap.tank_my);
         this.dir =0;
-        this.my_packet.setUserID(id);
-        this.my_packet.setPosX(this.x);
-        this.my_packet.setPosY(this.y);
-
     }
 
 
-
+    public void setPlayerId(String id){
+        this.id = id;
+    }
     public void RightMove(){
         if(GameView.view.getWidth()/2+Tiles.TILE_WIDTH*2>this.tx){
             this.tx = this.tx + Tiles.TILE_WIDTH;

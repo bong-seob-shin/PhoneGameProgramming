@@ -48,7 +48,8 @@ public class MainScene extends Scene {
         symbol = new CheckSymbol(R.mipmap.check, 100000, 100000);
         add(Layer.symbol,symbol );
 
-        player = new Player(w/2, h/2);
+        player = MainGame.get().my_player;
+        player.setPlayerInfo(w/2,h/2);
         add(Layer.player, player);
 
         selectButton = new CustomButton(R.mipmap.button, w/2, h-200);

@@ -31,6 +31,8 @@ public class LobbyScene extends Scene {
         scene =this;
         super.start();
 
+//        PlayerPacket pp = new PlayerPacket();
+//        pp.writeNewUser("2",3.0,0,0,0,0,false,false,false);
 
         int w = GameView.view.getWidth();
         int h = GameView.view.getHeight();
@@ -97,11 +99,14 @@ public class LobbyScene extends Scene {
 
                 p1_btsCheck = p1_Button.getIsSelected();
                 if(p1_btsCheck){
+                    MainGame.get().my_player.setPlayerId("1");
                     MainGame.get().push(new MainScene());
                 }
 
                 p2_btsCheck = p2_Button.getIsSelected();
                 if(p2_btsCheck){
+                    MainGame.get().my_player.setPlayerId("2");
+
                     MainGame.get().push(new MainScene());
 
                 }

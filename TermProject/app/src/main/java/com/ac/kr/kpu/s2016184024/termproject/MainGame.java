@@ -12,7 +12,7 @@ public class MainGame extends BaseGame {
 
     private static final String TAG = MainGame.class.getSimpleName();
     private boolean initialized;
-
+    public Player my_player = new Player();
 
 
     public static MainGame get(){
