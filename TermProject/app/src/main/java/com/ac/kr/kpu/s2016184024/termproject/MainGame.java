@@ -13,7 +13,7 @@ public class MainGame extends BaseGame {
     private static final String TAG = MainGame.class.getSimpleName();
     private boolean initialized;
     public Player my_player = new Player();
-
+    public CheckSymbol my_Symbol;
 
     public static MainGame get(){
         return (MainGame) instance;
@@ -24,7 +24,7 @@ public class MainGame extends BaseGame {
         if(initialized){
             return false;
         }
-
+        my_Symbol =new CheckSymbol(R.mipmap.check, 100000, 100000);
 
         push(new LobbyScene());
 

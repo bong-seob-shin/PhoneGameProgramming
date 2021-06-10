@@ -37,7 +37,7 @@ public class LobbyScene extends Scene {
         int w = GameView.view.getWidth();
         int h = GameView.view.getHeight();
 
-        initLayers(MainScene.Layer.LAYER_COUNT.ordinal());
+        initLayers(LobbyScene.Layer.LAYER_COUNT.ordinal());
         add(LobbyScene.Layer.bg, new Background(R.mipmap.background, w/2, h/2,0));
 
 
@@ -100,14 +100,14 @@ public class LobbyScene extends Scene {
                 p1_btsCheck = p1_Button.getIsSelected();
                 if(p1_btsCheck){
                     MainGame.get().my_player.setPlayerId("1");
-                    MainGame.get().push(new MainScene());
+                    MainGame.get().push(new MoveScene());
                 }
 
                 p2_btsCheck = p2_Button.getIsSelected();
                 if(p2_btsCheck){
                     MainGame.get().my_player.setPlayerId("2");
 
-                    MainGame.get().push(new MainScene());
+                    MainGame.get().push(new MoveScene());
 
                 }
 

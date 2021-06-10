@@ -6,22 +6,19 @@ import com.ac.kr.kpu.s2016184024.termproject.framework.game.Scene;
 import com.ac.kr.kpu.s2016184024.termproject.framework.iface.GameObject;
 import com.ac.kr.kpu.s2016184024.termproject.framework.view.GameView;
 
-public class MainScene extends Scene {
-    private Player player;
+public class AttackScene extends Scene {
+
     private Score score;
     private CheckSymbol symbol;
     private CustomButton selectButton;
-    private float clickStartPosX =0;
-    private float clickEndPosX =0;
-    private float clickStartPosY =0;
-    private float clickEndPosY =0;
-    private int selectLevel =0;
+
+
 
     public enum Layer{
         bg, Tile,player,ui,symbol,fire, LAYER_COUNT
     }
 
-    public static MainScene scene;
+    public static AttackScene scene;
     public void add(Layer layer, GameObject obj){
         add(layer.ordinal(), obj);
     }
@@ -45,12 +42,10 @@ public class MainScene extends Scene {
             }
         }
 
-        symbol = new CheckSymbol(R.mipmap.check, 100000, 100000);
+        symbol = MainGame.get().my_Symbol;
         add(Layer.symbol,symbol );
 
-        player = MainGame.get().my_player;
-        player.setPlayerInfo(w/2,h/2);
-        add(Layer.player, player);
+
 
         selectButton = new CustomButton(R.mipmap.button, w/2, h-200);
         add(Layer.ui, selectButton);
@@ -98,66 +93,25 @@ public class MainScene extends Scene {
     }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(selectLevel == 2){
-            Pair firePos = symbol.getPos();
-            add(Layer.fire, new FireEffect(firePos.getFirst(),firePos.getSecond() ));
 
-            remove(symbol);
-            selectLevel++;
-
-        }
 
         int swipeDistance = 100;
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN :
-                clickStartPosX = event.getX();
-                clickStartPosY = event.getY();
+
                 boolean btsCheck = checkButton(selectButton,event.getX(),event.getY());
                 if(btsCheck){
-                    selectLevel++;
+                   //공격위치 업데이트 후 씬 푸쉬
                 }
-                if(selectLevel == 1){
+
                     Pair checkPos = checkClickTile(event.getX(),event.getY());
                     if(checkPos.getFirst()>0){
                         symbol.setPos(checkPos.getFirst(),checkPos.getSecond());
                     }
-                }
+
                 break;
 
-            case MotionEvent.ACTION_UP:
-                if(selectLevel ==0) {
-                    clickEndPosX = event.getX();
-                    clickEndPosY = event.getY();
-                    float distX = clickEndPosX - clickStartPosX;
-                    float distY = clickEndPosY - clickStartPosY;
-                    if (Math.abs(distX) > Math.abs(distY)) {
-                        if (distX > swipeDistance) {
-                            //rightMove
-                            player.RightMove();
-                        }
-                        if (distX < -swipeDistance) {
-                            //leftMove
-                            player.LeftMove();
-                        }
-                    } else {
 
-                        if (distY > swipeDistance) {
-                            //downMove
-                            player.DownMove();
-
-                        }
-                        if (distY < -swipeDistance) {
-                            //upMove
-                            player.UpMove();
-
-                        }
-                    }
-                    clickStartPosX = 0;
-                    clickEndPosX = 0;
-                    clickStartPosY = 0;
-                    clickEndPosY = 0;
-                }
-                break;
         }
         return  true;
     }
