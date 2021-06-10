@@ -37,7 +37,11 @@ public class ImageObject implements GameObject {
     public void update() {
 
     }
+    public void changeBitmap(int resId)
+    {
+        bitmap = GameBitmap.load(resId);
 
+    }
     @Override
     public void draw(Canvas canvas) {
         canvas.drawBitmap(bitmap, srcRect, dstRect, null);

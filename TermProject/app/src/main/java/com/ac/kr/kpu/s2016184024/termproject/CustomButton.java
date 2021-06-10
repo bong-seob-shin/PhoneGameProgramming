@@ -10,7 +10,8 @@ public class CustomButton extends ImageObject {
     public static float TILE_WIDTH = TILESIZE * GameView.MULTIPLIER;
     public static float TILE_HEIGHT = TILESIZE* GameView.MULTIPLIER;
 
-    boolean isSelected = false;
+    private boolean isSelected;
+
 
     float x, y;
 
@@ -21,7 +22,7 @@ public class CustomButton extends ImageObject {
         this.x = x;
         this.y = y;
         dstRect.set( this.x-(TILE_WIDTH/2), this.y-(TILE_HEIGHT/2)-TILESIZE/2,  this.x+(TILE_WIDTH/2),  this.y+(TILE_HEIGHT/2)-TILESIZE/2);
-
+        isSelected = false;
 
     }
 
@@ -37,4 +38,11 @@ public class CustomButton extends ImageObject {
         return new Pair(this.x, this.y);
     }
 
+    @Override
+    public void changeBitmap(int resId){
+        if(!this.isSelected) {
+            super.changeBitmap(resId);
+            this.isSelected =!this.isSelected;
+        }
+    }
 }

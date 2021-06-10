@@ -2,6 +2,7 @@ package com.ac.kr.kpu.s2016184024.termproject;
 
 import android.view.MotionEvent;
 
+import com.ac.kr.kpu.s2016184024.termproject.framework.game.BaseGame;
 import com.ac.kr.kpu.s2016184024.termproject.framework.game.Scene;
 import com.ac.kr.kpu.s2016184024.termproject.framework.iface.GameObject;
 import com.ac.kr.kpu.s2016184024.termproject.framework.view.GameView;
@@ -50,11 +51,15 @@ public class LobbyScene extends Scene {
 
     }
     public boolean checkButton(CustomButton bts,float x, float y){
+        if(bts.getIsSelected()){
+            return false;
+        }
 
         Pair btsPos = bts.getPos();
 
         if(btsPos.getFirst()-CustomButton.TILE_WIDTH/2<x&&btsPos.getFirst()+CustomButton.TILE_WIDTH/2>x){
             if(btsPos.getSecond()-CustomButton.TILE_HEIGHT/2<y&&btsPos.getSecond()+CustomButton.TILE_HEIGHT/2>y){
+
                 return true;
             }
         }
@@ -64,15 +69,40 @@ public class LobbyScene extends Scene {
     public boolean onTouchEvent(MotionEvent event) {
 
 
-        int swipeDistance = 100;
+
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN :
 
                 boolean p1_btsCheck = checkButton(p1_Button,event.getX(),event.getY());
+                if(p1_btsCheck){
+                    p1_Button.changeBitmap(R.mipmap.p1_btn_clicked);
 
+                }
+                boolean p2_btsCheck = checkButton(p2_Button,event.getX(),event.getY());
+                if(p2_btsCheck){
+                    p2_Button.changeBitmap(R.mipmap.p2_btn_clicked);
+
+                }
+                boolean reset_btsCheck = checkButton(resetButton,event.getX(),event.getY());
+                if(reset_btsCheck){
+                    resetButton.changeBitmap(R.mipmap.resetbutton_clicked);
+
+                }
                 break;
+            case MotionEvent.ACTION_UP:
 
+                p1_btsCheck = p1_Button.getIsSelected();
+                if(p1_btsCheck){
+                    MainGame.get().push(new MainScene());
+                }
 
+                p2_btsCheck = p2_Button.getIsSelected();
+                if(p2_btsCheck){
+                    MainGame.get().push(new MainScene());
+
+                }
+
+              break;
         }
         return  true;
     }

@@ -22,13 +22,16 @@ public class Player implements GameObject {
     private float speed;
     private float dir; //0 top 1 bottom 2 left 3 right
 
+    private String UserID;
+    private int HP;
+    
     public Player(float x, float y) {
         this.x = x;
         this.y = y;
         this.tx = x;
         this.ty = y;
         this.speed = 800;
-        this.characterBitmap = new GameBitmap(R.mipmap.tank);
+        this.characterBitmap = new GameBitmap(R.mipmap.tank_my);
         this.dir =0;
 
     }
