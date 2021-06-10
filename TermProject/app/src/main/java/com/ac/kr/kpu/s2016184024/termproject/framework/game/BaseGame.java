@@ -18,7 +18,7 @@ public class BaseGame {
 
     private static final String TAG = BaseGame.class.getSimpleName();
     //singleton
-    static BaseGame instance;
+    protected static BaseGame instance;
 
 
     public static BaseGame get(){
