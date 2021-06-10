@@ -12,6 +12,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         mainGame = new MainGame();
 
+        User user = new User("123","231@12312312");
+        user.writeNewUser("1",user.userName,user.email);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         View decorView = getWindow().getDecorView();

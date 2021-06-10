@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "20471751796",
+    "firebase_url": "https://androidmultiserver-default-rtdb.firebaseio.com",
+    "project_id": "androidmultiserver",
+    "storage_bucket": "androidmultiserver.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:20471751796:android:2341910518a67e80d0dd21",
+        "android_client_info": {
+          "package_name": "com.ac.kr.kpu.s2016184024.termproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "20471751796-sq0f355nsp2chcg1l7lq9ind1frdn4nl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDw_uCMv8RePS1zpb_R4qAyK94Ka2qQDAQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "20471751796-sq0f355nsp2chcg1l7lq9ind1frdn4nl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
