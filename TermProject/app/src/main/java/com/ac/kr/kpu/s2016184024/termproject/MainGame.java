@@ -26,7 +26,7 @@ public class MainGame extends BaseGame {
         }
 
 
-        push(new MainScene());
+        push(new LobbyScene());
 
 
 

@@ -34,7 +34,7 @@ public class MainScene extends Scene {
         int h = GameView.view.getHeight();
 
         initLayers(Layer.LAYER_COUNT.ordinal());
-        add(Layer.bg, new Background(R.mipmap.background, w/2, h/2));
+        add(Layer.bg, new Background(R.mipmap.background, w/2, h/2,0));
 
 
         float tw = w/2- Tiles.TILE_WIDTH*2;

@@ -14,15 +14,20 @@ import com.ac.kr.kpu.s2016184024.termproject.framework.view.GameView;
 
 public class Background extends ImageObject {
 
-    private static final float TILESIZE = 10000;
+    private static final float TILESIZE = 800;
+    public static float TILE_WIDTH = TILESIZE * GameView.MULTIPLIER;
+    public static float TILE_HEIGHT = TILESIZE* GameView.MULTIPLIER;
 
 
-
-    public Background(int resId, float x,  float y){
+    public Background(int resId, float x,  float y, int type ){
 
         super(resId, x, y);
 
-        dstRect.set(0,GameView.view.getTop(), GameView.view.getRight(), GameView.view.getBottom());
+        if(type == 0)
+            dstRect.set(0,GameView.view.getTop(), GameView.view.getRight(), GameView.view.getBottom());
+
+        if(type == 1)
+            dstRect.set( x-(TILE_WIDTH/2), y-(TILE_HEIGHT/2)-TILESIZE/2,  x+(TILE_WIDTH/2),  y+(TILE_HEIGHT/2)-TILESIZE/2);
 
     }
 
