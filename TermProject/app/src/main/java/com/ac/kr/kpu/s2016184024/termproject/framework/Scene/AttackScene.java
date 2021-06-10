@@ -1,7 +1,15 @@
-package com.ac.kr.kpu.s2016184024.termproject;
+package com.ac.kr.kpu.s2016184024.termproject.framework.Scene;
 
 import android.view.MotionEvent;
 
+import com.ac.kr.kpu.s2016184024.termproject.Background;
+import com.ac.kr.kpu.s2016184024.termproject.CheckSymbol;
+import com.ac.kr.kpu.s2016184024.termproject.CustomButton;
+import com.ac.kr.kpu.s2016184024.termproject.MainGame;
+import com.ac.kr.kpu.s2016184024.termproject.Pair;
+import com.ac.kr.kpu.s2016184024.termproject.R;
+import com.ac.kr.kpu.s2016184024.termproject.Score;
+import com.ac.kr.kpu.s2016184024.termproject.Tiles;
 import com.ac.kr.kpu.s2016184024.termproject.framework.game.Scene;
 import com.ac.kr.kpu.s2016184024.termproject.framework.iface.GameObject;
 import com.ac.kr.kpu.s2016184024.termproject.framework.view.GameView;
@@ -15,7 +23,7 @@ public class AttackScene extends Scene {
 
 
     public enum Layer{
-        bg, Tile,player,ui,symbol,fire, LAYER_COUNT
+        bg, Tile,ui,symbol, LAYER_COUNT
     }
 
     public static AttackScene scene;
@@ -95,12 +103,14 @@ public class AttackScene extends Scene {
     public boolean onTouchEvent(MotionEvent event) {
 
 
-        int swipeDistance = 100;
+
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN :
 
                 boolean btsCheck = checkButton(selectButton,event.getX(),event.getY());
                 if(btsCheck){
+                    MainGame.get().my_Symbol = symbol;
+                    MainGame.get().push(new ResultScene());
                    //공격위치 업데이트 후 씬 푸쉬
                 }
 

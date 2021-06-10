@@ -85,6 +85,30 @@ public class BaseGame {
         }
     }
 
+    public void popTwoScene() {
+        int lastIndex = sceneStack.size() - 1;
+        if (lastIndex >= 0) {
+            Scene top = sceneStack.remove(lastIndex);
+            Log.d(TAG, "Ending(in pop): " + top);
+            top.end();
+        }
+        lastIndex--;
+
+        if (lastIndex >= 0) {
+            Scene top = sceneStack.remove(lastIndex);
+            Log.d(TAG, "Ending(in pop): " + top);
+            top.end();
+        }
+        lastIndex--;
+        if (lastIndex >= 0) {
+            Scene top = sceneStack.get(lastIndex);
+            Log.d(TAG, "Resuming: " + top);
+            top.resume();
+        } else {
+            Log.e(TAG, "should end app in popScene()");
+        }
+    }
+
     public void recycle(GameObject object){
         Class clazz = object.getClass();
         ArrayList<GameObject> array = recycleBin.get(clazz);

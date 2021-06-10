@@ -1,7 +1,15 @@
-package com.ac.kr.kpu.s2016184024.termproject;
+package com.ac.kr.kpu.s2016184024.termproject.framework.Scene;
 
 import android.view.MotionEvent;
 
+import com.ac.kr.kpu.s2016184024.termproject.Background;
+import com.ac.kr.kpu.s2016184024.termproject.CustomButton;
+import com.ac.kr.kpu.s2016184024.termproject.MainGame;
+import com.ac.kr.kpu.s2016184024.termproject.Pair;
+import com.ac.kr.kpu.s2016184024.termproject.Player;
+import com.ac.kr.kpu.s2016184024.termproject.R;
+import com.ac.kr.kpu.s2016184024.termproject.Score;
+import com.ac.kr.kpu.s2016184024.termproject.Tiles;
 import com.ac.kr.kpu.s2016184024.termproject.framework.game.Scene;
 import com.ac.kr.kpu.s2016184024.termproject.framework.iface.GameObject;
 import com.ac.kr.kpu.s2016184024.termproject.framework.view.GameView;
@@ -17,7 +25,7 @@ public class MoveScene extends Scene {
 
     private int moveCount =4;
     public enum Layer{
-        bg, Tile,player,ui,symbol,fire, LAYER_COUNT
+        bg, Tile,player,ui, LAYER_COUNT
     }
 
     public static MoveScene scene;
@@ -107,6 +115,7 @@ public class MoveScene extends Scene {
                 if(btsCheck){
                     //씬바꾸고 플레이어 정보 업데이트, 패킷 업데이트
                     MainGame.get().my_player = player;
+                    MainGame.get().push(new AttackScene());
                 }
 
                 break;

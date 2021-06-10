@@ -1,7 +1,16 @@
-package com.ac.kr.kpu.s2016184024.termproject;
+package com.ac.kr.kpu.s2016184024.termproject.framework.Scene;
 
 import android.view.MotionEvent;
 
+import com.ac.kr.kpu.s2016184024.termproject.Background;
+import com.ac.kr.kpu.s2016184024.termproject.CustomButton;
+
+import com.ac.kr.kpu.s2016184024.termproject.FireEffect;
+import com.ac.kr.kpu.s2016184024.termproject.MainGame;
+import com.ac.kr.kpu.s2016184024.termproject.Pair;
+import com.ac.kr.kpu.s2016184024.termproject.R;
+import com.ac.kr.kpu.s2016184024.termproject.Score;
+import com.ac.kr.kpu.s2016184024.termproject.Tiles;
 import com.ac.kr.kpu.s2016184024.termproject.framework.game.Scene;
 import com.ac.kr.kpu.s2016184024.termproject.framework.iface.GameObject;
 import com.ac.kr.kpu.s2016184024.termproject.framework.view.GameView;
@@ -15,7 +24,7 @@ public class ResultScene extends Scene {
 
 
     public enum Layer{
-        bg, Tile,player,ui,symbol,fire, LAYER_COUNT
+        bg, Tile,ui,fire, LAYER_COUNT
     }
 
     public static ResultScene scene;
@@ -43,7 +52,8 @@ public class ResultScene extends Scene {
         }
 
 
-
+        Pair firePos =  MainGame.get().my_Symbol.getPos();
+        add(Layer.fire, new FireEffect(firePos.getFirst(),firePos.getSecond() ));
 
 
         selectButton = new CustomButton(R.mipmap.button, w/2, h-200);
@@ -58,26 +68,7 @@ public class ResultScene extends Scene {
 
     }
 
-    public Pair checkClickTile(float x, float y){
-        int w = GameView.view.getWidth();
-        int h = GameView.view.getHeight();
-        float tileW =Tiles.TILE_WIDTH;
-        float tileH = Tiles.TILE_HEIGHT;
 
-        float tw = w/2- Tiles.TILE_WIDTH*2;
-        float ty = h/2- Tiles.TILE_HEIGHT*2;
-
-        for(int i = 0; i<5; i++){
-            for(int j = 0; j<5; j++){
-                if(tw + tileW * i - (tileW / 2) < x && tw + tileW * i + (tileW / 2) > x){
-                    if(ty + tileH * j - (tileH / 2) < y && ty + tileH * j + (tileH / 2) > y){
-                        return  new Pair(tw+tileW*i, ty+tileH*j);
-                    }
-                }
-            }
-        }
-        return  new Pair(-1,-1); //false value
-    }
     public boolean checkButton(CustomButton bts,float x, float y){
 
         Pair btsPos = bts.getPos();
@@ -93,20 +84,12 @@ public class ResultScene extends Scene {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-            Pair firePos =  MainGame.get().my_Symbol.getPos();
-            add(Layer.fire, new FireEffect(firePos.getFirst(),firePos.getSecond() ));
-
-
-
-
-
-        int swipeDistance = 100;
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN :
 
                 boolean btsCheck = checkButton(selectButton,event.getX(),event.getY());
                 if(btsCheck){
-                   //pop두번해야함
+                   MainGame.get().popTwoScene();
                 }
 
                 break;

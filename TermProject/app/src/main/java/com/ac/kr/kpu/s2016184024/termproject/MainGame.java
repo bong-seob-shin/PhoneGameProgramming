@@ -1,11 +1,7 @@
 package com.ac.kr.kpu.s2016184024.termproject;
 
-import android.util.Log;
-import android.view.MotionEvent;
-
+import com.ac.kr.kpu.s2016184024.termproject.framework.Scene.LobbyScene;
 import com.ac.kr.kpu.s2016184024.termproject.framework.game.BaseGame;
-import com.ac.kr.kpu.s2016184024.termproject.framework.iface.GameObject;
-import com.ac.kr.kpu.s2016184024.termproject.framework.view.GameView;
 
 public class MainGame extends BaseGame {
 

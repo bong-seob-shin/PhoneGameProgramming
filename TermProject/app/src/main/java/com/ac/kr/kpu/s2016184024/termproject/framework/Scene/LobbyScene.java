@@ -1,8 +1,12 @@
-package com.ac.kr.kpu.s2016184024.termproject;
+package com.ac.kr.kpu.s2016184024.termproject.framework.Scene;
 
 import android.view.MotionEvent;
 
-import com.ac.kr.kpu.s2016184024.termproject.framework.game.BaseGame;
+import com.ac.kr.kpu.s2016184024.termproject.Background;
+import com.ac.kr.kpu.s2016184024.termproject.CustomButton;
+import com.ac.kr.kpu.s2016184024.termproject.MainGame;
+import com.ac.kr.kpu.s2016184024.termproject.Pair;
+import com.ac.kr.kpu.s2016184024.termproject.R;
 import com.ac.kr.kpu.s2016184024.termproject.framework.game.Scene;
 import com.ac.kr.kpu.s2016184024.termproject.framework.iface.GameObject;
 import com.ac.kr.kpu.s2016184024.termproject.framework.view.GameView;
@@ -24,7 +28,7 @@ public class LobbyScene extends Scene {
 
 
     public enum Layer{
-        bg, Tile,player,ui,symbol,fire, LAYER_COUNT
+        bg,ui, LAYER_COUNT
     }
 
     public void start(){
