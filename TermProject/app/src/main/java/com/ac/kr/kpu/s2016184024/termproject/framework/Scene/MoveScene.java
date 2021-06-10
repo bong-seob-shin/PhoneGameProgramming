@@ -23,7 +23,7 @@ public class MoveScene extends Scene {
     private float clickStartPosY =0;
     private float clickEndPosY =0;
 
-    private int moveCount =4;
+
     public enum Layer{
         bg, Tile,player,ui, LAYER_COUNT
     }
@@ -113,9 +113,8 @@ public class MoveScene extends Scene {
                 clickStartPosY = event.getY();
                 boolean btsCheck = checkButton(selectButton,event.getX(),event.getY());
                 if(btsCheck){
-                    //씬바꾸고 플레이어 정보 업데이트, 패킷 업데이트
-                    MainGame.get().my_player = player;
-                    MainGame.get().push(new AttackScene());
+                    selectButton.changeBitmap(R.mipmap.select_btn_clicked);
+
                 }
 
                 break;
@@ -126,32 +125,41 @@ public class MoveScene extends Scene {
                     clickEndPosY = event.getY();
                     float distX = clickEndPosX - clickStartPosX;
                     float distY = clickEndPosY - clickStartPosY;
-                    if(moveCount>0){
+                    if(player.getMoveCount()>0){
                         if (Math.abs(distX) > Math.abs(distY)) {
                             if (distX > swipeDistance) {
                                 //rightMove
                                 player.RightMove();
-                                moveCount--;
+                                player.setMoveCount(player.getMoveCount()-1);
                             }
                             if (distX < -swipeDistance) {
                                 //leftMove
                                 player.LeftMove();
-                                moveCount--;
+                                player.setMoveCount(player.getMoveCount()-1);
+
                             }
                         } else {
 
                             if (distY > swipeDistance) {
                                 //downMove
                                 player.DownMove();
-                                moveCount--;
+                                player.setMoveCount(player.getMoveCount()-1);
+
                             }
                             if (distY < -swipeDistance) {
                                 //upMove
                                 player.UpMove();
-                                moveCount--;
+                                player.setMoveCount(player.getMoveCount()-1);
+
                             }
                         }
                     }
+                btsCheck = checkButton(selectButton,event.getX(),event.getY());
+                if(btsCheck){
+                    //씬바꾸고 플레이어 정보 업데이트, 패킷 업데이트
+                    MainGame.get().my_player = player;
+                    MainGame.get().push(new AttackScene());
+                }
                     clickStartPosX = 0;
                     clickEndPosX = 0;
                     clickStartPosY = 0;

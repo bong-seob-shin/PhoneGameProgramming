@@ -109,8 +109,9 @@ public class AttackScene extends Scene {
 
                 boolean btsCheck = checkButton(selectButton,event.getX(),event.getY());
                 if(btsCheck){
-                    MainGame.get().my_Symbol = symbol;
-                    MainGame.get().push(new ResultScene());
+                    selectButton.changeBitmap(R.mipmap.select_btn_clicked);
+
+
                    //공격위치 업데이트 후 씬 푸쉬
                 }
 
@@ -119,6 +120,15 @@ public class AttackScene extends Scene {
                         symbol.setPos(checkPos.getFirst(),checkPos.getSecond());
                     }
 
+                break;
+
+            case MotionEvent.ACTION_UP:
+
+                btsCheck = selectButton.getIsSelected();
+                if(btsCheck){
+                    MainGame.get().my_Symbol = symbol;
+                    MainGame.get().push(new ResultScene());
+                }
                 break;
 
 

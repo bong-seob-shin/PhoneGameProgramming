@@ -23,6 +23,10 @@ public class Player implements GameObject {
     public PlayerPacket my_packet;
     public String id;
 
+
+
+    private int moveCount =4;
+
     public Player() {
 
 
@@ -115,5 +119,11 @@ public class Player implements GameObject {
         characterBitmap.getBoundingRect(x,y,rect);
     }
 
+    public int getMoveCount() {
+        return moveCount;
+    }
 
+    public void setMoveCount(int moveCount) {
+        this.moveCount = moveCount;
+    }
 }

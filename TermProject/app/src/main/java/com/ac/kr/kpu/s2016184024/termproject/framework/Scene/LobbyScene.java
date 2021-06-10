@@ -24,7 +24,6 @@ public class LobbyScene extends Scene {
     private CustomButton p1_Button;
     private CustomButton p2_Button;
     private CustomButton resetButton;
-    private CustomButton title;
 
 
     public enum Layer{
@@ -45,7 +44,7 @@ public class LobbyScene extends Scene {
         add(LobbyScene.Layer.bg, new Background(R.mipmap.background, w/2, h/2,0));
 
 
-        add(LobbyScene.Layer.ui, new Background(R.mipmap.game_title, w/2, h-1900,1));
+        add(LobbyScene.Layer.ui, new Background(R.mipmap.game_title, w/2, h-1700,1));
 
 
 

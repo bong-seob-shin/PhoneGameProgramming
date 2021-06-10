@@ -89,11 +89,23 @@ public class ResultScene extends Scene {
 
                 boolean btsCheck = checkButton(selectButton,event.getX(),event.getY());
                 if(btsCheck){
-                   MainGame.get().popTwoScene();
+
+                    selectButton.changeBitmap(R.mipmap.select_btn_clicked);
+
+
+
                 }
 
                 break;
+            case MotionEvent.ACTION_UP:
 
+                btsCheck = selectButton.getIsSelected();
+                if(btsCheck){
+                    MainGame.get().my_Symbol.setPos(100000,100000);
+                    MainGame.get().my_player.setMoveCount(4);
+                    MainGame.get().popTwoScene();
+                }
+                break;
 
         }
         return  true;
