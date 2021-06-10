@@ -7,6 +7,9 @@ import androidx.annotation.NonNull;
 import com.ac.kr.kpu.s2016184024.termproject.framework.game.BaseGame;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 public class PlayerPacket {
     private static final String TAG = PlayerPacket.class.getSimpleName();
@@ -140,5 +143,24 @@ public class PlayerPacket {
 
     }
 
+    private void readUser(String userId){
+        BaseGame.get().mDatabase.child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                if(dataSnapshot.getValue(PlayerPacket.class) != null){
+                    PlayerPacket post = dataSnapshot.getValue(PlayerPacket.class);
+                    Log.d(TAG, "onSuccess: change ");
+                } else {
+                    Log.d(TAG, "onFail: noData");
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("FireBaseData", "loadPost:onCancelled", databaseError.toException());
+            }
+        });
+    }
 }
