@@ -6,7 +6,6 @@ import android.util.Log;
 
 import com.ac.kr.kpu.s2016184024.termproject.framework.bitmap.GameBitmap;
 import com.ac.kr.kpu.s2016184024.termproject.framework.game.BaseGame;
-import com.ac.kr.kpu.s2016184024.termproject.framework.iface.BoxCollidable;
 import com.ac.kr.kpu.s2016184024.termproject.framework.iface.GameObject;
 import com.ac.kr.kpu.s2016184024.termproject.framework.view.GameView;
 
@@ -21,11 +20,10 @@ public class Player implements GameObject {
     private float tx,ty;
     private float speed;
     private float dir; //0 top 1 bottom 2 left 3 right
+    public PlayerPacket my_packet;
 
-    private String UserID;
-    private int HP;
-    
-    public Player(float x, float y) {
+
+    public Player(float x, float y, String id) {
         this.x = x;
         this.y = y;
         this.tx = x;
@@ -33,6 +31,9 @@ public class Player implements GameObject {
         this.speed = 800;
         this.characterBitmap = new GameBitmap(R.mipmap.tank_my);
         this.dir =0;
+        this.my_packet.setUserID(id);
+        this.my_packet.setPosX(this.x);
+        this.my_packet.setPosY(this.y);
 
     }
 

@@ -10,6 +10,8 @@ import com.ac.kr.kpu.s2016184024.termproject.framework.view.GameView;
 public class LobbyScene extends Scene {
 
 
+
+
     public static LobbyScene scene;
     public void add(LobbyScene.Layer layer, GameObject obj){
         add(layer.ordinal(), obj);
@@ -28,6 +30,8 @@ public class LobbyScene extends Scene {
     public void start(){
         scene =this;
         super.start();
+
+
         int w = GameView.view.getWidth();
         int h = GameView.view.getHeight();
 

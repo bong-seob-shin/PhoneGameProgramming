@@ -7,6 +7,8 @@ import android.view.MotionEvent;
 import com.ac.kr.kpu.s2016184024.termproject.framework.iface.GameObject;
 import com.ac.kr.kpu.s2016184024.termproject.framework.iface.Recyclable;
 import com.ac.kr.kpu.s2016184024.termproject.framework.view.GameView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,7 +22,7 @@ public class BaseGame {
     //singleton
     protected static BaseGame instance;
 
-
+    public DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     public static BaseGame get(){
 
         return  instance;
