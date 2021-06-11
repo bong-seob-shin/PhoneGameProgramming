@@ -28,7 +28,8 @@ public class ResultScene extends Scene {
     private CustomButton selectButton;
     private CustomButton resultButton;
     private CustomButton loseButton;
-
+    private boolean isFinish;
+    private GameEffect fireEffect;
     public  PacketReader pr = new PacketReader();
 
     int w = GameView.view.getWidth();
@@ -51,7 +52,7 @@ public class ResultScene extends Scene {
         initLayers(Layer.LAYER_COUNT.ordinal());
         add(Layer.bg, new Background(R.mipmap.background, w/2, h/2,0));
 
-
+        isFinish =false;
         float tw = w/2- Tiles.TILE_WIDTH*2;
         float ty = h/2- Tiles.TILE_HEIGHT*2;
         for(int i = 0; i<5; i++){
@@ -60,11 +61,11 @@ public class ResultScene extends Scene {
             }
         }
 
-
         add(Layer.PacketReader.ordinal(),pr);
 
-    
 
+
+        fireEffect = new GameEffect(1000000, 100000000,R.mipmap.fireshot,8);
 
 
         resultButton = new CustomButton(R.mipmap.result_button, w/2-300, h-200,0);
@@ -87,18 +88,32 @@ public class ResultScene extends Scene {
             Pair attackPair = new Pair(MainGame.get().my_Symbol.getPos().getFirst(), MainGame.get().my_Symbol.getPos().getSecond());
             Pair PosPair = new Pair((float)pr.posX, (float) pr.posY);
 
-            add(Layer.fire, new GameEffect(attackPair.getFirst(), attackPair.getSecond(),R.mipmap.fireshot,8));
-            Log.d(TAG, "drawResult: "+pr.posX+"   "+pr.posY);
-            Log.d(TAG, "drawResult: "+attackPair.getFirst()+"   "+attackPair.getSecond());
+            fireEffect.SetPos(attackPair.getFirst(), attackPair.getSecond());
+
+            add(Layer.fire,fireEffect);
+
+            PlayerPacket pp = new PlayerPacket();
+
+            if(MainGame.get().my_player.id.equals("1")){
+                pp.writeNewUser("2", "2",pr.HP, (double)PosPair.getFirst(), (double)PosPair.getSecond(),
+                        pr.shieldItem,pr.rangeItem,pr.moveItem);
+            }
+            if(MainGame.get().my_player.id.equals("2")) {
+                pp.writeNewUser("1", "1",pr.HP, (double)PosPair.getFirst(), (double)PosPair.getSecond(),
+                        pr.shieldItem,pr.rangeItem,pr.moveItem);
+            }
+
+
             if(attackPair.equals(PosPair)){
-                if(pr.shieldItem){
+                pp = new PlayerPacket();
+
+
+
+                if(!pr.shieldItem){
                     MainGame.get().my_player.HP++;
                 }
-                else{
-                    add(Layer.fire, new GameEffect(PosPair.getFirst(), PosPair.getSecond(),R.mipmap.shield_anim,4));
-                }
+
                 Pair p = MainGame.get().my_player.getPos();
-                PlayerPacket pp = new PlayerPacket();
                 if(MainGame.get().my_player.id.equals("1")){
                     pp.writeNewUser("1", "1",MainGame.get().my_player.HP, (double)p.getFirst(), (double)p.getSecond(),
                             MainGame.get().my_player.getShieldItem(),MainGame.get().my_player.getRangeItem(),MainGame.get().my_player.getMoveItem());
@@ -109,20 +124,31 @@ public class ResultScene extends Scene {
                 }
 
             }
+
+            if(pr.shieldItem) {
+                add(Layer.fire, new GameEffect(PosPair.getFirst(), PosPair.getSecond(), R.mipmap.shield_anim, 4));
+                pr.shieldItem =false;
+                pp = new PlayerPacket();
+                if(MainGame.get().my_player.id.equals("1")){
+                    pp.writeNewUser("2", "2",pr.HP, (double)PosPair.getFirst(), (double)PosPair.getSecond(),
+                            pr.shieldItem,pr.rangeItem,pr.moveItem);
+                }
+                if(MainGame.get().my_player.id.equals("2")) {
+                    pp.writeNewUser("1", "1",pr.HP, (double)PosPair.getFirst(), (double)PosPair.getSecond(),
+                            pr.shieldItem,pr.rangeItem,pr.moveItem);
+                }
+            }
             other.setPlayerInfo(PosPair.getFirst(), PosPair.getSecond(), R.mipmap.tank_enemy);
 
             add(Layer.player.ordinal(), other);
             score.setScore((int)MainGame.get().my_player.HP);
 
-            if( pr.HP>=2){
-                loseButton = new CustomButton(R.mipmap.lose, w/2, h/2+300,0);
-                add(Layer.ui, loseButton);
-            }
-            if(MainGame.get().my_player.HP>= 3){
-                loseButton = new CustomButton(R.mipmap.win, w/2, h/2+300,0);
-                add(Layer.ui, loseButton);
-            }
 
+
+            if(MainGame.get().my_player.getShieldItem()){
+                MainGame.get().my_player.setShieldItem(false);
+            }
+            resultButton.setIsSelected(true);
         }
     }
 
@@ -159,11 +185,13 @@ public class ResultScene extends Scene {
             case MotionEvent.ACTION_UP:
 
                 if(resultButton != null){
-                    boolean btsCheck = checkButton(resultButton,event.getX(),event.getY());
-                    if(btsCheck){
+                    if(!resultButton.getIsSelected()) {
+                        boolean btsCheck = checkButton(resultButton, event.getX(), event.getY());
+                        if (btsCheck) {
 
-                        drawResult();
+                            drawResult();
 
+                        }
                     }
                 }
 
@@ -179,10 +207,27 @@ public class ResultScene extends Scene {
                 if(selectButton != null){
                     boolean btsCheck = selectButton.getIsSelected();
                     if(btsCheck){
-                        MainGame.get().my_Symbol.setPos(100000,100000);
-                        MainGame.get().my_player.setMoveCount(4);
-                        remove(pr);
-                        MainGame.get().popTwoScene();
+
+                        remove(fireEffect);
+                        if( pr.HP>=3){
+                            loseButton = new CustomButton(R.mipmap.lose, w/2, h/2+300,0);
+                            add(Layer.ui, loseButton);
+                            isFinish =true;
+                        }
+                        if(MainGame.get().my_player.HP>= 3){
+                            loseButton = new CustomButton(R.mipmap.win, w/2, h/2+300,0);
+                            add(Layer.ui, loseButton);
+                            isFinish = true;
+                        }
+                        if(!isFinish) {
+                            MainGame.get().my_Symbol.setPos(100000, 100000);
+                            MainGame.get().my_player.setMoveCount(4);
+
+
+
+                            remove(pr);
+                            MainGame.get().popTwoScene();
+                        }
                     }
                 }
                 break;

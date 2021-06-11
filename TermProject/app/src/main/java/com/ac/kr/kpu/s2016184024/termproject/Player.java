@@ -22,6 +22,19 @@ public class Player implements GameObject {
     private float dir; //0 top 1 bottom 2 left 3 right
 
     public String id;
+
+    public void setShieldItem(boolean shieldItem) {
+        this.shieldItem = shieldItem;
+    }
+
+    public void setRangeItem(boolean rangeItem) {
+        this.rangeItem = rangeItem;
+    }
+
+    public void setMoveItem(boolean moveItem) {
+        this.moveItem = moveItem;
+    }
+
     private boolean shieldItem;
     private boolean rangeItem;
     private boolean moveItem;
@@ -42,9 +55,9 @@ public class Player implements GameObject {
         this.speed = 800;
         this.characterBitmap = new GameBitmap(resId);
         this.dir =0;
-        this.shieldItem = true;
-        this.rangeItem = true;
-        this.moveItem = true;
+        this.shieldItem = false;
+        this.rangeItem = false;
+        this.moveItem = false;
         this.HP =0;
     }
 

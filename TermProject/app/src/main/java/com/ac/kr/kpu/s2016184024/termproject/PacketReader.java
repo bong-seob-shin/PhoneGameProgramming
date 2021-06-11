@@ -17,8 +17,7 @@ public class PacketReader implements GameObject {
     public double HP;
     public double posX;
     public double posY;
-    public double attackPosX;
-    public double attackPosY;
+  
     public boolean shieldItem;
     public boolean rangeItem;
     public boolean moveItem;

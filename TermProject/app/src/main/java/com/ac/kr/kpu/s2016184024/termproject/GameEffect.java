@@ -17,6 +17,10 @@ public class GameEffect implements GameObject {
         this.fireBitmap = new AnimationGameBitmap(resId, framecount*2, framecount);
     }
 
+    public void SetPos(float x, float y){
+        this.x = x;
+        this.y = y;
+    }
     @Override
     public void update() {
 

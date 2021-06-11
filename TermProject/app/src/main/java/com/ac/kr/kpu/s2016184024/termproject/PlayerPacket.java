@@ -27,6 +27,7 @@ public class PlayerPacket {
     private boolean rangeItem;
     private boolean moveItem;
 
+
     //    UserID,
 //    HP,
 //    posX,

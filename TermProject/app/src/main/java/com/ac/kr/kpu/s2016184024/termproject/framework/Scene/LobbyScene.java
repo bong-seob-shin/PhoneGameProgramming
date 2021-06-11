@@ -47,8 +47,10 @@ public class LobbyScene extends Scene {
         int h = GameView.view.getHeight();
 
         MainGame.get().s_btn = new CustomButton(R.mipmap.shield_button,w/2-400, h/2-1000,1);
-        MainGame.get().r_btn = new CustomButton(R.mipmap.move_button,w/2, h/2-1000,1);
-        MainGame.get().m_btn = new CustomButton(R.mipmap.randge_button,w/2+400, h/2-1000,1);
+
+        MainGame.get().m_btn = new CustomButton(R.mipmap.move_button,w/2, h/2-1000,1);
+
+        MainGame.get().r_btn = new CustomButton(R.mipmap.randge_button,w/2+400, h/2-1000,1);
         initLayers(LobbyScene.Layer.LAYER_COUNT.ordinal());
         add(LobbyScene.Layer.bg, new Background(R.mipmap.background, w/2, h/2,0));
 

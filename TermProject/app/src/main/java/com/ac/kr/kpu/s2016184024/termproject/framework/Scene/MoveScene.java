@@ -58,7 +58,7 @@ public class MoveScene extends Scene {
 
 
         player = MainGame.get().my_player;
-
+        player.setMoveCount(4);
         player.setPlayerInfo(w/2,h/2,R.mipmap.tank_my);
         add(Layer.player, player);
 
@@ -66,9 +66,9 @@ public class MoveScene extends Scene {
         selectButton.changeBitmap(R.mipmap.button);
         add(Layer.ui, selectButton);
 
-
-        add(Layer.ui,MainGame.get().r_btn);
-
+        if(!MainGame.get().m_btn.getIsSelected()) {
+            add(Layer.ui, MainGame.get().m_btn);
+        }
 
 
         score = new Score(w/2+100,  GameView.view.getTop()+100);
@@ -160,12 +160,14 @@ public class MoveScene extends Scene {
                         }
                     }
                 }
-                if(MainGame.get().r_btn !=null) {
-                    boolean moveBtnCheck = checkButton(MainGame.get().r_btn, event.getX(), event.getY());
+                if(MainGame.get().m_btn !=null) {
+                    boolean moveBtnCheck = checkButton(MainGame.get().m_btn, event.getX(), event.getY());
 
                     if (moveBtnCheck) {
                         player.setMoveCount(player.getMoveCount() + 4);
-                        remove(MainGame.get().r_btn);
+                        player.setMoveItem(true);
+                        MainGame.get().m_btn.setIsSelected(true);
+                        remove(MainGame.get().m_btn);
                     }
                 }
 

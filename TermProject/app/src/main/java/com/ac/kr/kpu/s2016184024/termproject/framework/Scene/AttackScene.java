@@ -54,9 +54,14 @@ public class AttackScene extends Scene {
         symbol = MainGame.get().my_Symbol;
         add(Layer.symbol,symbol );
 
-        add(Layer.ui, MainGame.get().m_btn);
-        add(Layer.ui,MainGame.get().s_btn);
+        if(!MainGame.get().r_btn.getIsSelected()) {
 
+            add(Layer.ui, MainGame.get().r_btn);
+        }
+        if(!MainGame.get().s_btn.getIsSelected()) {
+
+            add(Layer.ui, MainGame.get().s_btn);
+        }
         selectButton = new CustomButton(R.mipmap.button, w/2, h-200,0);
         add(Layer.ui, selectButton);
 
@@ -126,6 +131,51 @@ public class AttackScene extends Scene {
                 break;
 
             case MotionEvent.ACTION_UP:
+
+                if(MainGame.get().r_btn !=null) {
+                    boolean BtnCheck = checkButton(MainGame.get().r_btn, event.getX(), event.getY());
+
+                    if (BtnCheck) {
+
+                        MainGame.get().my_player.setRangeItem(true);
+                        MainGame.get().r_btn.setIsSelected(true);
+                        remove(MainGame.get().r_btn);
+
+                        Pair p = MainGame.get().my_player.getPos();
+                        PlayerPacket pp = new PlayerPacket();
+                        if(MainGame.get().my_player.id.equals("1")){
+                            pp.writeNewUser("1", "1",MainGame.get().my_player.HP, (double)p.getFirst(), (double)p.getSecond(),
+                                    MainGame.get().my_player.getShieldItem(),MainGame.get().my_player.getRangeItem(),MainGame.get().my_player.getMoveItem());
+                        }
+                        if(MainGame.get().my_player.id.equals("2")) {
+                            pp.writeNewUser("2", "2", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
+                                    MainGame.get().my_player.getShieldItem(), MainGame.get().my_player.getRangeItem(), MainGame.get().my_player.getMoveItem());
+                        }
+                    }
+                }
+
+                if(MainGame.get().s_btn !=null) {
+                    boolean BtnCheck = checkButton(MainGame.get().s_btn, event.getX(), event.getY());
+
+                    if (BtnCheck) {
+
+                        MainGame.get().my_player.setShieldItem(true);
+                        MainGame.get().s_btn.setIsSelected(true);
+
+                        remove(MainGame.get().s_btn);
+
+                        Pair p = MainGame.get().my_player.getPos();
+                        PlayerPacket pp = new PlayerPacket();
+                        if(MainGame.get().my_player.id.equals("1")){
+                            pp.writeNewUser("1", "1",MainGame.get().my_player.HP, (double)p.getFirst(), (double)p.getSecond(),
+                                    MainGame.get().my_player.getShieldItem(),MainGame.get().my_player.getRangeItem(),MainGame.get().my_player.getMoveItem());
+                        }
+                        if(MainGame.get().my_player.id.equals("2")) {
+                            pp.writeNewUser("2", "2", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
+                                    MainGame.get().my_player.getShieldItem(), MainGame.get().my_player.getRangeItem(), MainGame.get().my_player.getMoveItem());
+                        }
+                    }
+                }
 
                 btsCheck = selectButton.getIsSelected();
                 if(btsCheck){
