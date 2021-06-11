@@ -6,7 +6,7 @@ import android.view.MotionEvent;
 import com.ac.kr.kpu.s2016184024.termproject.Background;
 import com.ac.kr.kpu.s2016184024.termproject.CustomButton;
 
-import com.ac.kr.kpu.s2016184024.termproject.FireEffect;
+import com.ac.kr.kpu.s2016184024.termproject.GameEffect;
 import com.ac.kr.kpu.s2016184024.termproject.MainGame;
 import com.ac.kr.kpu.s2016184024.termproject.PacketReader;
 import com.ac.kr.kpu.s2016184024.termproject.Pair;
@@ -67,9 +67,9 @@ public class ResultScene extends Scene {
 
 
 
-        resultButton = new CustomButton(R.mipmap.result_button, w/2-300, h-200);
+        resultButton = new CustomButton(R.mipmap.result_button, w/2-300, h-200,0);
         add(Layer.ui, resultButton);
-        selectButton = new CustomButton(R.mipmap.button, w/2+300, h-200);
+        selectButton = new CustomButton(R.mipmap.button, w/2+300, h-200,0);
         add(Layer.ui, selectButton);
         score = new Score(w/2+100,  GameView.view.getTop()+100);
 
@@ -87,13 +87,16 @@ public class ResultScene extends Scene {
             Pair attackPair = new Pair(MainGame.get().my_Symbol.getPos().getFirst(), MainGame.get().my_Symbol.getPos().getSecond());
             Pair PosPair = new Pair((float)pr.posX, (float) pr.posY);
 
-            add(Layer.fire, new FireEffect(attackPair.getFirst(), attackPair.getSecond()));
+            add(Layer.fire, new GameEffect(attackPair.getFirst(), attackPair.getSecond(),R.mipmap.fireshot,8));
             Log.d(TAG, "drawResult: "+pr.posX+"   "+pr.posY);
             Log.d(TAG, "drawResult: "+attackPair.getFirst()+"   "+attackPair.getSecond());
             if(attackPair.equals(PosPair)){
-
-
-                MainGame.get().my_player.HP++;
+                if(pr.shieldItem){
+                    MainGame.get().my_player.HP++;
+                }
+                else{
+                    add(Layer.fire, new GameEffect(PosPair.getFirst(), PosPair.getSecond(),R.mipmap.shield_anim,4));
+                }
                 Pair p = MainGame.get().my_player.getPos();
                 PlayerPacket pp = new PlayerPacket();
                 if(MainGame.get().my_player.id.equals("1")){
@@ -107,15 +110,16 @@ public class ResultScene extends Scene {
 
             }
             other.setPlayerInfo(PosPair.getFirst(), PosPair.getSecond(), R.mipmap.tank_enemy);
+
             add(Layer.player.ordinal(), other);
             score.setScore((int)MainGame.get().my_player.HP);
 
             if( pr.HP>=2){
-                loseButton = new CustomButton(R.mipmap.lose, w/2, h/2+300);
+                loseButton = new CustomButton(R.mipmap.lose, w/2, h/2+300,0);
                 add(Layer.ui, loseButton);
             }
             if(MainGame.get().my_player.HP>= 3){
-                loseButton = new CustomButton(R.mipmap.win, w/2, h/2+300);
+                loseButton = new CustomButton(R.mipmap.win, w/2, h/2+300,0);
                 add(Layer.ui, loseButton);
             }
 
@@ -168,6 +172,7 @@ public class ResultScene extends Scene {
                     if(btsCheck){
 
                         BaseGame.get().popThreeScene();
+                        MainGame.get().push(new LobbyScene());
 
                     }
                 }

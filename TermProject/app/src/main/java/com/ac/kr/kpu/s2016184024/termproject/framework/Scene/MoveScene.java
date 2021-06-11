@@ -62,9 +62,14 @@ public class MoveScene extends Scene {
         player.setPlayerInfo(w/2,h/2,R.mipmap.tank_my);
         add(Layer.player, player);
 
-        selectButton = new CustomButton(R.mipmap.button, w/2, h-200);
+        selectButton = new CustomButton(R.mipmap.button, w/2, h-200,0);
         selectButton.changeBitmap(R.mipmap.button);
         add(Layer.ui, selectButton);
+
+
+        add(Layer.ui,MainGame.get().r_btn);
+
+
 
         score = new Score(w/2+100,  GameView.view.getTop()+100);
 
@@ -116,8 +121,8 @@ public class MoveScene extends Scene {
             case MotionEvent.ACTION_DOWN :
                 clickStartPosX = event.getX();
                 clickStartPosY = event.getY();
-                boolean btsCheck = checkButton(selectButton,event.getX(),event.getY());
-                if(btsCheck){
+                boolean btnCheck = checkButton(selectButton,event.getX(),event.getY());
+                if(btnCheck){
                     selectButton.changeBitmap(R.mipmap.select_btn_clicked);
 
                 }
@@ -126,58 +131,61 @@ public class MoveScene extends Scene {
 
             case MotionEvent.ACTION_UP:
 
-                    clickEndPosX = event.getX();
-                    clickEndPosY = event.getY();
-                    float distX = clickEndPosX - clickStartPosX;
-                    float distY = clickEndPosY - clickStartPosY;
-                    if(player.getMoveCount()>0){
-                        if (Math.abs(distX) > Math.abs(distY)) {
-                            if (distX > swipeDistance) {
-                                //rightMove
-                                player.RightMove();
-                                player.setMoveCount(player.getMoveCount()-1);
-                            }
-                            if (distX < -swipeDistance) {
-                                //leftMove
-                                player.LeftMove();
-                                player.setMoveCount(player.getMoveCount()-1);
-
-                            }
-                        } else {
-
-                            if (distY > swipeDistance) {
-                                //downMove
-                                player.DownMove();
-                                player.setMoveCount(player.getMoveCount()-1);
-
-                            }
-                            if (distY < -swipeDistance) {
-                                //upMove
-                                player.UpMove();
-                                player.setMoveCount(player.getMoveCount()-1);
-
-                            }
+                clickEndPosX = event.getX();
+                clickEndPosY = event.getY();
+                float distX = clickEndPosX - clickStartPosX;
+                float distY = clickEndPosY - clickStartPosY;
+                if(player.getMoveCount()>0){
+                    if (Math.abs(distX) > Math.abs(distY)) {
+                        if (distX > swipeDistance) {
+                            //rightMove
+                            player.RightMove();
+                            player.setMoveCount(player.getMoveCount()-1);
+                        }
+                        if (distX < -swipeDistance) {
+                            //leftMove
+                            player.LeftMove();
+                            player.setMoveCount(player.getMoveCount()-1);
+                        }
+                    } else {
+                        if (distY > swipeDistance) {
+                            //downMove
+                            player.DownMove();
+                            player.setMoveCount(player.getMoveCount()-1);
+                        }
+                        if (distY < -swipeDistance) {
+                            //upMove
+                            player.UpMove();
+                            player.setMoveCount(player.getMoveCount()-1);
                         }
                     }
-                btsCheck = checkButton(selectButton,event.getX(),event.getY());
+                }
+                if(MainGame.get().r_btn !=null) {
+                    boolean moveBtnCheck = checkButton(MainGame.get().r_btn, event.getX(), event.getY());
 
+                    if (moveBtnCheck) {
+                        player.setMoveCount(player.getMoveCount() + 4);
+                        remove(MainGame.get().r_btn);
+                    }
+                }
 
-                if(btsCheck){
+                btnCheck = checkButton(selectButton,event.getX(),event.getY());
+                if(btnCheck) {
                     //씬바꾸고 플레이어 정보 업데이트, 패킷 업데이트
                     Pair p = player.getPos();
 
 
                     PlayerPacket pp = new PlayerPacket();
 
-                    if(player.id.equals("1")){
+                    if (player.id.equals("1")) {
 
 
-                        pp.writeNewUser("1", "1",player.HP,p.getFirst(),p.getSecond(),player.getShieldItem(),player.getRangeItem(),
-                            player.getMoveItem());
+                        pp.writeNewUser("1", "1", player.HP, p.getFirst(), p.getSecond(), player.getShieldItem(), player.getRangeItem(),
+                                player.getMoveItem());
                     }
-                    if(player.id.equals("2")){
+                    if (player.id.equals("2")) {
 
-                        pp.writeNewUser("2", "2",player.HP,p.getFirst(),p.getSecond(),player.getShieldItem(),player.getRangeItem(),
+                        pp.writeNewUser("2", "2", player.HP, p.getFirst(), p.getSecond(), player.getShieldItem(), player.getRangeItem(),
                                 player.getMoveItem());
                     }
                     MainGame.get().my_player = player;
@@ -188,8 +196,7 @@ public class MoveScene extends Scene {
                     clickEndPosX = 0;
                     clickStartPosY = 0;
                     clickEndPosY = 0;
-
-                break;
+                    break;
         }
         return  true;
     }

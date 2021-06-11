@@ -14,6 +14,10 @@ public class MainGame extends BaseGame {
     public PlayerPacket my_Packet;
     public PlayerPacket other_Packet;
 
+    public CustomButton s_btn;
+    public CustomButton r_btn;
+    public CustomButton m_btn;
+
     public static MainGame get(){
         return (MainGame) instance;
     }
@@ -23,11 +27,7 @@ public class MainGame extends BaseGame {
         if(initialized){
             return false;
         }
-        my_player = new Player();
 
-        my_Symbol =new CheckSymbol(R.mipmap.check, 100000, 100000);
-        my_Packet = new PlayerPacket();
-        other_Packet = new PlayerPacket();
 
         push(new LobbyScene());
 

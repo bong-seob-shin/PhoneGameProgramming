@@ -4,9 +4,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 import com.ac.kr.kpu.s2016184024.termproject.Background;
+import com.ac.kr.kpu.s2016184024.termproject.CheckSymbol;
 import com.ac.kr.kpu.s2016184024.termproject.CustomButton;
 import com.ac.kr.kpu.s2016184024.termproject.MainGame;
 import com.ac.kr.kpu.s2016184024.termproject.Pair;
+import com.ac.kr.kpu.s2016184024.termproject.Player;
 import com.ac.kr.kpu.s2016184024.termproject.PlayerPacket;
 import com.ac.kr.kpu.s2016184024.termproject.R;
 import com.ac.kr.kpu.s2016184024.termproject.framework.game.Scene;
@@ -35,11 +37,18 @@ public class LobbyScene extends Scene {
         scene =this;
         super.start();
 
+        MainGame.get().my_player = new Player();
 
+        MainGame.get().my_Symbol =new CheckSymbol(R.mipmap.check, 100000, 100000);
+        MainGame.get().my_Packet = new PlayerPacket();
+        MainGame.get().other_Packet = new PlayerPacket();
 
         int w = GameView.view.getWidth();
         int h = GameView.view.getHeight();
 
+        MainGame.get().s_btn = new CustomButton(R.mipmap.shield_button,w/2-400, h/2-1000,1);
+        MainGame.get().r_btn = new CustomButton(R.mipmap.move_button,w/2, h/2-1000,1);
+        MainGame.get().m_btn = new CustomButton(R.mipmap.randge_button,w/2+400, h/2-1000,1);
         initLayers(LobbyScene.Layer.LAYER_COUNT.ordinal());
         add(LobbyScene.Layer.bg, new Background(R.mipmap.background, w/2, h/2,0));
 
@@ -47,13 +56,13 @@ public class LobbyScene extends Scene {
         add(LobbyScene.Layer.ui, new Background(R.mipmap.game_title, w/2, h-1700,1));
 
 
-        p1_Button = new CustomButton(R.mipmap.p1_button, w/2, h-700);
+        p1_Button = new CustomButton(R.mipmap.p1_button, w/2, h-700,0);
         add(LobbyScene.Layer.ui, p1_Button);
 
-        p2_Button = new CustomButton(R.mipmap.p2_button, w/2, h-200);
+        p2_Button = new CustomButton(R.mipmap.p2_button, w/2, h-200,0);
         add(LobbyScene.Layer.ui, p2_Button);
 
-        resetButton = new CustomButton(R.mipmap.reset_button, w/2, h-1200);
+        resetButton = new CustomButton(R.mipmap.reset_button, w/2, h-1200,0);
         add(LobbyScene.Layer.ui, resetButton);
 
 

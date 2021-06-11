@@ -6,15 +6,15 @@ import com.ac.kr.kpu.s2016184024.termproject.framework.bitmap.AnimationGameBitma
 import com.ac.kr.kpu.s2016184024.termproject.framework.bitmap.GameBitmap;
 import com.ac.kr.kpu.s2016184024.termproject.framework.iface.GameObject;
 
-public class FireEffect implements GameObject {
+public class GameEffect implements GameObject {
 
     private AnimationGameBitmap fireBitmap;
     private float x, y;
 
-    public FireEffect(float x, float y){
+    public GameEffect(float x, float y, int resId, int framecount){
         this.x = x;
         this.y = y;
-        this.fireBitmap = new AnimationGameBitmap(R.mipmap.fireshot, 15f, 8);
+        this.fireBitmap = new AnimationGameBitmap(resId, framecount*2, framecount);
     }
 
     @Override

@@ -15,13 +15,18 @@ public class CustomButton extends ImageObject {
 
     float x, y;
 
-    public CustomButton(int resId, float x, float y){
+    public CustomButton(int resId, float x, float y, int type){
 
         super(resId, x, y);
 
         this.x = x;
         this.y = y;
-        dstRect.set( this.x-(TILE_WIDTH/2), this.y-(TILE_HEIGHT/2)-TILESIZE/2,  this.x+(TILE_WIDTH/2),  this.y+(TILE_HEIGHT/2)-TILESIZE/2);
+        if(type ==0)
+         dstRect.set( this.x-(TILE_WIDTH/2), this.y-(TILE_HEIGHT/2)-TILESIZE/2,  this.x+(TILE_WIDTH/2),  this.y+(TILE_HEIGHT/2)-TILESIZE/2);
+
+        if(type ==1)
+            dstRect.set( this.x-(TILE_WIDTH/4), this.y-(TILE_HEIGHT/4)-TILESIZE/4,  this.x+(TILE_WIDTH/4),  this.y+(TILE_HEIGHT/4)-TILESIZE/4);
+
         isSelected = false;
 
     }

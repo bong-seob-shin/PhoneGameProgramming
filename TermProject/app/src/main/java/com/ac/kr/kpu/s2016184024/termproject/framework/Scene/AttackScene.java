@@ -54,9 +54,10 @@ public class AttackScene extends Scene {
         symbol = MainGame.get().my_Symbol;
         add(Layer.symbol,symbol );
 
+        add(Layer.ui, MainGame.get().m_btn);
+        add(Layer.ui,MainGame.get().s_btn);
 
-
-        selectButton = new CustomButton(R.mipmap.button, w/2, h-200);
+        selectButton = new CustomButton(R.mipmap.button, w/2, h-200,0);
         add(Layer.ui, selectButton);
 
         score = new Score(w/2+100,  GameView.view.getTop()+100);
