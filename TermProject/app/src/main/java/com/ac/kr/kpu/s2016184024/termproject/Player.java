@@ -43,6 +43,9 @@ public class Player implements GameObject {
     private int moveCount =4;
 
 
+
+    private int moveRange = 2;
+
     public boolean isResultPhase;
     public Player() {
 
@@ -62,6 +65,7 @@ public class Player implements GameObject {
         this.moveItem = false;
         this.HP =0;
         this.isResultPhase = false;
+        this.moveRange =2;
     }
 
     public boolean getShieldItem(){
@@ -79,40 +83,52 @@ public class Player implements GameObject {
 
         return new Pair(x, y);
     }
+    public void setPos(float x, float y){
+        this.x =x;
+        this.y =y;
+    }
     public void setPlayerId(String id){
         this.id = id;
     }
     public void RightMove(){
-        if(GameView.view.getWidth()/2+Tiles.TILE_WIDTH*2>this.tx){
+        if(GameView.view.getWidth()/2+Tiles.TILE_WIDTH*moveRange>this.tx){
             this.tx = this.tx + Tiles.TILE_WIDTH;
             Log.d(TAG, " Right Move");
             dir = 1;
+            this.moveCount -= 1;
+
         }
     }
     public void LeftMove(){
-        if(GameView.view.getWidth()/2-Tiles.TILE_WIDTH*2<this.tx){
+        if(GameView.view.getWidth()/2-Tiles.TILE_WIDTH*moveRange<this.tx){
             this.tx = this.tx -Tiles.TILE_WIDTH;
             Log.d(TAG, " Left Move");
 
             dir = 3;
+            this.moveCount -= 1;
+
         }
     }
     public void UpMove() {
-        if(GameView.view.getHeight()/2-Tiles.TILE_WIDTH*2<this.ty) {
+        if(GameView.view.getHeight()/2-Tiles.TILE_WIDTH*moveRange<this.ty) {
 
             this.ty = this.ty - Tiles.TILE_HEIGHT;
             Log.d(TAG, " Up Move");
 
             dir = 0;
+            this.moveCount -= 1;
+
         }
 
     }
 
     public void DownMove() {
-        if(GameView.view.getHeight()/2+Tiles.TILE_WIDTH*2>this.ty) {
+        if(GameView.view.getHeight()/2+Tiles.TILE_WIDTH*moveRange>this.ty) {
             this.ty = this.ty + Tiles.TILE_HEIGHT;
             Log.d(TAG, " Down Move");
             dir =2;
+            this.moveCount -= 1;
+
         }
     }
 
@@ -161,5 +177,9 @@ public class Player implements GameObject {
 
     public void setMoveCount(int moveCount) {
         this.moveCount = moveCount;
+    }
+
+    public void setMoveRange(int moveRange) {
+        this.moveRange = moveRange;
     }
 }

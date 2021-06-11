@@ -43,6 +43,10 @@ public class CustomButton extends ImageObject {
         return new Pair(this.x, this.y);
     }
 
+    public void disableButton(){
+        this.x = 100000;
+        this.y = 100000;
+    }
     @Override
     public void changeBitmap(int resId){
         if(!this.isSelected) {

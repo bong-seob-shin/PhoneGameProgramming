@@ -11,6 +11,7 @@ import com.ac.kr.kpu.s2016184024.termproject.Pair;
 import com.ac.kr.kpu.s2016184024.termproject.Player;
 import com.ac.kr.kpu.s2016184024.termproject.PlayerPacket;
 import com.ac.kr.kpu.s2016184024.termproject.R;
+import com.ac.kr.kpu.s2016184024.termproject.Tiles;
 import com.ac.kr.kpu.s2016184024.termproject.framework.game.Scene;
 import com.ac.kr.kpu.s2016184024.termproject.framework.iface.GameObject;
 import com.ac.kr.kpu.s2016184024.termproject.framework.view.GameView;
@@ -36,15 +37,16 @@ public class LobbyScene extends Scene {
     public void start(){
         scene =this;
         super.start();
-
+        int w = GameView.view.getWidth();
+        int h = GameView.view.getHeight();
         MainGame.get().my_player = new Player();
+        MainGame.get().my_player.setPlayerInfo(w/2,h/2,R.mipmap.tank_my);
 
         MainGame.get().my_Symbol =new CheckSymbol(R.mipmap.check, 100000, 100000);
         MainGame.get().my_Packet = new PlayerPacket();
         MainGame.get().other_Packet = new PlayerPacket();
 
-        int w = GameView.view.getWidth();
-        int h = GameView.view.getHeight();
+
 
         MainGame.get().s_btn = new CustomButton(R.mipmap.shield_button,w/2-400, h/2-1000,1);
 
@@ -54,6 +56,7 @@ public class LobbyScene extends Scene {
         initLayers(LobbyScene.Layer.LAYER_COUNT.ordinal());
         add(LobbyScene.Layer.bg, new Background(R.mipmap.background, w/2, h/2,0));
 
+        MainGame.get().playTurns =0;
 
         add(LobbyScene.Layer.ui, new Background(R.mipmap.game_title, w/2, h-1700,1));
 
@@ -67,6 +70,13 @@ public class LobbyScene extends Scene {
         resetButton = new CustomButton(R.mipmap.reset_button, w/2, h-1200,0);
         add(LobbyScene.Layer.ui, resetButton);
 
+        MainGame.get().tiles = new Tiles[5][5];
+
+        for(int i = 0; i<5; i++){
+            for(int j = 0; j<5; j++){
+                MainGame.get().tiles[i][j]= new Tiles();
+            }
+        }
 
     }
     public boolean checkButton(CustomButton bts,float x, float y){
@@ -125,7 +135,7 @@ public class LobbyScene extends Scene {
                     PlayerPacket pp = new PlayerPacket();
                     pp.writeNewUser("1", "1",0,0,0,false,false,false,false);
                     MainGame.get().my_player.setPlayerId("1");
-                    Log.d(TAG, "onTouchEvent: "+ MainGame.get().my_player.id);
+
                     MainGame.get().push(new MoveScene());
                 }
 

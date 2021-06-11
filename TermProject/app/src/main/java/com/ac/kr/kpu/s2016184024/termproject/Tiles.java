@@ -7,8 +7,18 @@ public class Tiles extends ImageObject {
     private static final float TILESIZE = 140;
     public static float TILE_WIDTH = TILESIZE * GameView.MULTIPLIER;
     public static float TILE_HEIGHT = TILESIZE* GameView.MULTIPLIER;
-    public Tiles( float x , float y, int indexX, int indexY){
+    private float x,y;
+    public Tiles( ){
 
+    }
+    public void ChangeTile (int resId){
+        init(resId,this.x,this.y);
+        dstRect.set(x-(TILE_WIDTH/2),y-(TILE_HEIGHT/2), x+(TILE_WIDTH/2), y+(TILE_HEIGHT/2));
+
+    }
+    public void SetTile(float x , float y, int indexX, int indexY){
+        this.x =x;
+        this.y =y;
         if(indexX == 0){
             if(indexY == 0){
                 init(R.mipmap.left_top_tile,x,y);

@@ -1,6 +1,5 @@
 package com.ac.kr.kpu.s2016184024.termproject.framework.Scene;
 
-import android.util.Log;
 import android.view.MotionEvent;
 
 import com.ac.kr.kpu.s2016184024.termproject.Background;
@@ -61,7 +60,8 @@ public class ResultScene extends Scene {
         float ty = h/2- Tiles.TILE_HEIGHT*2;
         for(int i = 0; i<5; i++){
             for(int j = 0; j<5; j++){
-                add(Layer.Tile, new Tiles(tw+Tiles.TILE_WIDTH*i, ty+Tiles.TILE_HEIGHT*j,i,j ));
+                MainGame.get().tiles[i][j].SetTile(tw+Tiles.TILE_WIDTH*i, ty+Tiles.TILE_HEIGHT*j,i,j);
+                add(Layer.Tile, MainGame.get().tiles[i][j]);
             }
         }
 
@@ -100,12 +100,7 @@ public class ResultScene extends Scene {
                 fireEffect.SetPos(attackPair.getFirst(), attackPair.getSecond());
 
                 add(Layer.fire, fireEffect);
-                if(pr.rangeItem) {
-                    fireEffect_r.SetPos(attackPair.getFirst() - Tiles.TILE_WIDTH, attackPair.getSecond());
-                    fireEffect_l.SetPos(attackPair.getFirst() + Tiles.TILE_WIDTH, attackPair.getSecond());
-                    add(Layer.fire,  fireEffect_r );
-                    add(Layer.fire,  fireEffect_l);
-                }
+
                 PlayerPacket pp = new PlayerPacket();
 
                 if (MainGame.get().my_player.id.equals("1")) {
@@ -116,7 +111,12 @@ public class ResultScene extends Scene {
                     pp.writeNewUser("1", "1", pr.HP, (double) PosPair.getFirst(), (double) PosPair.getSecond(),
                             pr.shieldItem, pr.rangeItem, pr.moveItem, true);
                 }
-
+                if(pr.rangeItem) {
+                    fireEffect_r.SetPos(attackPair.getFirst() - Tiles.TILE_WIDTH, attackPair.getSecond());
+                    fireEffect_l.SetPos(attackPair.getFirst() + Tiles.TILE_WIDTH, attackPair.getSecond());
+                    add(Layer.fire,  fireEffect_r );
+                    add(Layer.fire,  fireEffect_l);
+                }
 
                 if (attackPair.equals(PosPair)) {
                     pp = new PlayerPacket();
@@ -138,7 +138,9 @@ public class ResultScene extends Scene {
 
                 }
 
-                if (pr.rangeItem){
+                if (MainGame.get().my_player.getRangeItem()){
+                    MainGame.get().my_player.setRangeItem(false);
+
                     if(PosPair.equals(new Pair(attackPair.getFirst()-Tiles.TILE_WIDTH, attackPair.getSecond())))
                     {
                         if (!pr.shieldItem) {
@@ -220,7 +222,7 @@ public class ResultScene extends Scene {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN :
 
-                Log.d(TAG, "onTouchEvent: "+pr.packetRead);
+
                 if(selectButton != null){
                     if (pr.isResultPhase && MainGame.get().my_player.isResultPhase&&onResult) {
                         boolean btsCheck = checkButton(selectButton, event.getX(), event.getY());
@@ -250,7 +252,7 @@ public class ResultScene extends Scene {
                     boolean btsCheck = checkButton(loseButton,event.getX(),event.getY());
                     if(btsCheck){
 
-                        BaseGame.get().popThreeScene();
+                        BaseGame.get().popAllScene();
                         MainGame.get().push(new LobbyScene());
 
                     }
@@ -275,7 +277,7 @@ public class ResultScene extends Scene {
                                 MainGame.get().my_Symbol.setPos(100000, 100000);
                                 MainGame.get().my_player.setMoveCount(4);
 
-
+                                MainGame.get().playTurns++;
 
                                 MainGame.get().popTwoScene();
                             }

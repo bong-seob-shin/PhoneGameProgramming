@@ -49,17 +49,27 @@ public class MoveScene extends Scene {
 
         float tw = w/2- Tiles.TILE_WIDTH*2;
         float ty = h/2- Tiles.TILE_HEIGHT*2;
+        Log.d(TAG, "start plz: "+MainGame.get().playTurns);
         for(int i = 0; i<5; i++){
             for(int j = 0; j<5; j++){
-                add(Layer.Tile, new Tiles(tw+Tiles.TILE_WIDTH*i, ty+Tiles.TILE_HEIGHT*j,i,j ));
+                MainGame.get().tiles[i][j].SetTile(tw+Tiles.TILE_WIDTH*i, ty+Tiles.TILE_HEIGHT*j,i,j);
+                if(MainGame.get().playTurns>0){
+                    if(i == 0 || i == 4 || j== 0 || j==4)
+                        MainGame.get().tiles[i][j].ChangeTile(R.mipmap.hole);
+                }
+                add(Layer.Tile, MainGame.get().tiles[i][j]);
             }
         }
 
 
 
+
         player = MainGame.get().my_player;
         player.setMoveCount(4);
-        player.setPlayerInfo(w/2,h/2,R.mipmap.tank_my);
+        if(MainGame.get().playTurns>4){
+            player.setPos(w/2, h/2);
+            player.setMoveRange(1);
+        }
         add(Layer.player, player);
 
         selectButton = new CustomButton(R.mipmap.button, w/2, h-200,0);
@@ -73,8 +83,8 @@ public class MoveScene extends Scene {
 
         score = new Score(w/2+100,  GameView.view.getTop()+100);
 
-        add(Layer.ui, score);
 
+        add(Layer.ui, score);
 
 
 
@@ -127,6 +137,7 @@ public class MoveScene extends Scene {
 
                 }
 
+
                 break;
 
             case MotionEvent.ACTION_UP:
@@ -140,23 +151,23 @@ public class MoveScene extends Scene {
                         if (distX > swipeDistance) {
                             //rightMove
                             player.RightMove();
-                            player.setMoveCount(player.getMoveCount()-1);
+
                         }
                         if (distX < -swipeDistance) {
                             //leftMove
                             player.LeftMove();
-                            player.setMoveCount(player.getMoveCount()-1);
+
                         }
                     } else {
                         if (distY > swipeDistance) {
                             //downMove
                             player.DownMove();
-                            player.setMoveCount(player.getMoveCount()-1);
+
                         }
                         if (distY < -swipeDistance) {
                             //upMove
                             player.UpMove();
-                            player.setMoveCount(player.getMoveCount()-1);
+
                         }
                     }
                 }
@@ -166,6 +177,7 @@ public class MoveScene extends Scene {
                     if (moveBtnCheck) {
                         player.setMoveCount(player.getMoveCount() + 4);
                         player.setMoveItem(true);
+                        MainGame.get().m_btn.disableButton();
                         MainGame.get().m_btn.setIsSelected(true);
                         remove(MainGame.get().m_btn);
                     }
@@ -191,6 +203,8 @@ public class MoveScene extends Scene {
                                 player.getMoveItem(),false);
                     }
                     MainGame.get().my_player = player;
+
+
 
                     MainGame.get().push(new AttackScene());
                 }

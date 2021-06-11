@@ -17,7 +17,8 @@ public class MainGame extends BaseGame {
     public CustomButton s_btn;
     public CustomButton r_btn;
     public CustomButton m_btn;
-
+    public Tiles [][] tiles;
+    public int playTurns;
     public static MainGame get(){
         return (MainGame) instance;
     }

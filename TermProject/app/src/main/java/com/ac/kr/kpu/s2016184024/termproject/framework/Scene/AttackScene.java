@@ -47,7 +47,12 @@ public class AttackScene extends Scene {
         float ty = h/2- Tiles.TILE_HEIGHT*2;
         for(int i = 0; i<5; i++){
             for(int j = 0; j<5; j++){
-                add(Layer.Tile, new Tiles(tw+Tiles.TILE_WIDTH*i, ty+Tiles.TILE_HEIGHT*j,i,j ));
+                MainGame.get().tiles[i][j].SetTile(tw+Tiles.TILE_WIDTH*i, ty+Tiles.TILE_HEIGHT*j,i,j);
+                if(MainGame.get().playTurns>4){
+                    if(i == 0 || i == 4 || j== 0 || j==4)
+                        MainGame.get().tiles[i][j].ChangeTile(R.mipmap.hole);
+                }
+                add(Layer.Tile, MainGame.get().tiles[i][j]);
             }
         }
 
@@ -138,7 +143,9 @@ public class AttackScene extends Scene {
                     if (BtnCheck) {
 
                         MainGame.get().my_player.setRangeItem(true);
+                        MainGame.get().r_btn.disableButton();
                         MainGame.get().r_btn.setIsSelected(true);
+
                         remove(MainGame.get().r_btn);
 
                         Pair p = MainGame.get().my_player.getPos();
@@ -161,7 +168,7 @@ public class AttackScene extends Scene {
 
                         MainGame.get().my_player.setShieldItem(true);
                         MainGame.get().s_btn.setIsSelected(true);
-
+                        MainGame.get().s_btn.disableButton();
                         remove(MainGame.get().s_btn);
 
                         Pair p = MainGame.get().my_player.getPos();

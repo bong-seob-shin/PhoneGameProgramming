@@ -103,13 +103,13 @@ public class BaseGame {
         if (lastIndex >= 0) {
             Scene top = sceneStack.get(lastIndex);
             Log.d(TAG, "Resuming: " + top);
-            top.resume();
+            top.start();
         } else {
             Log.e(TAG, "should end app in popScene()");
         }
     }
 
-    public void popThreeScene() {
+    public void popAllScene() {
         int lastIndex = sceneStack.size() - 1;
         if (lastIndex >= 0) {
             Scene top = sceneStack.remove(lastIndex);
