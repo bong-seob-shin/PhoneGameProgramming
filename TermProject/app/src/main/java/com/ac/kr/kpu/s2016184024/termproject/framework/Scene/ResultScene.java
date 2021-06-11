@@ -50,7 +50,7 @@ public class ResultScene extends Scene {
 
         super.start();
 
-        other =new Player();
+        other =new Player(0);
         initLayers(Layer.LAYER_COUNT.ordinal());
         add(Layer.bg, new Background(R.mipmap.background, w/2, h/2,0));
         pr = new PacketReader();

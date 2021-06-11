@@ -14,6 +14,7 @@ import com.ac.kr.kpu.s2016184024.termproject.R;
 import com.ac.kr.kpu.s2016184024.termproject.Tiles;
 import com.ac.kr.kpu.s2016184024.termproject.framework.game.Scene;
 import com.ac.kr.kpu.s2016184024.termproject.framework.iface.GameObject;
+import com.ac.kr.kpu.s2016184024.termproject.framework.utils.Sound;
 import com.ac.kr.kpu.s2016184024.termproject.framework.view.GameView;
 
 public class LobbyScene extends Scene {
@@ -37,9 +38,11 @@ public class LobbyScene extends Scene {
     public void start(){
         scene =this;
         super.start();
+        Sound.play(R.raw.canon_bgm);
+
         int w = GameView.view.getWidth();
         int h = GameView.view.getHeight();
-        MainGame.get().my_player = new Player();
+        MainGame.get().my_player = new Player(1);
         MainGame.get().my_player.setPlayerInfo(w/2,h/2,R.mipmap.tank_my);
 
         MainGame.get().my_Symbol =new CheckSymbol(R.mipmap.check, 100000, 100000);

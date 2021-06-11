@@ -2,6 +2,7 @@ package com.ac.kr.kpu.s2016184024.termproject;
 
 import android.graphics.Canvas;
 import android.graphics.RectF;
+import android.media.MediaPlayer;
 import android.util.Log;
 
 import com.ac.kr.kpu.s2016184024.termproject.framework.bitmap.GameBitmap;
@@ -21,6 +22,7 @@ public class Player implements GameObject {
     private float speed;
     private float dir; //0 top 1 bottom 2 left 3 right
 
+    private static MediaPlayer mediaPlayer;
     public String id;
 
     public void setShieldItem(boolean shieldItem) {
@@ -47,9 +49,13 @@ public class Player implements GameObject {
     private int moveRange = 2;
 
     public boolean isResultPhase;
-    public Player() {
+    public Player(int id) {
+        this.mediaPlayer = MediaPlayer.create(GameView.view.getContext(),R.raw.canon_bgm);
 
-
+        if(id ==1) {
+            this.mediaPlayer.start();
+            this.mediaPlayer.setLooping(true);
+        }
     }
 
     public void setPlayerInfo(float x, float y, int resId){
@@ -150,7 +156,6 @@ public class Player implements GameObject {
         if((dx>0&& x>tx)||(dx<0&& x<tx)){
             x =tx;
         }
-
 
     }
 

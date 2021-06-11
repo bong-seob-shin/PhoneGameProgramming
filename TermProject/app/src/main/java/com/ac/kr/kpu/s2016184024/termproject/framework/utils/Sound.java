@@ -6,12 +6,15 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.util.Log;
 
+import com.ac.kr.kpu.s2016184024.termproject.R;
+
 import java.util.HashMap;
 
 public class Sound {
     private static final String TAG = Sound.class.getSimpleName();
     private static SoundPool soundPool;
     private static final int[] SOUND_IDS = {
+            R.raw.canon_bgm
 //            R.raw.hadouken
     };
     private static HashMap<Integer, Integer> soundIdMap = new HashMap<>();
