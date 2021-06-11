@@ -53,7 +53,7 @@ public class MoveScene extends Scene {
         for(int i = 0; i<5; i++){
             for(int j = 0; j<5; j++){
                 MainGame.get().tiles[i][j].SetTile(tw+Tiles.TILE_WIDTH*i, ty+Tiles.TILE_HEIGHT*j,i,j);
-                if(MainGame.get().playTurns>0){
+                if(MainGame.get().playTurns>4){
                     if(i == 0 || i == 4 || j== 0 || j==4)
                         MainGame.get().tiles[i][j].ChangeTile(R.mipmap.hole);
                 }
@@ -69,6 +69,8 @@ public class MoveScene extends Scene {
         if(MainGame.get().playTurns>4){
             player.setPos(w/2, h/2);
             player.setMoveRange(1);
+            player.setMoveCount(2);
+
         }
         add(Layer.player, player);
 

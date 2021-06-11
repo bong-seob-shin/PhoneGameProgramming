@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
+
     }
 }

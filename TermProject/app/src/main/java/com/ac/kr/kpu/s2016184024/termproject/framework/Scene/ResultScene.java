@@ -61,6 +61,10 @@ public class ResultScene extends Scene {
         for(int i = 0; i<5; i++){
             for(int j = 0; j<5; j++){
                 MainGame.get().tiles[i][j].SetTile(tw+Tiles.TILE_WIDTH*i, ty+Tiles.TILE_HEIGHT*j,i,j);
+                if(MainGame.get().playTurns>4){
+                    if(i == 0 || i == 4 || j== 0 || j==4)
+                        MainGame.get().tiles[i][j].ChangeTile(R.mipmap.hole);
+                }
                 add(Layer.Tile, MainGame.get().tiles[i][j]);
             }
         }
@@ -111,7 +115,7 @@ public class ResultScene extends Scene {
                     pp.writeNewUser("1", "1", pr.HP, (double) PosPair.getFirst(), (double) PosPair.getSecond(),
                             pr.shieldItem, pr.rangeItem, pr.moveItem, true);
                 }
-                if(pr.rangeItem) {
+                if(MainGame.get().my_player.getRangeItem()) {
                     fireEffect_r.SetPos(attackPair.getFirst() - Tiles.TILE_WIDTH, attackPair.getSecond());
                     fireEffect_l.SetPos(attackPair.getFirst() + Tiles.TILE_WIDTH, attackPair.getSecond());
                     add(Layer.fire,  fireEffect_r );
@@ -138,8 +142,7 @@ public class ResultScene extends Scene {
 
                 }
 
-                if (MainGame.get().my_player.getRangeItem()){
-                    MainGame.get().my_player.setRangeItem(false);
+                if (MainGame.get().my_player.getRangeItem()){MainGame.get().my_player.setRangeItem(false);
 
                     if(PosPair.equals(new Pair(attackPair.getFirst()-Tiles.TILE_WIDTH, attackPair.getSecond())))
                     {
@@ -279,6 +282,9 @@ public class ResultScene extends Scene {
 
                                 MainGame.get().playTurns++;
 
+                                if(MainGame.get().playTurns>4){
+                                    MainGame.get().my_player.setMoveCount(2);
+                                }
                                 MainGame.get().popTwoScene();
                             }
                         }
