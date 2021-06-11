@@ -91,7 +91,7 @@ public class ResultScene extends Scene {
             Log.d(TAG, "drawResult: "+pr.posX+"   "+pr.posY);
             Log.d(TAG, "drawResult: "+attackPair.getFirst()+"   "+attackPair.getSecond());
             if(attackPair.equals(PosPair)){
-                Log.d(TAG, "drawResult: nonoonononoo");
+
 
                 MainGame.get().my_player.HP++;
                 Pair p = MainGame.get().my_player.getPos();
@@ -108,10 +108,9 @@ public class ResultScene extends Scene {
             }
             other.setPlayerInfo(PosPair.getFirst(), PosPair.getSecond(), R.mipmap.tank_enemy);
             add(Layer.player.ordinal(), other);
-            score.setScore((int)pr.HP);
+            score.setScore((int)MainGame.get().my_player.HP);
 
-            if( pr.HP>=3){
-                Log.d(TAG, "drawResult: loslsoeloselsoelosel");
+            if( pr.HP>=2){
                 loseButton = new CustomButton(R.mipmap.lose, w/2, h/2+300);
                 add(Layer.ui, loseButton);
             }
