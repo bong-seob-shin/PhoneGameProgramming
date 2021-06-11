@@ -101,8 +101,8 @@ public class LobbyScene extends Scene {
                        {
                            resetButton.changeBitmap(R.mipmap.resetbutton_clicked);
                            PlayerPacket pp = new PlayerPacket();
-                           pp.writeNewUser("1", "0",3.0,0,0,false,false,false);
-                           pp.writeNewUser("2", "0",3.0,0,0,false,false,false);
+                           pp.writeNewUser("1", "0",0,0,0,false,false,false);
+                           pp.writeNewUser("2", "0",0,0,0,false,false,false);
                        }
                     }
                 }
@@ -112,7 +112,7 @@ public class LobbyScene extends Scene {
                 p1_btsCheck = p1_Button.getIsSelected();
                 if(p1_btsCheck){
                     PlayerPacket pp = new PlayerPacket();
-                    pp.writeNewUser("1", "1",3.0,0,0,false,false,false);
+                    pp.writeNewUser("1", "1",0,0,0,false,false,false);
                     MainGame.get().my_player.setPlayerId("1");
                     Log.d(TAG, "onTouchEvent: "+ MainGame.get().my_player.id);
                     MainGame.get().push(new MoveScene());
@@ -121,7 +121,7 @@ public class LobbyScene extends Scene {
                 p2_btsCheck = p2_Button.getIsSelected();
                 if(p2_btsCheck){
                     PlayerPacket pp = new PlayerPacket();
-                    pp.writeNewUser("2", "2",3.0,0,0,false,false,false);
+                    pp.writeNewUser("2", "2",0,0,0,false,false,false);
 
                     MainGame.get().my_player.setPlayerId("2");
 

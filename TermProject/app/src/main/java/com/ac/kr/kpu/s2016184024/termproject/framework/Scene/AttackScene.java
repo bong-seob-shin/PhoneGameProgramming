@@ -60,7 +60,7 @@ public class AttackScene extends Scene {
         add(Layer.ui, selectButton);
 
         score = new Score(w/2+100,  GameView.view.getTop()+100);
-        score.setScore(Integer.parseInt(MainGame.get().my_player.id));
+
 
         add(Layer.ui, score);
 
@@ -133,11 +133,11 @@ public class AttackScene extends Scene {
                     Pair sp = symbol.getPos();
                     PlayerPacket pp = new PlayerPacket();
                     if(MainGame.get().my_player.id.equals("1")){
-                    pp.writeNewUser("1", "1",3.0, (double)p.getFirst(), (double)p.getSecond(),
+                    pp.writeNewUser("1", "1",MainGame.get().my_player.HP, (double)p.getFirst(), (double)p.getSecond(),
                             MainGame.get().my_player.getShieldItem(),MainGame.get().my_player.getRangeItem(),MainGame.get().my_player.getMoveItem());
                     }
                     if(MainGame.get().my_player.id.equals("2")) {
-                        pp.writeNewUser("2", "2", 3.0, (double) p.getFirst(), (double) p.getSecond(),
+                        pp.writeNewUser("2", "2", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
                                 MainGame.get().my_player.getShieldItem(), MainGame.get().my_player.getRangeItem(), MainGame.get().my_player.getMoveItem());
                     }
                         MainGame.get().my_Symbol = symbol;

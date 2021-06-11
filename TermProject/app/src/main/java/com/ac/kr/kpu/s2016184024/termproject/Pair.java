@@ -16,4 +16,14 @@ public class Pair {
     public float getSecond(){
         return  this.second;
     }
+
+    public boolean equals(Pair p){
+        if(this.first == (float) p.first){
+            if(this.second == (float)p.second){
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

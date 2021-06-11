@@ -67,7 +67,7 @@ public class MoveScene extends Scene {
         add(Layer.ui, selectButton);
 
         score = new Score(w/2+100,  GameView.view.getTop()+100);
-        score.setScore(Integer.parseInt(MainGame.get().my_player.id));
+
         add(Layer.ui, score);
 
 
@@ -172,12 +172,12 @@ public class MoveScene extends Scene {
                     if(player.id.equals("1")){
 
 
-                        pp.writeNewUser("1", "1",3.0,p.getFirst(),p.getSecond(),player.getShieldItem(),player.getRangeItem(),
+                        pp.writeNewUser("1", "1",player.HP,p.getFirst(),p.getSecond(),player.getShieldItem(),player.getRangeItem(),
                             player.getMoveItem());
                     }
                     if(player.id.equals("2")){
 
-                        pp.writeNewUser("2", "2",3.0,p.getFirst(),p.getSecond(),player.getShieldItem(),player.getRangeItem(),
+                        pp.writeNewUser("2", "2",player.HP,p.getFirst(),p.getSecond(),player.getShieldItem(),player.getRangeItem(),
                                 player.getMoveItem());
                     }
                     MainGame.get().my_player = player;

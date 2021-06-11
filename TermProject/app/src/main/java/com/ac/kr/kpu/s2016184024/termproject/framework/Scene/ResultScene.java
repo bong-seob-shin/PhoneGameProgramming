@@ -11,9 +11,11 @@ import com.ac.kr.kpu.s2016184024.termproject.MainGame;
 import com.ac.kr.kpu.s2016184024.termproject.PacketReader;
 import com.ac.kr.kpu.s2016184024.termproject.Pair;
 import com.ac.kr.kpu.s2016184024.termproject.Player;
+import com.ac.kr.kpu.s2016184024.termproject.PlayerPacket;
 import com.ac.kr.kpu.s2016184024.termproject.R;
 import com.ac.kr.kpu.s2016184024.termproject.Score;
 import com.ac.kr.kpu.s2016184024.termproject.Tiles;
+import com.ac.kr.kpu.s2016184024.termproject.framework.game.BaseGame;
 import com.ac.kr.kpu.s2016184024.termproject.framework.game.Scene;
 import com.ac.kr.kpu.s2016184024.termproject.framework.iface.GameObject;
 import com.ac.kr.kpu.s2016184024.termproject.framework.view.GameView;
@@ -25,6 +27,7 @@ public class ResultScene extends Scene {
     private Player other;
     private CustomButton selectButton;
     private CustomButton resultButton;
+    private CustomButton loseButton;
 
     public  PacketReader pr = new PacketReader();
 
@@ -69,7 +72,6 @@ public class ResultScene extends Scene {
         selectButton = new CustomButton(R.mipmap.button, w/2+300, h-200);
         add(Layer.ui, selectButton);
         score = new Score(w/2+100,  GameView.view.getTop()+100);
-        score.setScore(Integer.parseInt(MainGame.get().my_player.id));
 
         add(Layer.ui, score);
 
@@ -88,22 +90,35 @@ public class ResultScene extends Scene {
             add(Layer.fire, new FireEffect(attackPair.getFirst(), attackPair.getSecond()));
             Log.d(TAG, "drawResult: "+pr.posX+"   "+pr.posY);
             Log.d(TAG, "drawResult: "+attackPair.getFirst()+"   "+attackPair.getSecond());
+            if(attackPair.equals(PosPair)){
+                Log.d(TAG, "drawResult: nonoonononoo");
 
-            other.setPlayerInfo(PosPair.getFirst(), PosPair.getSecond(), R.mipmap.tank_enemy);
-            add(Layer.player.ordinal(), other);
-
-
-            if(attackPair.getFirst()-30<PosPair.getFirst()&&attackPair.getFirst()+30>PosPair.getFirst()){
-                if(attackPair.getSecond()-30<PosPair.getFirst()&&attackPair.getSecond()+30>PosPair.getFirst()){
-                    score.setScore(10);
+                MainGame.get().my_player.HP++;
+                Pair p = MainGame.get().my_player.getPos();
+                PlayerPacket pp = new PlayerPacket();
+                if(MainGame.get().my_player.id.equals("1")){
+                    pp.writeNewUser("1", "1",MainGame.get().my_player.HP, (double)p.getFirst(), (double)p.getSecond(),
+                            MainGame.get().my_player.getShieldItem(),MainGame.get().my_player.getRangeItem(),MainGame.get().my_player.getMoveItem());
+                }
+                if(MainGame.get().my_player.id.equals("2")) {
+                    pp.writeNewUser("2", "2", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
+                            MainGame.get().my_player.getShieldItem(), MainGame.get().my_player.getRangeItem(), MainGame.get().my_player.getMoveItem());
                 }
 
-
             }
-            pr.packetRead =false;
+            other.setPlayerInfo(PosPair.getFirst(), PosPair.getSecond(), R.mipmap.tank_enemy);
+            add(Layer.player.ordinal(), other);
+            score.setScore((int)pr.HP);
 
-
-
+            if( pr.HP>=3){
+                Log.d(TAG, "drawResult: loslsoeloselsoelosel");
+                loseButton = new CustomButton(R.mipmap.lose, w/2, h/2+300);
+                add(Layer.ui, loseButton);
+            }
+            if(MainGame.get().my_player.HP>= 3){
+                loseButton = new CustomButton(R.mipmap.win, w/2, h/2+300);
+                add(Layer.ui, loseButton);
+            }
 
         }
     }
@@ -131,7 +146,7 @@ public class ResultScene extends Scene {
                     boolean btsCheck = checkButton(selectButton,event.getX(),event.getY());
                     if(btsCheck){
 
-                    selectButton.changeBitmap(R.mipmap.select_btn_clicked);
+                        selectButton.changeBitmap(R.mipmap.select_btn_clicked);
 
                     }
 
@@ -145,6 +160,15 @@ public class ResultScene extends Scene {
                     if(btsCheck){
 
                         drawResult();
+
+                    }
+                }
+
+                if(loseButton != null){
+                    boolean btsCheck = checkButton(loseButton,event.getX(),event.getY());
+                    if(btsCheck){
+
+                        BaseGame.get().popThreeScene();
 
                     }
                 }

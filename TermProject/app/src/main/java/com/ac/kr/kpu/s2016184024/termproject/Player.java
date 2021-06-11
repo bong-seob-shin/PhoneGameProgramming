@@ -25,7 +25,7 @@ public class Player implements GameObject {
     private boolean shieldItem;
     private boolean rangeItem;
     private boolean moveItem;
-
+    public double HP;
 
     private int moveCount =4;
 
@@ -45,7 +45,7 @@ public class Player implements GameObject {
         this.shieldItem = true;
         this.rangeItem = true;
         this.moveItem = true;
-
+        this.HP =0;
     }
 
     public boolean getShieldItem(){
