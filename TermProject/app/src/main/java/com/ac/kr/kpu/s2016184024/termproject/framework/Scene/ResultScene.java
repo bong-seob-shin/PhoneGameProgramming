@@ -30,8 +30,11 @@ public class ResultScene extends Scene {
     private CustomButton loseButton;
     private boolean isFinish;
     private GameEffect fireEffect;
-    public  PacketReader pr = new PacketReader();
+    private GameEffect fireEffect_r;
+    private GameEffect fireEffect_l;
 
+    public  PacketReader pr = new PacketReader();
+    private boolean onResult;
     int w = GameView.view.getWidth();
     int h = GameView.view.getHeight();
     public enum Layer{
@@ -51,8 +54,9 @@ public class ResultScene extends Scene {
         other =new Player();
         initLayers(Layer.LAYER_COUNT.ordinal());
         add(Layer.bg, new Background(R.mipmap.background, w/2, h/2,0));
-
+        pr = new PacketReader();
         isFinish =false;
+        onResult =false;
         float tw = w/2- Tiles.TILE_WIDTH*2;
         float ty = h/2- Tiles.TILE_HEIGHT*2;
         for(int i = 0; i<5; i++){
@@ -64,8 +68,11 @@ public class ResultScene extends Scene {
         add(Layer.PacketReader.ordinal(),pr);
 
 
+        MainGame.get().my_player.isResultPhase =true;
 
         fireEffect = new GameEffect(1000000, 100000000,R.mipmap.fireshot,8);
+        fireEffect_l = new GameEffect(1000000, 100000000,R.mipmap.fireshot,8);
+        fireEffect_r = new GameEffect(1000000, 100000000,R.mipmap.fireshot,8);
 
 
         resultButton = new CustomButton(R.mipmap.result_button, w/2-300, h-200,0);
@@ -83,72 +90,115 @@ public class ResultScene extends Scene {
 
 
     void drawResult(){
-        if(pr.packetRead){
+        if(pr.packetRead) {
 
-            Pair attackPair = new Pair(MainGame.get().my_Symbol.getPos().getFirst(), MainGame.get().my_Symbol.getPos().getSecond());
-            Pair PosPair = new Pair((float)pr.posX, (float) pr.posY);
+            if (pr.isResultPhase && MainGame.get().my_player.isResultPhase) {
 
-            fireEffect.SetPos(attackPair.getFirst(), attackPair.getSecond());
+                Pair attackPair = new Pair(MainGame.get().my_Symbol.getPos().getFirst(), MainGame.get().my_Symbol.getPos().getSecond());
+                Pair PosPair = new Pair((float) pr.posX, (float) pr.posY);
 
-            add(Layer.fire,fireEffect);
+                fireEffect.SetPos(attackPair.getFirst(), attackPair.getSecond());
 
-            PlayerPacket pp = new PlayerPacket();
+                add(Layer.fire, fireEffect);
+                if(pr.rangeItem) {
+                    fireEffect_r.SetPos(attackPair.getFirst() - Tiles.TILE_WIDTH, attackPair.getSecond());
+                    fireEffect_l.SetPos(attackPair.getFirst() + Tiles.TILE_WIDTH, attackPair.getSecond());
+                    add(Layer.fire,  fireEffect_r );
+                    add(Layer.fire,  fireEffect_l);
+                }
+                PlayerPacket pp = new PlayerPacket();
 
-            if(MainGame.get().my_player.id.equals("1")){
-                pp.writeNewUser("2", "2",pr.HP, (double)PosPair.getFirst(), (double)PosPair.getSecond(),
-                        pr.shieldItem,pr.rangeItem,pr.moveItem);
-            }
-            if(MainGame.get().my_player.id.equals("2")) {
-                pp.writeNewUser("1", "1",pr.HP, (double)PosPair.getFirst(), (double)PosPair.getSecond(),
-                        pr.shieldItem,pr.rangeItem,pr.moveItem);
-            }
-
-
-            if(attackPair.equals(PosPair)){
-                pp = new PlayerPacket();
-
-
-
-                if(!pr.shieldItem){
-                    MainGame.get().my_player.HP++;
+                if (MainGame.get().my_player.id.equals("1")) {
+                    pp.writeNewUser("2", "2", pr.HP, (double) PosPair.getFirst(), (double) PosPair.getSecond(),
+                            pr.shieldItem, pr.rangeItem, pr.moveItem, true);
+                }
+                if (MainGame.get().my_player.id.equals("2")) {
+                    pp.writeNewUser("1", "1", pr.HP, (double) PosPair.getFirst(), (double) PosPair.getSecond(),
+                            pr.shieldItem, pr.rangeItem, pr.moveItem, true);
                 }
 
-                Pair p = MainGame.get().my_player.getPos();
-                if(MainGame.get().my_player.id.equals("1")){
-                    pp.writeNewUser("1", "1",MainGame.get().my_player.HP, (double)p.getFirst(), (double)p.getSecond(),
-                            MainGame.get().my_player.getShieldItem(),MainGame.get().my_player.getRangeItem(),MainGame.get().my_player.getMoveItem());
-                }
-                if(MainGame.get().my_player.id.equals("2")) {
-                    pp.writeNewUser("2", "2", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
-                            MainGame.get().my_player.getShieldItem(), MainGame.get().my_player.getRangeItem(), MainGame.get().my_player.getMoveItem());
+
+                if (attackPair.equals(PosPair)) {
+                    pp = new PlayerPacket();
+
+
+                    if (!pr.shieldItem) {
+                        MainGame.get().my_player.HP++;
+                    }
+
+                    Pair p = MainGame.get().my_player.getPos();
+                    if (MainGame.get().my_player.id.equals("1")) {
+                        pp.writeNewUser("1", "1", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
+                                MainGame.get().my_player.getShieldItem(), MainGame.get().my_player.getRangeItem(), MainGame.get().my_player.getMoveItem(), true);
+                    }
+                    if (MainGame.get().my_player.id.equals("2")) {
+                        pp.writeNewUser("2", "2", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
+                                MainGame.get().my_player.getShieldItem(), MainGame.get().my_player.getRangeItem(), MainGame.get().my_player.getMoveItem(), true);
+                    }
+
                 }
 
+                if (pr.rangeItem){
+                    if(PosPair.equals(new Pair(attackPair.getFirst()-Tiles.TILE_WIDTH, attackPair.getSecond())))
+                    {
+                        if (!pr.shieldItem) {
+                            MainGame.get().my_player.HP++;
+                        }
+
+                        Pair p = MainGame.get().my_player.getPos();
+                        if (MainGame.get().my_player.id.equals("1")) {
+                            pp.writeNewUser("1", "1", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
+                                    MainGame.get().my_player.getShieldItem(), MainGame.get().my_player.getRangeItem(), MainGame.get().my_player.getMoveItem(), true);
+                        }
+                        if (MainGame.get().my_player.id.equals("2")) {
+                            pp.writeNewUser("2", "2", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
+                                    MainGame.get().my_player.getShieldItem(), MainGame.get().my_player.getRangeItem(), MainGame.get().my_player.getMoveItem(), true);
+                        }
+                    }
+
+                    if(PosPair.equals(new Pair(attackPair.getFirst()+Tiles.TILE_WIDTH, attackPair.getSecond())))
+                    {
+                        if (!pr.shieldItem) {
+                            MainGame.get().my_player.HP++;
+                        }
+
+                        Pair p = MainGame.get().my_player.getPos();
+                        if (MainGame.get().my_player.id.equals("1")) {
+                            pp.writeNewUser("1", "1", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
+                                    MainGame.get().my_player.getShieldItem(), MainGame.get().my_player.getRangeItem(), MainGame.get().my_player.getMoveItem(), true);
+                        }
+                        if (MainGame.get().my_player.id.equals("2")) {
+                            pp.writeNewUser("2", "2", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
+                                    MainGame.get().my_player.getShieldItem(), MainGame.get().my_player.getRangeItem(), MainGame.get().my_player.getMoveItem(), true);
+                        }
+                    }
+                }
+
+                if (pr.shieldItem) {
+                    add(Layer.fire, new GameEffect(PosPair.getFirst(), PosPair.getSecond(), R.mipmap.shield_anim, 4));
+                    pr.shieldItem = false;
+                    pp = new PlayerPacket();
+                    if (MainGame.get().my_player.id.equals("1")) {
+                        pp.writeNewUser("2", "2", pr.HP, (double) PosPair.getFirst(), (double) PosPair.getSecond(),
+                                pr.shieldItem, pr.rangeItem, pr.moveItem, pr.isResultPhase);
+                    }
+                    if (MainGame.get().my_player.id.equals("2")) {
+                        pp.writeNewUser("1", "1", pr.HP, (double) PosPair.getFirst(), (double) PosPair.getSecond(),
+                                pr.shieldItem, pr.rangeItem, pr.moveItem, pr.isResultPhase);
+                    }
+                }
+                other.setPlayerInfo(PosPair.getFirst(), PosPair.getSecond(), R.mipmap.tank_enemy);
+
+                add(Layer.player.ordinal(), other);
+                score.setScore((int) MainGame.get().my_player.HP);
+
+
+                if (MainGame.get().my_player.getShieldItem()) {
+                    MainGame.get().my_player.setShieldItem(false);
+                }
+                resultButton.setIsSelected(true);
+                onResult =true;
             }
-
-            if(pr.shieldItem) {
-                add(Layer.fire, new GameEffect(PosPair.getFirst(), PosPair.getSecond(), R.mipmap.shield_anim, 4));
-                pr.shieldItem =false;
-                pp = new PlayerPacket();
-                if(MainGame.get().my_player.id.equals("1")){
-                    pp.writeNewUser("2", "2",pr.HP, (double)PosPair.getFirst(), (double)PosPair.getSecond(),
-                            pr.shieldItem,pr.rangeItem,pr.moveItem);
-                }
-                if(MainGame.get().my_player.id.equals("2")) {
-                    pp.writeNewUser("1", "1",pr.HP, (double)PosPair.getFirst(), (double)PosPair.getSecond(),
-                            pr.shieldItem,pr.rangeItem,pr.moveItem);
-                }
-            }
-            other.setPlayerInfo(PosPair.getFirst(), PosPair.getSecond(), R.mipmap.tank_enemy);
-
-            add(Layer.player.ordinal(), other);
-            score.setScore((int)MainGame.get().my_player.HP);
-
-
-
-            if(MainGame.get().my_player.getShieldItem()){
-                MainGame.get().my_player.setShieldItem(false);
-            }
-            resultButton.setIsSelected(true);
         }
     }
 
@@ -172,13 +222,14 @@ public class ResultScene extends Scene {
 
                 Log.d(TAG, "onTouchEvent: "+pr.packetRead);
                 if(selectButton != null){
-                    boolean btsCheck = checkButton(selectButton,event.getX(),event.getY());
-                    if(btsCheck){
+                    if (pr.isResultPhase && MainGame.get().my_player.isResultPhase&&onResult) {
+                        boolean btsCheck = checkButton(selectButton, event.getX(), event.getY());
+                        if (btsCheck) {
 
-                        selectButton.changeBitmap(R.mipmap.select_btn_clicked);
+                            selectButton.changeBitmap(R.mipmap.select_btn_clicked);
 
+                        }
                     }
-
                 }
 
                 break;
@@ -204,31 +255,35 @@ public class ResultScene extends Scene {
 
                     }
                 }
-                if(selectButton != null){
-                    boolean btsCheck = selectButton.getIsSelected();
-                    if(btsCheck){
+                if(selectButton != null) {
+                    if (pr.isResultPhase && MainGame.get().my_player.isResultPhase&&onResult) {
+                        boolean btsCheck = selectButton.getIsSelected();
+                        if (btsCheck) {
 
-                        remove(fireEffect);
-                        if( pr.HP>=3){
-                            loseButton = new CustomButton(R.mipmap.lose, w/2, h/2+300,0);
-                            add(Layer.ui, loseButton);
-                            isFinish =true;
-                        }
-                        if(MainGame.get().my_player.HP>= 3){
-                            loseButton = new CustomButton(R.mipmap.win, w/2, h/2+300,0);
-                            add(Layer.ui, loseButton);
-                            isFinish = true;
-                        }
-                        if(!isFinish) {
-                            MainGame.get().my_Symbol.setPos(100000, 100000);
-                            MainGame.get().my_player.setMoveCount(4);
+                            remove(fireEffect);
+                            if (pr.HP >= 3) {
+                                loseButton = new CustomButton(R.mipmap.lose, w / 2, h / 2 + 300, 0);
+                                add(Layer.ui, loseButton);
+                                isFinish = true;
+                            }
+                            if (MainGame.get().my_player.HP >= 3) {
+                                loseButton = new CustomButton(R.mipmap.win, w / 2, h / 2 + 300, 0);
+                                add(Layer.ui, loseButton);
+                                isFinish = true;
+                            }
+                            if (!isFinish) {
+                                MainGame.get().my_Symbol.setPos(100000, 100000);
+                                MainGame.get().my_player.setMoveCount(4);
 
 
 
-                            remove(pr);
-                            MainGame.get().popTwoScene();
+                                MainGame.get().popTwoScene();
+                            }
                         }
                     }
+                }
+                else{
+                    selectButton.changeBitmap(R.mipmap.button);
                 }
                 break;
 

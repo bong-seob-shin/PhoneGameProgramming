@@ -26,6 +26,7 @@ public class PlayerPacket {
     private boolean shieldItem;
     private boolean rangeItem;
     private boolean moveItem;
+    private boolean isResultPhase;
 
 
     //    UserID,
@@ -38,9 +39,17 @@ public class PlayerPacket {
 //    rangeItem,
 //    moveItem,
 
+    public boolean isResultPhase() {
+        return isResultPhase;
+    }
+
+    public void setResultPhase(boolean resultPhase) {
+        isResultPhase = resultPhase;
+    }
+
     public PlayerPacket(){}
 
-    public PlayerPacket(String userId, double HP,double posX,double posY,boolean shieldItem,boolean rangeItem,boolean moveItem){
+    public PlayerPacket(String userId, double HP,double posX,double posY,boolean shieldItem,boolean rangeItem,boolean moveItem, boolean isResultPhase){
         this.UserID =userId;
         this.HP = HP;
         this.posX =posX;
@@ -48,6 +57,7 @@ public class PlayerPacket {
         this.shieldItem= shieldItem;
         this.rangeItem= rangeItem;
         this.moveItem= moveItem;
+        this.isResultPhase = isResultPhase;
 
     }
 
@@ -59,6 +69,8 @@ public class PlayerPacket {
         this.shieldItem= p.shieldItem;
         this.rangeItem= p.rangeItem;
         this.moveItem= p.moveItem;
+        this.isResultPhase = p.isResultPhase;
+
     }
     public String getUserID() {
         return UserID;
@@ -120,8 +132,8 @@ public class PlayerPacket {
 
 
 
-    public void writeNewUser(String index, String userId, double HP,double posX,double posY, boolean shieldItem,boolean rangeItem,boolean moveItem) {
-        PlayerPacket user = new PlayerPacket(userId , HP, posX,  posY, shieldItem, rangeItem, moveItem);
+    public void writeNewUser(String index, String userId, double HP,double posX,double posY, boolean shieldItem,boolean rangeItem,boolean moveItem, boolean isResultPhase) {
+        PlayerPacket user = new PlayerPacket(userId , HP, posX,  posY, shieldItem, rangeItem, moveItem,isResultPhase);
 
         BaseGame.get().mDatabase.child(index).setValue(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

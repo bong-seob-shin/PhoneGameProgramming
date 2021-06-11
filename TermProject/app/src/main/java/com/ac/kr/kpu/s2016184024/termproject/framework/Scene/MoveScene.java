@@ -183,12 +183,12 @@ public class MoveScene extends Scene {
 
 
                         pp.writeNewUser("1", "1", player.HP, p.getFirst(), p.getSecond(), player.getShieldItem(), player.getRangeItem(),
-                                player.getMoveItem());
+                                player.getMoveItem(),false);
                     }
                     if (player.id.equals("2")) {
 
                         pp.writeNewUser("2", "2", player.HP, p.getFirst(), p.getSecond(), player.getShieldItem(), player.getRangeItem(),
-                                player.getMoveItem());
+                                player.getMoveItem(),false);
                     }
                     MainGame.get().my_player = player;
 

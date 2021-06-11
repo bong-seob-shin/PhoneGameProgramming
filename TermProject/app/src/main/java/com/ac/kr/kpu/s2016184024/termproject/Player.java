@@ -42,6 +42,8 @@ public class Player implements GameObject {
 
     private int moveCount =4;
 
+
+    public boolean isResultPhase;
     public Player() {
 
 
@@ -59,6 +61,7 @@ public class Player implements GameObject {
         this.rangeItem = false;
         this.moveItem = false;
         this.HP =0;
+        this.isResultPhase = false;
     }
 
     public boolean getShieldItem(){

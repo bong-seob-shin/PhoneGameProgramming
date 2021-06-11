@@ -145,11 +145,11 @@ public class AttackScene extends Scene {
                         PlayerPacket pp = new PlayerPacket();
                         if(MainGame.get().my_player.id.equals("1")){
                             pp.writeNewUser("1", "1",MainGame.get().my_player.HP, (double)p.getFirst(), (double)p.getSecond(),
-                                    MainGame.get().my_player.getShieldItem(),MainGame.get().my_player.getRangeItem(),MainGame.get().my_player.getMoveItem());
+                                    MainGame.get().my_player.getShieldItem(),MainGame.get().my_player.getRangeItem(),MainGame.get().my_player.getMoveItem(),false);
                         }
                         if(MainGame.get().my_player.id.equals("2")) {
                             pp.writeNewUser("2", "2", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
-                                    MainGame.get().my_player.getShieldItem(), MainGame.get().my_player.getRangeItem(), MainGame.get().my_player.getMoveItem());
+                                    MainGame.get().my_player.getShieldItem(), MainGame.get().my_player.getRangeItem(), MainGame.get().my_player.getMoveItem(),false);
                         }
                     }
                 }
@@ -168,11 +168,11 @@ public class AttackScene extends Scene {
                         PlayerPacket pp = new PlayerPacket();
                         if(MainGame.get().my_player.id.equals("1")){
                             pp.writeNewUser("1", "1",MainGame.get().my_player.HP, (double)p.getFirst(), (double)p.getSecond(),
-                                    MainGame.get().my_player.getShieldItem(),MainGame.get().my_player.getRangeItem(),MainGame.get().my_player.getMoveItem());
+                                    MainGame.get().my_player.getShieldItem(),MainGame.get().my_player.getRangeItem(),MainGame.get().my_player.getMoveItem(),false);
                         }
                         if(MainGame.get().my_player.id.equals("2")) {
                             pp.writeNewUser("2", "2", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
-                                    MainGame.get().my_player.getShieldItem(), MainGame.get().my_player.getRangeItem(), MainGame.get().my_player.getMoveItem());
+                                    MainGame.get().my_player.getShieldItem(), MainGame.get().my_player.getRangeItem(), MainGame.get().my_player.getMoveItem(),false);
                         }
                     }
                 }
@@ -185,11 +185,11 @@ public class AttackScene extends Scene {
                     PlayerPacket pp = new PlayerPacket();
                     if(MainGame.get().my_player.id.equals("1")){
                     pp.writeNewUser("1", "1",MainGame.get().my_player.HP, (double)p.getFirst(), (double)p.getSecond(),
-                            MainGame.get().my_player.getShieldItem(),MainGame.get().my_player.getRangeItem(),MainGame.get().my_player.getMoveItem());
+                            MainGame.get().my_player.getShieldItem(),MainGame.get().my_player.getRangeItem(),MainGame.get().my_player.getMoveItem(),true);
                     }
                     if(MainGame.get().my_player.id.equals("2")) {
                         pp.writeNewUser("2", "2", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
-                                MainGame.get().my_player.getShieldItem(), MainGame.get().my_player.getRangeItem(), MainGame.get().my_player.getMoveItem());
+                                MainGame.get().my_player.getShieldItem(), MainGame.get().my_player.getRangeItem(), MainGame.get().my_player.getMoveItem(),true);
                     }
                         MainGame.get().my_Symbol = symbol;
                     MainGame.get().push(new ResultScene());

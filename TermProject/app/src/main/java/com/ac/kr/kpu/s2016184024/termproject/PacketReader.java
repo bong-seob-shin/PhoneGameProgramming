@@ -17,10 +17,11 @@ public class PacketReader implements GameObject {
     public double HP;
     public double posX;
     public double posY;
-  
+
     public boolean shieldItem;
     public boolean rangeItem;
     public boolean moveItem;
+    public boolean isResultPhase;
 
     public void SetValue(PlayerPacket p){
         this.UserID =p.getUserID();
@@ -31,6 +32,7 @@ public class PacketReader implements GameObject {
         this.shieldItem= p.isShieldItem();
         this.rangeItem= p.isRangeItem();
         this.moveItem= p.isMoveItem();
+        this.isResultPhase = p.isResultPhase();
     }
     @Override
     public void update() {
