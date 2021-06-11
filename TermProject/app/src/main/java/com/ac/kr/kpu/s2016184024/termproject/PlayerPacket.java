@@ -5,10 +5,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.ac.kr.kpu.s2016184024.termproject.framework.game.BaseGame;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -24,8 +22,7 @@ public class PlayerPacket {
     private double HP;
     private double posX;
     private double posY;
-    private double attackPosX;
-    private double attackPosY;
+
     private boolean shieldItem;
     private boolean rangeItem;
     private boolean moveItem;
@@ -42,13 +39,11 @@ public class PlayerPacket {
 
     public PlayerPacket(){}
 
-    public PlayerPacket(String userId, double HP,double posX,double posY, double attackPosX, double attackPosY,boolean shieldItem,boolean rangeItem,boolean moveItem){
+    public PlayerPacket(String userId, double HP,double posX,double posY,boolean shieldItem,boolean rangeItem,boolean moveItem){
         this.UserID =userId;
         this.HP = HP;
         this.posX =posX;
         this.posY =posY;
-        this.attackPosX =attackPosX;
-        this.attackPosY= attackPosY;
         this.shieldItem= shieldItem;
         this.rangeItem= rangeItem;
         this.moveItem= moveItem;
@@ -60,8 +55,6 @@ public class PlayerPacket {
         this.HP = p.HP;
         this.posX =p.posX;
         this.posY =p.posY;
-        this.attackPosX =p.attackPosX;
-        this.attackPosY= p.attackPosY;
         this.shieldItem= p.shieldItem;
         this.rangeItem= p.rangeItem;
         this.moveItem= p.moveItem;
@@ -82,13 +75,7 @@ public class PlayerPacket {
         return posY;
     }
 
-    public double getAttackPosX() {
-        return attackPosX;
-    }
 
-    public double getAttackPosY() {
-        return attackPosY;
-    }
 
     public boolean isShieldItem() {
         return shieldItem;
@@ -118,14 +105,6 @@ public class PlayerPacket {
         this.posY = posY;
     }
 
-    public void setAttackPosX(double attackPosX) {
-        this.attackPosX = attackPosX;
-    }
-
-    public void setAttackPosY(double attackPosY) {
-        this.attackPosY = attackPosY;
-    }
-
     public void setShieldItem(boolean shieldItem) {
         this.shieldItem = shieldItem;
     }
@@ -140,8 +119,8 @@ public class PlayerPacket {
 
 
 
-    public void writeNewUser(String index, String userId, double HP,double posX,double posY, double attackPosX, double attackPosY,boolean shieldItem,boolean rangeItem,boolean moveItem) {
-        PlayerPacket user = new PlayerPacket(userId , HP, posX,  posY,  attackPosX, attackPosY, shieldItem, rangeItem, moveItem);
+    public void writeNewUser(String index, String userId, double HP,double posX,double posY, boolean shieldItem,boolean rangeItem,boolean moveItem) {
+        PlayerPacket user = new PlayerPacket(userId , HP, posX,  posY, shieldItem, rangeItem, moveItem);
 
         BaseGame.get().mDatabase.child(index).setValue(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -165,23 +144,29 @@ public class PlayerPacket {
     public void readUser(String index){
 
 
-        BaseGame.get().mDatabase.child(index).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        BaseGame.get().mDatabase.child(index).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
-                if(!task.isSuccessful()){
-                    Log.d(TAG, "onFail: noData");
-                } else {
+                if(dataSnapshot.getValue(PlayerPacket.class) != null){
+                    PlayerPacket post = dataSnapshot.getValue(PlayerPacket.class);
+                    if(packets.isEmpty())
+                        packets.add(post);
+                    else
+                        packets.set(0,post);
 
-
-                    PlayerPacket post = task.getResult().getValue(PlayerPacket.class);
-                    packets.add(post);
 
                     Log.d(TAG, "onSuccess: change "+packets.get(0).getUserID());
+                } else {
+                    Log.d(TAG, "onFail: noData");
                 }
             }
 
-
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("FireBaseData", "loadPost:onCancelled", databaseError.toException());
+            }
         });
 
 

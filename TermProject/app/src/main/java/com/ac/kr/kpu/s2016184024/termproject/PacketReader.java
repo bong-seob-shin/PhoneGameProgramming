@@ -28,8 +28,7 @@ public class PacketReader implements GameObject {
         this.HP = p.getHP();
         this.posX =p.getPosX();
         this.posY =p.getPosY();
-        this.attackPosX =p.getAttackPosX();
-        this.attackPosY= p.getAttackPosY();
+
         this.shieldItem= p.isShieldItem();
         this.rangeItem= p.isRangeItem();
         this.moveItem= p.isMoveItem();
@@ -37,7 +36,7 @@ public class PacketReader implements GameObject {
     @Override
     public void update() {
 
-        if(!packetRead) {
+
             if (MainGame.get().my_player.id.equals("1")) {
 
 
@@ -61,7 +60,7 @@ public class PacketReader implements GameObject {
                     }
                 }
             }
-        }
+
 
     }
 
