@@ -32,12 +32,12 @@ public class ResultScene extends Scene {
     private GameEffect fireEffect_r;
     private GameEffect fireEffect_l;
 
-    public  PacketReader pr = new PacketReader();
+    public  PacketReader packetReader = new PacketReader();
     private boolean onResult;
     int w = GameView.view.getWidth();
     int h = GameView.view.getHeight();
     public enum Layer{
-        bg, PacketReader,Tile,player,ui,fire, LAYER_COUNT
+        Background, PacketReader,Tile,player,ui,fire, LAYER_COUNT
     }
 
 
@@ -52,8 +52,8 @@ public class ResultScene extends Scene {
 
         other =new Player(0);
         initLayers(Layer.LAYER_COUNT.ordinal());
-        add(Layer.bg, new Background(R.mipmap.background, w/2, h/2,0));
-        pr = new PacketReader();
+        add(Layer.Background, new Background(R.mipmap.background, w/2, h/2,0));
+        packetReader = new PacketReader();
         isFinish =false;
         onResult =false;
         float tw = w/2- Tiles.TILE_WIDTH*2;
@@ -69,127 +69,101 @@ public class ResultScene extends Scene {
             }
         }
 
-        add(Layer.PacketReader.ordinal(),pr);
-
-
+        add(Layer.PacketReader.ordinal(), packetReader);
         MainGame.get().my_player.isResultPhase =true;
 
         fireEffect = new GameEffect(1000000, 100000000,R.mipmap.fireshot,8);
         fireEffect_l = new GameEffect(1000000, 100000000,R.mipmap.fireshot,8);
         fireEffect_r = new GameEffect(1000000, 100000000,R.mipmap.fireshot,8);
 
-
         resultButton = new CustomButton(R.mipmap.result_button, w/2-300, h-200,0);
         add(Layer.ui, resultButton);
         selectButton = new CustomButton(R.mipmap.button, w/2+300, h-200,0);
         add(Layer.ui, selectButton);
         score = new Score(w/2+100,  GameView.view.getTop()+100);
-
         add(Layer.ui, score);
-
-
-
-
     }
 
 
     void drawResult(){
-        if(pr.packetRead) {
-
-            if (pr.isResultPhase && MainGame.get().my_player.isResultPhase) {
-
+        if(packetReader.packetRead) {
+            if (packetReader.isResultPhase && MainGame.get().my_player.isResultPhase) {
                 Pair attackPair = new Pair(MainGame.get().my_Symbol.getPos().getFirst(), MainGame.get().my_Symbol.getPos().getSecond());
-                Pair PosPair = new Pair((float) pr.posX, (float) pr.posY);
-
+                Pair PosPair = new Pair((float) packetReader.posX, (float) packetReader.posY);
                 fireEffect.SetPos(attackPair.getFirst(), attackPair.getSecond());
-
                 add(Layer.fire, fireEffect);
+                PlayerPacket playerPacket = new PlayerPacket();
 
-                PlayerPacket pp = new PlayerPacket();
-
-                if (MainGame.get().my_player.id.equals("1")) {
-                    pp.writeNewUser("2", "2", pr.HP, (double) PosPair.getFirst(), (double) PosPair.getSecond(),
-                            pr.shieldItem, pr.rangeItem, pr.moveItem, true);
-                }
-                if (MainGame.get().my_player.id.equals("2")) {
-                    pp.writeNewUser("1", "1", pr.HP, (double) PosPair.getFirst(), (double) PosPair.getSecond(),
-                            pr.shieldItem, pr.rangeItem, pr.moveItem, true);
-                }
                 if(MainGame.get().my_player.getRangeItem()) {
                     fireEffect_r.SetPos(attackPair.getFirst() - Tiles.TILE_WIDTH, attackPair.getSecond());
                     fireEffect_l.SetPos(attackPair.getFirst() + Tiles.TILE_WIDTH, attackPair.getSecond());
                     add(Layer.fire,  fireEffect_r );
                     add(Layer.fire,  fireEffect_l);
                 }
-
                 if (attackPair.equals(PosPair)) {
-                    pp = new PlayerPacket();
-
-
-                    if (!pr.shieldItem) {
+                    playerPacket = new PlayerPacket();
+                    if (!packetReader.shieldItem) {
                         MainGame.get().my_player.HP++;
                     }
-
                     Pair p = MainGame.get().my_player.getPos();
                     if (MainGame.get().my_player.id.equals("1")) {
-                        pp.writeNewUser("1", "1", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
+                        playerPacket.writeNewUser("1", "1", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
                                 MainGame.get().my_player.getShieldItem(), MainGame.get().my_player.getRangeItem(), MainGame.get().my_player.getMoveItem(), true);
                     }
                     if (MainGame.get().my_player.id.equals("2")) {
-                        pp.writeNewUser("2", "2", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
+                        playerPacket.writeNewUser("2", "2", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
                                 MainGame.get().my_player.getShieldItem(), MainGame.get().my_player.getRangeItem(), MainGame.get().my_player.getMoveItem(), true);
                     }
-
                 }
 
                 if (MainGame.get().my_player.getRangeItem()){MainGame.get().my_player.setRangeItem(false);
 
                     if(PosPair.equals(new Pair(attackPair.getFirst()-Tiles.TILE_WIDTH, attackPair.getSecond())))
                     {
-                        if (!pr.shieldItem) {
+                        if (!packetReader.shieldItem) {
                             MainGame.get().my_player.HP++;
                         }
 
                         Pair p = MainGame.get().my_player.getPos();
                         if (MainGame.get().my_player.id.equals("1")) {
-                            pp.writeNewUser("1", "1", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
+                            playerPacket.writeNewUser("1", "1", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
                                     MainGame.get().my_player.getShieldItem(), MainGame.get().my_player.getRangeItem(), MainGame.get().my_player.getMoveItem(), true);
                         }
                         if (MainGame.get().my_player.id.equals("2")) {
-                            pp.writeNewUser("2", "2", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
+                            playerPacket.writeNewUser("2", "2", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
                                     MainGame.get().my_player.getShieldItem(), MainGame.get().my_player.getRangeItem(), MainGame.get().my_player.getMoveItem(), true);
                         }
                     }
 
                     if(PosPair.equals(new Pair(attackPair.getFirst()+Tiles.TILE_WIDTH, attackPair.getSecond())))
                     {
-                        if (!pr.shieldItem) {
+                        if (!packetReader.shieldItem) {
                             MainGame.get().my_player.HP++;
                         }
 
                         Pair p = MainGame.get().my_player.getPos();
                         if (MainGame.get().my_player.id.equals("1")) {
-                            pp.writeNewUser("1", "1", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
+                            playerPacket.writeNewUser("1", "1", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
                                     MainGame.get().my_player.getShieldItem(), MainGame.get().my_player.getRangeItem(), MainGame.get().my_player.getMoveItem(), true);
                         }
                         if (MainGame.get().my_player.id.equals("2")) {
-                            pp.writeNewUser("2", "2", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
+                            playerPacket.writeNewUser("2", "2", MainGame.get().my_player.HP, (double) p.getFirst(), (double) p.getSecond(),
                                     MainGame.get().my_player.getShieldItem(), MainGame.get().my_player.getRangeItem(), MainGame.get().my_player.getMoveItem(), true);
                         }
                     }
                 }
 
-                if (pr.shieldItem) {
+                if (packetReader.shieldItem) {
                     add(Layer.fire, new GameEffect(PosPair.getFirst(), PosPair.getSecond(), R.mipmap.shield_anim, 4));
-                    pr.shieldItem = false;
-                    pp = new PlayerPacket();
+                    packetReader.shieldItem = false;
+                    playerPacket = new PlayerPacket();
                     if (MainGame.get().my_player.id.equals("1")) {
-                        pp.writeNewUser("2", "2", pr.HP, (double) PosPair.getFirst(), (double) PosPair.getSecond(),
-                                pr.shieldItem, pr.rangeItem, pr.moveItem, pr.isResultPhase);
+                        playerPacket.writeNewUser("2", "2", packetReader.HP, (double) PosPair.getFirst(), (double) PosPair.getSecond(),
+                                packetReader.shieldItem, packetReader.rangeItem, packetReader.moveItem, packetReader.isResultPhase);
                     }
                     if (MainGame.get().my_player.id.equals("2")) {
-                        pp.writeNewUser("1", "1", pr.HP, (double) PosPair.getFirst(), (double) PosPair.getSecond(),
-                                pr.shieldItem, pr.rangeItem, pr.moveItem, pr.isResultPhase);
+                        playerPacket.writeNewUser("1", "1", packetReader.HP, (double) PosPair.getFirst(), (double) PosPair.getSecond(),
+                                packetReader.shieldItem, packetReader.rangeItem, packetReader.moveItem, packetReader.isResultPhase);
                     }
                 }
                 other.setPlayerInfo(PosPair.getFirst(), PosPair.getSecond(), R.mipmap.tank_enemy);
@@ -227,7 +201,7 @@ public class ResultScene extends Scene {
 
 
                 if(selectButton != null){
-                    if (pr.isResultPhase && MainGame.get().my_player.isResultPhase&&onResult) {
+                    if (packetReader.isResultPhase && MainGame.get().my_player.isResultPhase&&onResult) {
                         boolean btsCheck = checkButton(selectButton, event.getX(), event.getY());
                         if (btsCheck) {
 
@@ -261,12 +235,12 @@ public class ResultScene extends Scene {
                     }
                 }
                 if(selectButton != null) {
-                    if (pr.isResultPhase && MainGame.get().my_player.isResultPhase&&onResult) {
+                    if (packetReader.isResultPhase && MainGame.get().my_player.isResultPhase&&onResult) {
                         boolean btsCheck = selectButton.getIsSelected();
                         if (btsCheck) {
 
                             remove(fireEffect);
-                            if (pr.HP >= 3) {
+                            if (packetReader.HP >= 3) {
                                 loseButton = new CustomButton(R.mipmap.lose, w / 2, h / 2 + 300, 0);
                                 add(Layer.ui, loseButton);
                                 isFinish = true;

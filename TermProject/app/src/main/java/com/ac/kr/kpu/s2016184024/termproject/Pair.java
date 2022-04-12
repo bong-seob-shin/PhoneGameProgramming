@@ -10,15 +10,12 @@ public class Pair {
         this.first = first;
         this.second = second;
     }
-
     public float getFirst(){
         return this.first;
     }
-
     public float getSecond(){
         return  this.second;
     }
-
     public boolean equals(Pair p){
         if(first-boundLength* GameView.MULTIPLIER>p.getFirst()||first+boundLength* GameView.MULTIPLIER<p.getFirst()){
             return false;

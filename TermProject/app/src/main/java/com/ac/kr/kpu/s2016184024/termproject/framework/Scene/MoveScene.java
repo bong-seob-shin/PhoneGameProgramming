@@ -60,36 +60,22 @@ public class MoveScene extends Scene {
                 add(Layer.Tile, MainGame.get().tiles[i][j]);
             }
         }
-
-
-
-
         player = MainGame.get().my_player;
         player.setMoveCount(4);
         if(MainGame.get().playTurns>4){
             player.setPos(w/2, h/2);
             player.setMoveRange(1);
             player.setMoveCount(2);
-
         }
         add(Layer.player, player);
-
         selectButton = new CustomButton(R.mipmap.button, w/2, h-200,0);
         selectButton.changeBitmap(R.mipmap.button);
         add(Layer.ui, selectButton);
-
         if(!MainGame.get().m_btn.getIsSelected()) {
             add(Layer.ui, MainGame.get().m_btn);
         }
-
-
         score = new Score(w/2+100,  GameView.view.getTop()+100);
-
-
         add(Layer.ui, score);
-
-
-
     }
 
     public Pair checkClickTile(float x, float y){
@@ -126,8 +112,6 @@ public class MoveScene extends Scene {
     }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
-
         int swipeDistance = 100;
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN :
@@ -136,14 +120,9 @@ public class MoveScene extends Scene {
                 boolean btnCheck = checkButton(selectButton,event.getX(),event.getY());
                 if(btnCheck){
                     selectButton.changeBitmap(R.mipmap.select_btn_clicked);
-
                 }
-
-
                 break;
-
             case MotionEvent.ACTION_UP:
-
                 clickEndPosX = event.getX();
                 clickEndPosY = event.getY();
                 float distX = clickEndPosX - clickStartPosX;
@@ -153,29 +132,24 @@ public class MoveScene extends Scene {
                         if (distX > swipeDistance) {
                             //rightMove
                             player.RightMove();
-
                         }
                         if (distX < -swipeDistance) {
                             //leftMove
                             player.LeftMove();
-
                         }
                     } else {
                         if (distY > swipeDistance) {
                             //downMove
                             player.DownMove();
-
                         }
                         if (distY < -swipeDistance) {
                             //upMove
                             player.UpMove();
-
                         }
                     }
                 }
                 if(MainGame.get().m_btn !=null) {
                     boolean moveBtnCheck = checkButton(MainGame.get().m_btn, event.getX(), event.getY());
-
                     if (moveBtnCheck) {
                         player.setMoveCount(player.getMoveCount() + 4);
                         player.setMoveItem(true);
@@ -184,30 +158,20 @@ public class MoveScene extends Scene {
                         remove(MainGame.get().m_btn);
                     }
                 }
-
                 btnCheck = checkButton(selectButton,event.getX(),event.getY());
                 if(btnCheck) {
                     //씬바꾸고 플레이어 정보 업데이트, 패킷 업데이트
-                    Pair p = player.getPos();
-
-
-                    PlayerPacket pp = new PlayerPacket();
-
+                    Pair pair = player.getPos();
+                    PlayerPacket playerPacket = new PlayerPacket();
                     if (player.id.equals("1")) {
-
-
-                        pp.writeNewUser("1", "1", player.HP, p.getFirst(), p.getSecond(), player.getShieldItem(), player.getRangeItem(),
+                        playerPacket.writeNewUser("1", "1", player.HP, pair.getFirst(), pair.getSecond(), player.getShieldItem(), player.getRangeItem(),
                                 player.getMoveItem(),false);
                     }
                     if (player.id.equals("2")) {
-
-                        pp.writeNewUser("2", "2", player.HP, p.getFirst(), p.getSecond(), player.getShieldItem(), player.getRangeItem(),
+                        playerPacket.writeNewUser("2", "2", player.HP, pair.getFirst(), pair.getSecond(), player.getShieldItem(), player.getRangeItem(),
                                 player.getMoveItem(),false);
                     }
                     MainGame.get().my_player = player;
-
-
-
                     MainGame.get().push(new AttackScene());
                 }
                     clickStartPosX = 0;

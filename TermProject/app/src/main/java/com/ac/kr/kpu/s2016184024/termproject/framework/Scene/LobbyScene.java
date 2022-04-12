@@ -95,12 +95,9 @@ public class LobbyScene extends Scene {
                 return true;
             }
         }
-
         return  false;
     }
     public boolean onTouchEvent(MotionEvent event) {
-
-
 
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN :
@@ -124,36 +121,29 @@ public class LobbyScene extends Scene {
                        if(MainGame.get().my_Packet.packets.get(0).getUserID().equals( "1") &&MainGame.get().other_Packet.packets.get(0).getUserID().equals("2"))
                        {
                            resetButton.changeBitmap(R.mipmap.resetbutton_clicked);
-                           PlayerPacket pp = new PlayerPacket();
-                           pp.writeNewUser("1", "0",0,0,0,false,false,false,false);
-                           pp.writeNewUser("2", "0",0,0,0,false,false,false,false);
+                           PlayerPacket playerPacket = new PlayerPacket();
+                           playerPacket.writeNewUser("1", "0",0,0,0,false,false,false,false);
+                           playerPacket.writeNewUser("2", "0",0,0,0,false,false,false,false);
                        }
                     }
                 }
                 break;
             case MotionEvent.ACTION_UP:
-
                 p1_btsCheck = p1_Button.getIsSelected();
                 if(p1_btsCheck){
-                    PlayerPacket pp = new PlayerPacket();
-                    pp.writeNewUser("1", "1",0,0,0,false,false,false,false);
+                    PlayerPacket playerPacket = new PlayerPacket();
+                    playerPacket.writeNewUser("1", "1",0,0,0,false,false,false,false);
                     MainGame.get().my_player.setPlayerId("1");
-
                     MainGame.get().push(new MoveScene());
                 }
-
                 p2_btsCheck = p2_Button.getIsSelected();
                 if(p2_btsCheck){
-                    PlayerPacket pp = new PlayerPacket();
-                    pp.writeNewUser("2", "2",0,0,0,false,false,false,false);
-
+                    PlayerPacket playerPacket = new PlayerPacket();
+                    playerPacket.writeNewUser("2", "2",0,0,0,false,false,false,false);
                     MainGame.get().my_player.setPlayerId("2");
-
                     MainGame.get().push(new MoveScene());
-
                 }
-
-              break;
+                break;
         }
         return  true;
     }

@@ -86,7 +86,6 @@ public class Player implements GameObject {
     }
 
     public Pair getPos(){
-
         return new Pair(x, y);
     }
     public void setPos(float x, float y){
@@ -127,7 +126,6 @@ public class Player implements GameObject {
         }
 
     }
-
     public void DownMove() {
         if(GameView.view.getHeight()/2+Tiles.TILE_WIDTH*moveRange>this.ty) {
             this.ty = this.ty + Tiles.TILE_HEIGHT;
@@ -143,20 +141,16 @@ public class Player implements GameObject {
         float dx = speed * game.frameTime;
         float dy = speed * game.frameTime;
         if(tx < x){
-            //move left
             dx = -dx;
         }
         if(ty < y){
-            //move left
             dy = -dy;
         }
         x+=dx;
         y += dy;
-
         if((dx>0&& x>tx)||(dx<0&& x<tx)){
             x =tx;
         }
-
     }
 
 

@@ -58,7 +58,6 @@ public class PlayerPacket {
         this.rangeItem= rangeItem;
         this.moveItem= moveItem;
         this.isResultPhase = isResultPhase;
-
     }
 
     public void SetValue(PlayerPacket p){
@@ -134,33 +133,26 @@ public class PlayerPacket {
 
     public void writeNewUser(String index, String userId, double HP,double posX,double posY, boolean shieldItem,boolean rangeItem,boolean moveItem, boolean isResultPhase) {
         PlayerPacket user = new PlayerPacket(userId , HP, posX,  posY, shieldItem, rangeItem, moveItem,isResultPhase);
-
         BaseGame.get().mDatabase.child(index).setValue(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        // Write was successful!
                         Log.d(TAG, "onSuccess: success ");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        // Write failed
                         Log.d(TAG, "onFail: fail");
 
                     }
                 });
-
     }
 
     public void readUser(String index){
-
-
         BaseGame.get().mDatabase.child(index).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
                 if(dataSnapshot.getValue(PlayerPacket.class) != null){
                     PlayerPacket post = dataSnapshot.getValue(PlayerPacket.class);
                     if(packets.isEmpty())
@@ -168,20 +160,16 @@ public class PlayerPacket {
                     else
                         packets.set(0,post);
 
-
                     Log.d(TAG, "onSuccess: change "+packets.get(0).getUserID());
-                } else {
+                }
+                else {
                     Log.d(TAG, "onFail: noData");
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Getting Post failed, log a message
                 Log.w("FireBaseData", "loadPost:onCancelled", databaseError.toException());
             }
         });
-
-
     }
 }

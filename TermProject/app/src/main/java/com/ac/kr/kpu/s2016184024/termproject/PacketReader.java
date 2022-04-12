@@ -28,7 +28,6 @@ public class PacketReader implements GameObject {
         this.HP = p.getHP();
         this.posX =p.getPosX();
         this.posY =p.getPosY();
-
         this.shieldItem= p.isShieldItem();
         this.rangeItem= p.isRangeItem();
         this.moveItem= p.isMoveItem();
@@ -36,21 +35,15 @@ public class PacketReader implements GameObject {
     }
     @Override
     public void update() {
-
-
             if (MainGame.get().my_player.id.equals("1")) {
-
-
                 MainGame.get().other_Packet.readUser("2");
                 if (!MainGame.get().other_Packet.packets.isEmpty()) {
-
                     if(MainGame.get().other_Packet.packets.get(0) != null) {
                         SetValue(MainGame.get().other_Packet.packets.get(0));
                         packetRead = true;
                     }
                 }
             }
-
             if (MainGame.get().my_player.id.equals("2")) {
                 MainGame.get().other_Packet.readUser("1");
                 if (!MainGame.get().other_Packet.packets.isEmpty()) {
@@ -61,12 +54,8 @@ public class PacketReader implements GameObject {
                     }
                 }
             }
-
-
     }
-
     @Override
     public void draw(Canvas canvas) {
-
     }
 }
